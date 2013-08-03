@@ -14,3 +14,9 @@
 [quit]
     close #1
     end
+
+[game]
+    wait
+    
+[gameLoop]
+    wait
