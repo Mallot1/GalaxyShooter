@@ -14,9 +14,8 @@
         'create window
         open "Main Menu" for graphics_nsb_nf as #main
         print #main, "trapclose [quit]"
-
         'setup window
-        gosub [menuBackground]
+       gosub [menuBackground]
        wait
 
  [menuBackground]
@@ -40,8 +39,12 @@
     open "SpaceBlast v1.0a" for graphics_nsb_nf as #game
     print #game, "trapclose [gameQuit]"
  1 'this is labeled as line "1". Gives the program somewhere to jump to so it can continue the game.
-    gosub [gameBackground]
-    gosub [
+    gosub [playGame]
+    wait
+
+[playGame]
+    gosub [gameBackground]  ' load the background
+    
     wait
 
 [gameQuit]
@@ -61,7 +64,7 @@ wait
     print #game, "background bg"
     print #game, "drawsprites"
     return
-    wait 
+    wait
 
 [changeBackground]
     filedialog "Open Bitmap Image", "*.bmp", UserBGimage$
