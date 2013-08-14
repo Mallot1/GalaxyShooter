@@ -7,22 +7,26 @@
     WindowWidth = DisplayWidth
     WindowHeight = DisplayHeight
 
-    'buttons and things
-    button #main.play, "Play Game", [playGame], UL, DisplayWidth/2-100, 200, 200, 50
-    button #main.about, "About", [About], UL, DisplayWidth/2-100, 250, 200, 50
-    'create window
-    open "Main Menu" for graphics_nsb_nf as #main
-    print #main, "trapclose [quit]"
+    [MainMenu]
+        'buttons and things
+        button #main.play, "Play Game", [playGame], UL, DisplayWidth/2-100, 200, 200, 50
+        button #main.about, "About", [About], UL, DisplayWidth/2-100, 250, 200, 50
+        'create window
+        open "Main Menu" for graphics_nsb_nf as #main
+        print #main, "trapclose [quit]"
 
-    'setup window
-    gosub [menuBackground]
-
-    wait
+        'setup window
+        gosub [menuBackground]
+       wait
 
  [menuBackground]
-        loadbmp "menuBG", "media\space.bmp"
-        print #main, "background menuBG"
+        if ( backgroundLoaded$ = "") then
+            loadbmp "menuBG", "media\menuBG.bmp"
+            print #main, "background menuBG"
+        end if
+
         print #main, "drawsprites"
+        backgroundLoaded$ = "true"
         wait
 
  [quit]
@@ -59,11 +63,12 @@ wait
     wait
 
 [changeBackground]
-    filedialog "Open text file", "*.bmp", UserBGimage$
- 2   loadbmp "UserBG",  UserBGimage$
+    filedialog "Open Bitmap Image", "*.bmp", UserBGimage$
+ 2 loadbmp "UserBG",  UserBGimage$
     print #game, "background UserBG"
     print #game, "drawsprites"
     backgroundChanged$ = "true"
+    return
     wait
 
 [About]
