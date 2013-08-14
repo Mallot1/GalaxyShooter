@@ -45,8 +45,31 @@
 
 [playGame]
     gosub [gameBackground]  ' load the background
+    gosub [makeShip]
+    gosub [loadShip]
     gosub [makeAsteroids]
-3    timer 250,  [LoadAsteroids]
+3  timer 250,  [loadAsteroids]
+    wait
+
+[makeShip]
+    'load ship sprites
+    loadbmp "ship_up", "sprites\ship_up.bmp"
+    loadbmp "ship_up_on", "sprites\ship_up_on.bmp"
+    loadbmp "ship_left", "sprites\ship_left.bmp"
+    loadbmp "ship_left_on", "sprites\ship_left_on.bmp"
+    loadbmp "ship_right",  "sprites\ship_right.bmp"
+    loadbmp "ship_right_on", "sprites\ship_right_on.bmp"
+    loadbmp "ship_down", "sprites\ship_down.bmp"
+    loadbmp "ship_down_on", "sprites\ship_down_on.bmp"
+
+    print #game, "addsprite ship ship_up ship_up_on ship_left ship_left_on ship_right ship_right_on ship_down ship_down_on"
+    return
+    wait
+
+ [loadShip]
+    print #game, "spriteimage ship ship_up"
+    print #game, "spritexy ship 250 470"
+    return
     wait
 
 [makeAsteroids]
@@ -55,7 +78,7 @@
     return
     wait
 
-[LoadAsteroids]
+[loadAsteroids]
     print #game, "flush";
     velX = 0.5 ' X-Axis speed
     velY = 0.5 'Y-Axis speed
