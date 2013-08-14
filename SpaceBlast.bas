@@ -1,4 +1,4 @@
-'GalaxyShooter v1.0a
+'SpaceBlast v1.0a
 'By: Mallot1 and rawelja
 '(C) 2013
 
@@ -32,7 +32,7 @@
     close #main
     'buttons and things
     menu #game, "Options", "Change Background", [changeBackground]
-    open "GalaxyShooter v1.0a" for graphics_nsb_nf as #game
+    open "SpaceBlast v1.0a" for graphics_nsb_nf as #game
     print #game, "trapclose [gameQuit]"
  1 'this is labeled as line "1". Gives the program somewhere to jump to so it can continue the game.
     gosub [gameBackground]
