@@ -67,10 +67,13 @@
     wait
 
  [loadShip]
- x = WindowWidth/2-100
- y = WindowHeight - 120
+    x = WindowWidth/2-100
+    y = WindowHeight - 120
+
     print #game, "spritescale ship 250"
-    print #game, "spriteimage ship ship_up"
+    print #game, "spriteimage ship ship_up"';
+    print #game, "spritexy? ship "
+    input #game, posX, posY
     print #game, "spritexy ship ";x;" ";y
     return
     wait
@@ -85,8 +88,20 @@
     print #game, "flush";
     velX = 0.5 ' X-Axis speed
     velY = 0.5 'Y-Axis speed
-    X = velX + X 'X distance per frame
-    Y = velY + Y 'Y distance per frame
+
+    if (X > 0) then
+        X = velX - X
+   end if
+
+     if (Y > 0) then
+        Y = velY - Y
+    end if
+
+    if ( X and Y < 0 ) then
+        X = velX + X 'X distance per frame
+        Y = velY + Y 'Y distance per frame
+    end if
+
     print #game, "spriteimage asteroid asteroid"
     print #game, "spritemovexy asteroid X Y"
     print #game, "drawsprites"
