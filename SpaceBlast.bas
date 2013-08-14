@@ -45,7 +45,12 @@
 
 [playGame]
     gosub [gameBackground]  ' load the background
-    gosub [makeShip]
+
+    if shipMade = 0 then
+        shipMade = 1
+        gosub [makeShip]
+    end if
+
     gosub [loadShip]
     gosub [makeAsteroids]
 3  timer 50,  [loadAsteroids]
