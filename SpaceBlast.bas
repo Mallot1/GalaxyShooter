@@ -44,7 +44,21 @@
 
 [playGame]
     gosub [gameBackground]  ' load the background
-    
+    gosub [makeAsteroids]
+    gosub [LoadAsteroids]
+    wait
+
+[makeAsteroids]
+    loadbmp "asteroid", "sprites\asteroid.bmp"
+    print #game, "addsprite asteroid asteroid"
+    return
+    wait
+
+[LoadAsteroids]
+    print #game, "spriteimage asteroid asteroid"
+    print #game, "spritexy asteroid 250 250"
+    print #game, "drawsprites"
+    return
     wait
 
 [gameQuit]
