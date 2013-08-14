@@ -66,5 +66,5 @@ wait
     wait
 
 [About]
-    notice "hi"
+    notice "About" + chr$(13) + "SpaceBlast (C)' 2013"
     wait
