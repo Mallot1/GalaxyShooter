@@ -1,5 +1,5 @@
 'SpaceBlast v1.0a
-'By: Mallot1 and rawelja
+'By: Mallot1
 '(C) 2013
 
   NOMAINWIN
