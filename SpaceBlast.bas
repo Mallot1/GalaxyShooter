@@ -19,6 +19,7 @@
        wait
 
  [menuBackground]
+        print #main, "flush";
         if ( backgroundLoaded$ = "") then
             loadbmp "menuBG", "media\menuBG.bmp"
             print #main, "background menuBG"
@@ -45,7 +46,7 @@
 [playGame]
     gosub [gameBackground]  ' load the background
     gosub [makeAsteroids]
-    gosub [LoadAsteroids]
+3    timer 250,  [LoadAsteroids]
     wait
 
 [makeAsteroids]
@@ -55,10 +56,17 @@
     wait
 
 [LoadAsteroids]
+    print #game, "flush";
+    velX = 0.5 ' X-Axis speed
+    velY = 0.5 'Y-Axis speed
+    X = velX + X + 0.5 'X distance per frame
+    Y = velY + Y 'Y distance per frame
     print #game, "spriteimage asteroid asteroid"
-    print #game, "spritexy asteroid 250 250"
+    print #game, "spritexy asteroid X Y"
     print #game, "drawsprites"
-    return
+   X = X + 1
+   Y = Y + 1
+    goto 3
     wait
 
 [gameQuit]
