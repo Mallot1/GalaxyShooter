@@ -9,6 +9,7 @@
 
     'buttons and things
     button #main.play, "Play Game", [playGame], UL, DisplayWidth/2-100, 200, 200, 50
+    button #main.about, "About", [About], UL, DisplayWidth/2-100, 250, 200, 50
     'create window
     open "Main Menu" for graphics_nsb_nf as #main
     print #main, "trapclose [quit]"
