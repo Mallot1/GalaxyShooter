@@ -30,6 +30,8 @@
 
  [playGame]
     close #main
+    'buttons and things
+    menu #game, "Options", "Change Background", [changeBackground]
     open "GalaxyShooter v1.0a" for graphics_nsb_nf as #game
     print #game, "trapclose [gameQuit]"
  1 'this is labeled as line "1". Gives the program somewhere to jump to so it can continue the game.
@@ -54,4 +56,10 @@ wait
     return
     wait
 
+[changeBackground]
+    filedialog "Open text file", "*.bmp", UserBGimage$
+    loadbmp "UserBG",  UserBGimage$
+    print #game, "background UserBG"
+    print #game, "drawsprites"
+    wait
 
