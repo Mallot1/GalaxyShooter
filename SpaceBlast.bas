@@ -48,7 +48,7 @@
     gosub [makeShip]
     gosub [loadShip]
     gosub [makeAsteroids]
-3  timer 250,  [loadAsteroids]
+3  timer 50,  [loadAsteroids]
     wait
 
 [makeShip]
@@ -67,8 +67,11 @@
     wait
 
  [loadShip]
+ x = WindowWidth/2-100
+ y = WindowHeight - 120
+    print #game, "spritescale ship 250"
     print #game, "spriteimage ship ship_up"
-    print #game, "spritexy ship 250 470"
+    print #game, "spritexy ship ";x;" ";y
     return
     wait
 
@@ -82,13 +85,11 @@
     print #game, "flush";
     velX = 0.5 ' X-Axis speed
     velY = 0.5 'Y-Axis speed
-    X = velX + X + 0.5 'X distance per frame
+    X = velX + X 'X distance per frame
     Y = velY + Y 'Y distance per frame
     print #game, "spriteimage asteroid asteroid"
-    print #game, "spritexy asteroid X Y"
+    print #game, "spritemovexy asteroid X Y"
     print #game, "drawsprites"
-   X = X + 1
-   Y = Y + 1
     goto 3
     wait
 
