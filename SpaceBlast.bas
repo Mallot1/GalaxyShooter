@@ -9,7 +9,7 @@
 
     [MainMenu]
         'buttons and things
-        button #main.play, "Play Game", [playGame], UL, DisplayWidth/2-100, 200, 200, 50
+        button #main.play, "Play Game", [Game], UL, DisplayWidth/2-100, 200, 200, 50
         button #main.about, "About", [About], UL, DisplayWidth/2-100, 250, 200, 50
         'create window
         open "Main Menu" for graphics_nsb_nf as #main
@@ -33,7 +33,7 @@
     close #main
     end
 
- [playGame]
+ [Game]
     close #main
     'buttons and things
     menu #game, "Options", "Change Background", [changeBackground],  "About", [About]
@@ -41,6 +41,7 @@
     print #game, "trapclose [gameQuit]"
  1 'this is labeled as line "1". Gives the program somewhere to jump to so it can continue the game.
     gosub [gameBackground]
+    gosub [
     wait
 
 [gameQuit]
@@ -60,7 +61,7 @@ wait
     print #game, "background bg"
     print #game, "drawsprites"
     return
-    wait
+    wait 
 
 [changeBackground]
     filedialog "Open Bitmap Image", "*.bmp", UserBGimage$
