@@ -51,6 +51,7 @@
         gosub [makeShip]
     end if
 
+    gosub [userInput]
     gosub [loadShip]
     gosub [makeAsteroids]
 3  timer 50,  [loadAsteroids]
@@ -79,7 +80,13 @@
     print #game, "spriteimage ship ship_up"';
     print #game, "spritexy? ship "
     input #game, posX, posY
-    print #game, "spritexy ship ";x;" ";y
+   print #game, "spritexy ship ";x;" ";y
+
+    return
+    wait
+
+[userInput]
+
     return
     wait
 
@@ -91,24 +98,13 @@
 
 [loadAsteroids]
     print #game, "flush";
-    velX = 0.5 ' X-Axis speed
-    velY = 0.5 'Y-Axis speed
-
-    if (X > 0) then
-        X = velX - X
-   end if
-
-     if (Y > 0) then
-        Y = velY - Y
-    end if
-
-    if ( X and Y < 0 ) then
-        X = velX + X 'X distance per frame
-        Y = velY + Y 'Y distance per frame
-    end if
+    velx = 0.5 ' X-Axis speed
+    vely = 0.5 'Y-Axis speed
+    x = 1
+    y = 1
 
     print #game, "spriteimage asteroid asteroid"
-    print #game, "spritemovexy asteroid X Y"
+    print #game, "spritemovexy asteroid x y"
     print #game, "drawsprites"
     goto 3
     wait
@@ -134,6 +130,10 @@ wait
 
 [changeBackground]
     filedialog "Open Bitmap Image", "*.bmp", UserBGimage$
+    if (UserBGimage$ = "") then
+        notice "No file chosen!"
+    end if
+
  2 loadbmp "UserBG",  UserBGimage$
     print #game, "background UserBG"
     print #game, "drawsprites"
