@@ -50,8 +50,7 @@
         shipMade = 1
         gosub [makeShip]
     end if
-
-    gosub [userInput]
+    
     gosub [loadShip]
     gosub [makeAsteroids]
 3  timer 50,  [loadAsteroids]
@@ -86,7 +85,8 @@
     wait
 
 [userInput]
-
+    
+    
     return
     wait
 
