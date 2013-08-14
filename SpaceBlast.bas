@@ -31,7 +31,7 @@
  [playGame]
     close #main
     'buttons and things
-    menu #game, "Options", "Change Background", [changeBackground]
+    menu #game, "Options", "Change Background", [changeBackground],  "About", [About]
     open "SpaceBlast v1.0a" for graphics_nsb_nf as #game
     print #game, "trapclose [gameQuit]"
  1 'this is labeled as line "1". Gives the program somewhere to jump to so it can continue the game.
@@ -50,6 +50,7 @@
 wait
 
 [gameBackground]
+    if (backgroundChanged$ = "true") then goto 2                'now game will always show the user chosen background
     loadbmp "bg", "media\space.bmp"
     print #game, "background bg"
     print #game, "drawsprites"
@@ -58,8 +59,12 @@ wait
 
 [changeBackground]
     filedialog "Open text file", "*.bmp", UserBGimage$
-    loadbmp "UserBG",  UserBGimage$
+ 2   loadbmp "UserBG",  UserBGimage$
     print #game, "background UserBG"
     print #game, "drawsprites"
+    backgroundChanged$ = "true"
     wait
 
+[About]
+    notice "hi"
+    wait
