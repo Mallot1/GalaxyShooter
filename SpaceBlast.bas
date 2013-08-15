@@ -45,9 +45,15 @@
     open "SpaceBlast v1.0a" for graphics_nsb_nf as #game
     print #game, "trapclose [gameQuit]"
     print #game, "when characterInput [userInput]"
-    print #game, "setfocus"
     print #game, "addsprite ship ship_up ship_up_on ship_left ship_left_on ship_right ship_right_on ship_down ship_down_on"
     print #game, "addsprite asteroid asteroid"
+    print #game, "setfocus"
+
+    'load Background
+    if (backgroundChanged$ = "true") then goto 3                'now game will always show the user chosen background
+    loadbmp "bg", "media\space.bmp"
+    print #game, "background bg"
+    print #game, "drawsprites"
 
 1   'Variables:
     shipX = WindowWidth/2 - 100 ' ship x-pos
@@ -56,13 +62,8 @@
     vely = 0.5 ' asteroid Y-Axis speed
     x = 1 ' asteroid x-pos
     y = 1 ' asteroid y-pos
-
-    'load Background
-    if (backgroundChanged$ = "true") then goto 3                'now game will always show the user chosen background
-    loadbmp "bg", "media\space.bmp"
-    print #game, "background bg"
+    print #game, "spritexy ship "; shipX; " "; shipY
     print #game, "drawsprites"
-
     gosub [loadShip]
 2   timer 50,  [loadAsteroids]
     wait
@@ -80,20 +81,18 @@
 
     [loadShip]
         print #game, "spritescale ship 250"
-        print #game, "spritexy? ship "
-        input #game, posX, posY
-        print #game, "spritexy ship "; shipX;" ";shipY
+        print #game, "spritexy ship "; shipX; " "; shipY
         print #game, "drawsprites"
         return
         wait
 
     [userInput]
         char$ = InKey$
-        if char$ = "w" then shipY = shipY - 1
-        if char$ = "a" then shipX = shipX - 1
-        if char$ = "s" then shipY = shipY + 1
-        if char$ = "d" then shipX = shipX + 1
-        print #game, "spritexy ship "; shipX;" ";shipY
+        if char$ = "w" then shipY = shipY - 10
+        if char$ = "a" then shipX = shipX - 10
+        if char$ = "s" then shipY = shipY + 10
+        if char$ = "d" then shipX = shipX + 10
+        print #game, "spritexy ship "; shipX; " "; shipY
         print #game, "drawsprites"
         wait
 
