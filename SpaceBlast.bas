@@ -20,7 +20,6 @@
         loadbmp "menuBG", "media\menuBG.bmp"
         print #main, "background menuBG"
     end if
-
     print #main, "drawsprites"
     backgroundLoaded$ = "true"
     wait
@@ -31,13 +30,26 @@
 
  [Game]
     close #main
-    'buttons and things
+    'sprites
+    loadbmp "ship_up", "sprites\ship_up.bmp"
+    loadbmp "ship_up_on", "sprites\ship_up_on.bmp"
+    loadbmp "ship_left", "sprites\ship_left.bmp"
+    loadbmp "ship_left_on", "sprites\ship_left_on.bmp"
+    loadbmp "ship_right",  "sprites\ship_right.bmp"
+    loadbmp "ship_right_on", "sprites\ship_right_on.bmp"
+    loadbmp "ship_down", "sprites\ship_down.bmp"
+    loadbmp "ship_down_on", "sprites\ship_down_on.bmp"
+    loadbmp "asteroid", "sprites\asteroid.bmp"
+
     menu #game, "Options", "Change Background", [changeBackground],  "About", [About]
     open "SpaceBlast v1.0a" for graphics_nsb_nf as #game
     print #game, "trapclose [gameQuit]"
- 1 'this is labeled as line "1". Gives the program somewhere to jump to so it can continue the game.
+    print #game, "when characterInput [userInput]"
+    print #game, "setfocus"
+    print #game, "addsprite ship ship_up ship_up_on ship_left ship_left_on ship_right ship_right_on ship_down ship_down_on"
+    print #game, "addsprite asteroid asteroid"
 
-    'Variables:
+1   'Variables:
     shipX = WindowWidth/2 - 100 ' ship x-pos
     shipY = WindowHeight - 120  ' ship y-pos
     velx = 0.5 ' asteroid X-Axis speed
@@ -46,53 +58,32 @@
     y = 1 ' asteroid y-pos
 
     'load Background
-    if (backgroundChanged$ = "true") then goto 2                'now game will always show the user chosen background
+    if (backgroundChanged$ = "true") then goto 3                'now game will always show the user chosen background
     loadbmp "bg", "media\space.bmp"
     print #game, "background bg"
     print #game, "drawsprites"
 
-    'logic
-    if shipMade = 0 then
-        shipMade = 1
-        gosub [makeShip]
-    end if
-
-    if AsteroidsMade = 0 then
-        AsteroidsMade = 1
-        gosub [makeAsteroids]
-    end if
-
-    'ship movement
-    print #game, "when characterInput [userInput]"
-
-    print #game, "setfocus"
     gosub [loadShip]
-    3  timer 50,  [loadAsteroids]
+2   timer 50,  [loadAsteroids]
     wait
 
-    [makeShip]
-        'load ship sprites
-        loadbmp "ship_up", "sprites\ship_up.bmp"
-        loadbmp "ship_up_on", "sprites\ship_up_on.bmp"
-        loadbmp "ship_left", "sprites\ship_left.bmp"
-        loadbmp "ship_left_on", "sprites\ship_left_on.bmp"
-        loadbmp "ship_right",  "sprites\ship_right.bmp"
-        loadbmp "ship_right_on", "sprites\ship_right_on.bmp"
-        loadbmp "ship_down", "sprites\ship_down.bmp"
-        loadbmp "ship_down_on", "sprites\ship_down_on.bmp"
-
-        print #game, "addsprite ship ship_up ship_up_on ship_left ship_left_on ship_right ship_right_on ship_down ship_down_on"
-        return
+    [gameQuit]
+        confirm "Do you really want to quit?";quit$
+        if ( quit$ = "yes" ) then
+            close #game
+            end
+        end if
+        if ( quit$ = "no" ) then
+            goto  1 ' goto line labeled "1"
+        end if
         wait
 
     [loadShip]
-
         print #game, "spritescale ship 250"
         print #game, "spritexy? ship "
         input #game, posX, posY
         print #game, "spritexy ship "; shipX;" ";shipY
         print #game, "drawsprites"
-
         return
         wait
 
@@ -106,30 +97,11 @@
         print #game, "drawsprites"
         wait
 
-    [makeAsteroids]
-        loadbmp "asteroid", "sprites\asteroid.bmp"
-        print #game, "addsprite asteroid asteroid"
-        return
-        wait
-
     [loadAsteroids]
-        print #game, "flush";
         print #game, "spriteimage asteroid asteroid"
         print #game, "spritemovexy asteroid x y"
         print #game, "drawsprites"
-        goto 3
-        wait
-
-    [gameQuit]
-        confirm "Do you really want to quit?";quit$
-        if ( quit$ = "yes" ) then
-            close #game
-            end
-        end if
-
-        if ( quit$ = "no" ) then
-            goto  1 ' goto line labeled "1"
-        end if
+        goto 2
         wait
 
     [changeBackground]
@@ -137,9 +109,8 @@
         if (UserBGimage$ = "") then
             notice "No file chosen!"
         end if
-
         backgroundChanged$ = "true"
-2       loadbmp "UserBG",  UserBGimage$
+3       loadbmp "UserBG",  UserBGimage$
         print #game, "background UserBG"
         print #game, "drawsprites"
         wait
