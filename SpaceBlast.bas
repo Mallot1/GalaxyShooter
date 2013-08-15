@@ -43,17 +43,26 @@
     gosub [playGame]
     wait
 
-[playGame]
-    gosub [gameBackground]  ' load the background
-
+[logic]
     if shipMade = 0 then
         shipMade = 1
         gosub [makeShip]
     end if
-    
+
+    if AsteroidsMade = 0 then
+        AsteroidsMade = 1
+        gosub [makeAsteroids]
+    end if
+
+    return
+    wait
+
+[playGame]
+    gosub [gameBackground]  ' load the background
+
+    gosub [logic]
     gosub [loadShip]
-    gosub [makeAsteroids]
-3  timer 50,  [loadAsteroids]
+    3  timer 50,  [loadAsteroids]
     wait
 
 [makeShip]
@@ -79,14 +88,21 @@
     print #game, "spriteimage ship ship_up"';
     print #game, "spritexy? ship "
     input #game, posX, posY
-   print #game, "spritexy ship ";x;" ";y
+    print #game, "spritexy ship ";x;" ";y
 
     return
     wait
 
 [userInput]
-    
-    
+    char$ = InKey$
+
+    if char$ = "w" then y = y - 1
+    if char$ = "a" then  x = x  - 1
+    if char$ = "s" then y = y + 1
+    if char$ = "d" then x = x + 1
+
+    print #game, "spritexy ship "; x;" ";y
+    print #game, "drawsprites"
     return
     wait
 
@@ -134,13 +150,15 @@ wait
         notice "No file chosen!"
     end if
 
- 2 loadbmp "UserBG",  UserBGimage$
+    backgroundChanged$ = "true"
+ 2   loadbmp "UserBG",  UserBGimage$
     print #game, "background UserBG"
     print #game, "drawsprites"
-    backgroundChanged$ = "true"
     return
     wait
 
 [About]
     notice "About" + chr$(13) + "SpaceBlast (C)' 2013"
     wait
+
+
