@@ -59,8 +59,8 @@
 1   'Variables:
     shipX = WindowWidth/2 - 100 ' ship x-pos
     shipY = WindowHeight - 120  ' ship y-pos
-    velx = 0.5 ' asteroid X-Axis speed
-    vely = 0.5 ' asteroid Y-Axis speed
+    velx = 15.5 ' asteroid X-Axis speed
+    vely = 15.5 ' asteroid Y-Axis speed
     x = 1 ' asteroid x-pos
     y = 1 ' asteroid y-pos
     print #game, "spritexy ship "; shipX; " "; shipY
@@ -90,17 +90,37 @@
 
     [userInput]
         char$ = InKey$
-        if char$ = "w" then shipY = shipY - 10
-        if char$ = "a" then shipX = shipX - 10
-        if char$ = "s" then shipY = shipY + 10
-        if char$ = "d" then shipX = shipX + 10
-        print #game, "spritexy ship "; shipX; " "; shipY
+        if char$ = "w" then
+            shipY = shipY - 10
+            print #game, "spritemovexy ship "; shipX; " "; shipY
+            print #game, "drawsprites"
+        end if
+
+        if char$ = "a" then
+            shipX = shipX - 10
+            print #game, "spritemovexy ship "; shipX; " "; shipY
+            print #game, "drawsprites"
+        end if
+
+        if char$ = "s" then
+            shipY = shipY + 10
+            print #game, "spritemovexy ship "; shipX; " "; shipY
+            print #game, "drawsprites"
+        end if
+
+        if char$ = "d" then
+            shipX = shipX + 10
+        print #game, "spritemovexy ship "; shipX; " "; shipY
         print #game, "drawsprites"
+        end if
+
+        char$ = ""
+
         wait
 
     [loadAsteroids]
         print #game, "spriteimage asteroid asteroid"
-        print #game, "spritemovexy asteroid "; x; " "; y
+        print #game, "spritemovexy asteroid "; x+velx; " "; y+vely
         print #game, "drawsprites"
         goto 2
         wait
