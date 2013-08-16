@@ -69,6 +69,7 @@
     wait
 
     [gameQuit]
+        timer 0
         confirm "Do you really want to quit?";quit$
         if ( quit$ = "yes" ) then
             close #game
@@ -107,7 +108,9 @@
         filedialog "Open Bitmap Image", "*.bmp", UserBGimage$
         if (UserBGimage$ = "") then
             notice "No file chosen!"
+            goto 1
         end if
+
         backgroundChanged$ = "true"
 3       loadbmp "UserBG",  UserBGimage$
         print #game, "background UserBG"
