@@ -46,6 +46,7 @@
     print #game, "trapclose [gameQuit]"
     print #game, "when characterInput [userInput]"
     print #game, "addsprite ship ship_up ship_up_on ship_left ship_left_on ship_right ship_right_on ship_down ship_down_on"
+    print #game, "spritescale ship 250"
     print #game, "addsprite asteroid asteroid"
     print #game, "setfocus"
 
@@ -64,6 +65,7 @@
     y = 1 ' asteroid y-pos
     print #game, "spritexy ship "; shipX; " "; shipY
     print #game, "drawsprites"
+    scan
     gosub [loadShip]
 2   timer 50,  [loadAsteroids]
     wait
@@ -81,7 +83,6 @@
         wait
 
     [loadShip]
-        print #game, "spritescale ship 250"
         print #game, "spritexy ship "; shipX; " "; shipY
         print #game, "drawsprites"
         return
@@ -99,15 +100,16 @@
 
     [loadAsteroids]
         print #game, "spriteimage asteroid asteroid"
-        print #game, "spritemovexy asteroid x y"
+        print #game, "spritemovexy asteroid "; x; " "; y
         print #game, "drawsprites"
         goto 2
         wait
 
     [changeBackground]
+
         filedialog "Open Bitmap Image", "*.bmp", UserBGimage$
         if (UserBGimage$ = "") then
-            notice "No file chosen!"
+            notice "Background change aborted by user."
             goto 1
         end if
 
