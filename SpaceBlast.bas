@@ -30,6 +30,8 @@
 
  [Game]
     close #main
+    WindowWidth = 640
+    WindowHeight = 480
     'sprites
     loadbmp "ship_up", "sprites\ship_up.bmp"
     loadbmp "ship_up_on", "sprites\ship_up_on.bmp"
@@ -56,10 +58,10 @@
     print #game, "background bg"
     print #game, "drawsprites"
 
-1   'Variables:
+   'Variables:
     shipX = WindowWidth/2 - 100 ' ship x-pos
     shipY = WindowHeight - 120  ' ship y-pos
-    velx = 15.5 ' asteroid X-Axis speed
+1   velx = 15.5 ' asteroid X-Axis speed
     vely = 15.5 ' asteroid Y-Axis speed
     x = 1 ' asteroid x-pos
     y = 1 ' asteroid y-pos
@@ -67,7 +69,7 @@
     print #game, "drawsprites"
     scan
     gosub [loadShip]
-2   timer 50,  [loadAsteroids]
+2   timer 50,  [timeTicked]
     wait
 
     [gameQuit]
@@ -88,34 +90,42 @@
         return
         wait
 
-    [userInput]
-        char$ = InKey$
-        if char$ = "w" then
-            shipY = shipY - 10
-            print #game, "spritemovexy ship "; shipX; " "; shipY
-            print #game, "drawsprites"
-        end if
-
-        if char$ = "a" then
-            shipX = shipX - 10
-            print #game, "spritemovexy ship "; shipX; " "; shipY
-            print #game, "drawsprites"
-        end if
-
-        if char$ = "s" then
-            shipY = shipY + 10
-            print #game, "spritemovexy ship "; shipX; " "; shipY
-            print #game, "drawsprites"
-        end if
-
-        if char$ = "d" then
-            shipX = shipX + 10
-        print #game, "spritemovexy ship "; shipX; " "; shipY
+    [timeTicked]
+        gosub [loadAsteroids]
+        print #game, "spritexy ball "; shipX; " "; shipY
+        print #game, "spritexy asteroid "; x; " "; y
         print #game, "drawsprites"
-        end if
 
         char$ = ""
+        wait
 
+    [userInput]
+        char$ = InKey$
+        if char$ = "w" then shipY = shipY - 10
+        if char$ = "a" then shipX = shipX - 10
+        if char$ = "s" then shipY = shipY + 10
+        if char$ = "d" then shipX = shipX + 10
+
+       if shipX >= WindowWidth then
+          shipX = 520
+       end if
+
+       if shipX <= 0 then
+          shipX = 10
+       end if
+
+       if shipY >= WindowHeight then
+          shipY = 420
+       end if
+
+       if shipY <= WindowHeight then
+          shipY = 10
+       end if
+
+
+        print #game, "spritexy ship "; shipX; " "; shipY
+        print #game, "drawsprites"
+        char$ = ""
         wait
 
     [loadAsteroids]
