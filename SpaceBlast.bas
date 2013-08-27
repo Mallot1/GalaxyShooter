@@ -2,7 +2,7 @@
 'By: Mallot1
 '(C) 2013
 
-  'NOMAINWIN
+  NOMAINWIN
 
        WindowWidth = DisplayWidth
        WindowHeight = DisplayHeight
@@ -101,13 +101,29 @@
 
     [userInput]
         char$ = Inkey$
-        if char$ = "w" then shipY = shipY - 1
-        if char$ = "a" then shipX = shipX - 1
-        if char$ = "s" then shipY = shipY + 1
-        if char$ = "d" then shipX = shipX + 1
+        if char$ = "w" then shipY = shipY - 10
+        if char$ = "a" then shipX = shipX - 10
+        if char$ = "s" then shipY = shipY + 10
+        if char$ = "d" then shipX = shipX + 10
         print "X: ";shipX ;"   Y: ";shipY
         print #game, "spritexy ship "; shipX; " ";shipY
         print #game, "drawsprites"
+
+        if shipX >= 580 then
+           shipX = 580
+        end if
+
+        if shipX <= 0 then
+           shipX = 0
+        end if
+
+        if shipY >= 370 then
+           shipY = 370
+        end if
+
+        if shipY <= 0 then
+           shipY = 0
+        end if
         wait
 
     [loadAsteroids]
