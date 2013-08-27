@@ -2,7 +2,7 @@
 'By: Mallot1
 '(C) 2013
 
-  NOMAINWIN
+  'NOMAINWIN
 
        WindowWidth = DisplayWidth
        WindowHeight = DisplayHeight
@@ -20,6 +20,7 @@
         loadbmp "menuBG", "media\menuBG.bmp"
         print #main, "background menuBG"
     end if
+
     print #main, "drawsprites"
     backgroundLoaded$ = "true"
     wait
@@ -46,10 +47,10 @@
     menu #game, "Options", "Change Background", [changeBackground],  "About", [About]
     open "SpaceBlast v1.0a" for graphics_nsb_nf as #game
     print #game, "trapclose [gameQuit]"
-    print #game, "when characterInput [userInput]"
     print #game, "addsprite ship ship_up ship_up_on ship_left ship_left_on ship_right ship_right_on ship_down ship_down_on"
     print #game, "spritescale ship 250"
     print #game, "addsprite asteroid asteroid"
+    print #game, "when characterInput [userInput]"
     print #game, "setfocus"
 
     'load Background
@@ -95,37 +96,18 @@
         print #game, "spritexy ball "; shipX; " "; shipY
         print #game, "spritexy asteroid "; x; " "; y
         print #game, "drawsprites"
-
         char$ = ""
         wait
 
     [userInput]
-        char$ = InKey$
-        if char$ = "w" then shipY = shipY - 10
-        if char$ = "a" then shipX = shipX - 10
-        if char$ = "s" then shipY = shipY + 10
-        if char$ = "d" then shipX = shipX + 10
-
-       if shipX >= WindowWidth then
-          shipX = 520
-       end if
-
-       if shipX <= 0 then
-          shipX = 10
-       end if
-
-       if shipY >= WindowHeight then
-          shipY = 420
-       end if
-
-       if shipY <= WindowHeight then
-          shipY = 10
-       end if
-
-
-        print #game, "spritexy ship "; shipX; " "; shipY
+        char$ = Inkey$
+        if char$ = "w" then shipY = shipY - 1
+        if char$ = "a" then shipX = shipX - 1
+        if char$ = "s" then shipY = shipY + 1
+        if char$ = "d" then shipX = shipX + 1
+        print "X: ";shipX ;"   Y: ";shipY
+        print #game, "spritexy ship "; shipX; " ";shipY
         print #game, "drawsprites"
-        char$ = ""
         wait
 
     [loadAsteroids]
