@@ -96,8 +96,8 @@
         wait
 
     [timeTicked]
-        bulletX = shipX
-        bulletY = shipY
+        bulletX = 244
+        bulletY = 350
         gosub [loadAsteroids]
         print #game, "spritexy ball "; shipX; " "; shipY
         print #game, "spritexy asteroid "; x; " "; y
@@ -227,7 +227,25 @@
         wait
 
     [shoot]
+        if moving$ = "up" then
+            #game, "spritemovexy bullet 0 -5"
+            #game, "drawsprites"
+        end if
 
+        if moving$ = "left" then
+            #game, "spritemovexy bullet -5 0"
+            #game, "drawsprites"
+        end if
+
+        if moving$ = "down" then
+            #game, "spritemovexy bullet 0 5"
+            #game, "drawsprites"
+        end if
+
+        if moving$ = "right" then
+            #game, "spritemovexy bullet 5 0"
+            #game, "drawsprites"
+        end if
         wait
 
 [About]
