@@ -76,11 +76,11 @@
     [gameQuit]
         timer 0
         confirm "Do you really want to quit?";quit$
-        if ( quit$ = "yes" ) then
+        if quit$ = "yes" then
             close #game
             end
         end if
-        if ( quit$ = "no" ) then
+        if quit$ = "no" then
             goto  1 ' goto line labeled "1"
         end if
         wait
@@ -105,23 +105,31 @@
             shipY = shipY - 10
             print #game, "spriteimage ship ship_up_on"
             print #game, "drawsprites"
+            moving$ = "up"
+            char$ = ""
         end if
 
         if char$ = "a" then
             print #game, "spriteimage ship ship_left_on"
             print #game, "drawsprites"
             shipX = shipX - 10
+            moving$ = "left"
+            char$ = ""
         end if
 
         if char$ = "s" then
             print #game, "spriteimage ship ship_down_on"
             print #game, "drawsprites"
             shipY = shipY + 10
+            moving$ = "down"
+            char$ = ""
         end if
         if char$ = "d" then
             print #game, "spriteimage ship ship_right_on"
-            print #game, "drawsprites"www
+            print #game, "drawsprites"
             shipX = shipX + 10
+            moving$ = "right"
+            char$ = ""
         end if
 
         print "X: ";shipX ;"   Y: ";shipY
@@ -142,6 +150,28 @@
 
         if shipY <= 0 then
            shipY = 0
+        end if
+
+        if char$ = "" then
+            if moving$ = "up" then
+                print #game, "spriteimage ship ship_up"
+                print #game, "drawsprites"
+            end if
+
+            if moving$ = "left" then
+                print #game, "spriteimage ship ship_left"
+                print #game, "drawsprites"
+            end if
+
+            if moving$ = "down" then
+                print #game, "spriteimage ship ship_down"
+                print #game, "drawsprites"
+            end if
+
+            if moving$ = "right" then
+                print #game, "spriteimage ship ship_right"
+                print #game, "drawsprites"
+            end if
         end if
         wait
 
