@@ -43,6 +43,7 @@
     loadbmp "ship_down", "sprites\ship_down.bmp"
     loadbmp "ship_down_on", "sprites\ship_down_on.bmp"
     loadbmp "asteroid", "sprites\asteroid.bmp"
+    loadbmp "bullet", "sprites\bullet.bmp"
 
     menu #game, "Options", "Change Background", [changeBackground],  "About", [About]
     open "SpaceBlast v1.0a" for graphics_nsb_nf as #game
@@ -50,7 +51,9 @@
     print #game, "addsprite ship ship_up ship_up_on ship_left ship_left_on ship_right ship_right_on ship_down ship_down_on"
     print #game, "spritescale ship 250"
     print #game, "addsprite asteroid asteroid"
+    print #game, "addsprite bullet bullet"
     print #game, "when characterInput [userInput]"
+    print #game, "when leftButtonDown [shoot]"
     print #game, "setfocus"
 
     'load Background
@@ -66,6 +69,7 @@
     vely = 15.5 ' asteroid Y-Axis speed
     x = 1 ' asteroid x-pos
     y = 1 ' asteroid y-pos
+
     print #game, "spritexy ship "; shipX; " "; shipY
     print #game, "drawsprites"
     scan
@@ -92,6 +96,8 @@
         wait
 
     [timeTicked]
+        bulletX = shipX
+        bulletY = shipY
         gosub [loadAsteroids]
         print #game, "spritexy ball "; shipX; " "; shipY
         print #game, "spritexy asteroid "; x; " "; y
@@ -173,6 +179,8 @@
                 print #game, "drawsprites"
             end if
         end if
+        gosub [loadBullet]
+        return
         wait
 
     [loadAsteroids]
@@ -194,6 +202,32 @@
 3       loadbmp "UserBG",  UserBGimage$
         print #game, "background UserBG"
         print #game, "drawsprites"
+        wait
+
+    [loadBullet]
+        if moving$ = "up" then
+            print #game, "spritexy bullet "; bulletX+24; " ";bulletY-10
+            print #game, "drawsprites"
+        end if
+
+        if moving$ = "left" then
+            print #game, "spritexy bullet "; bulletX-5; " ";bulletY+18
+            print #game, "drawsprites"
+        end if
+
+        if moving$ = "down" then
+            print #game, "spritexy bullet "; bulletX+22; " ";bulletY+50
+            print #game, "drawsprites"
+        end if
+
+        if moving$ = "right" then
+            print #game, "spritexy bullet "; bulletX+53; " ";bulletY+22
+            print #game, "drawsprites"
+        end if
+        wait
+
+    [shoot]
+
         wait
 
 [About]
