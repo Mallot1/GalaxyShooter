@@ -74,7 +74,7 @@
     print #game, "drawsprites"
     scan
     gosub [loadShip]
-2   timer 50,  [timeTicked]
+    timer 1,  [timeTicked]
     wait
 
     [gameQuit]
@@ -96,11 +96,10 @@
         wait
 
     [timeTicked]
-        bulletX = 244
-        bulletY = 350
+        bulletX = shipX
+        bulletY = shipY
         gosub [loadAsteroids]
-        print #game, "spritexy ball "; shipX; " "; shipY
-        print #game, "spritexy asteroid "; x; " "; y
+        print #game, "spritexy ship "; shipX; " "; shipY
         print #game, "drawsprites"
         char$ = ""
         wait
@@ -180,14 +179,13 @@
             end if
         end if
         gosub [loadBullet]
-        return
         wait
 
     [loadAsteroids]
         print #game, "spriteimage asteroid asteroid"
         print #game, "spritemovexy asteroid "; x+velx; " "; y+vely
         print #game, "drawsprites"
-        goto 2
+        return
         wait
 
     [changeBackground]
@@ -224,9 +222,15 @@
             print #game, "spritexy bullet "; bulletX+53; " ";bulletY+22
             print #game, "drawsprites"
         end if
+        if shot = 1 then
+            shot = 0
+            return
+        end if
         wait
 
     [shoot]
+        shot = 1
+        gosub [loadBullet]
         if moving$ = "up" then
             #game, "spritemovexy bullet 0 -5"
             #game, "drawsprites"
