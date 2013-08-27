@@ -101,10 +101,29 @@
 
     [userInput]
         char$ = Inkey$
-        if char$ = "w" then shipY = shipY - 10
-        if char$ = "a" then shipX = shipX - 10
-        if char$ = "s" then shipY = shipY + 10
-        if char$ = "d" then shipX = shipX + 10
+        if char$ = "w" then
+            shipY = shipY - 10
+            print #game, "spriteimage ship ship_up_on"
+            print #game, "drawsprites"
+        end if
+
+        if char$ = "a" then
+            print #game, "spriteimage ship ship_left_on"
+            print #game, "drawsprites"
+            shipX = shipX - 10
+        end if
+
+        if char$ = "s" then
+            print #game, "spriteimage ship ship_down_on"
+            print #game, "drawsprites"
+            shipY = shipY + 10
+        end if
+        if char$ = "d" then
+            print #game, "spriteimage ship ship_right_on"
+            print #game, "drawsprites"www
+            shipX = shipX + 10
+        end if
+
         print "X: ";shipX ;"   Y: ";shipY
         print #game, "spritexy ship "; shipX; " ";shipY
         print #game, "drawsprites"
