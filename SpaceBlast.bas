@@ -2,7 +2,7 @@
 'By: Mallot1
 '(C) 2013
 
-  NOMAINWIN
+NOMAINWIN
 
        WindowWidth = DisplayWidth
        WindowHeight = DisplayHeight
@@ -45,7 +45,7 @@
     loadbmp "asteroid", "sprites\asteroid.bmp"
     bulletname$ = "bullet";bulletnumber
     bulletnumber = 1
-    loadbmp bulletname$, "sprites\bullet.bmp"
+    loadbmp bulletname$, "sprites\bullet1.bmp"
 
     menu #game, "Options", "Change Background", [changeBackground],  "About", [About]
     open "SpaceBlast v1.0a" for graphics_nsb_nf as #game
@@ -71,6 +71,18 @@
     vely = 15.5 ' asteroid Y-Axis speed
     x = 1 ' asteroid x-pos
     y = 1 ' asteroid y-pos
+    dim BulletBMP$(10)
+    BulletBMP$(1) = "sprites\bullet1.bmp"
+    BulletBMP$(2) = "sprites\bullet2.bmp"
+    BulletBMP$(3) = "sprites\bullet3.bmp"
+    BulletBMP$(4) = "sprites\bullet4.bmp"
+    BulletBMP$(5) = "sprites\bullet5.bmp"
+    BulletBMP$(6) = "sprites\bullet6.bmp"
+    BulletBMP$(7) = "sprites\bullet7.bmp"
+    BulletBMP$(8) = "sprites\bullet8.bmp"
+    BulletBMP$(9) = "sprites\bullet9.bmp"
+    BulletBMP$(10) = "sprites\bullet10.bmp"
+    currentBulletNum = 1
 
     print #game, "spritexy ship "; shipX; " "; shipY
     print #game, "drawsprites"
@@ -207,7 +219,15 @@
         wait
 
     [loadBullet]
-        if moving$ = "up" then
+        'print BulletBMP$(currentBulletNum)
+            if currentBulletNum >= 10 then
+                currentBulletNum = 1
+            else
+                currentBulletNum = currentBulletNum + 1
+            end if
+                                              'Load up new bullet
+
+              if moving$ = "up" then
             print #game, "spritexy bullet ";bulletX+24; " ";bulletY-10
             print #game, "drawsprites"
         end if
@@ -248,7 +268,6 @@
         end if
 
         if shot = 1 then
-            bulletnumber = bulletnumber + 1
             bulletname$ = "bullet";bulletnumber
             shot = 0
             return
@@ -257,7 +276,9 @@
 
     [shoot]
         shot = 1
+
         gosub [loadBullet]
+
         if moving$ = "up" then
                 #game, "spritemovexy bullet 0 -5"
                 #game, "drawsprites"
@@ -283,5 +304,6 @@
 [About]
     notice "About" + chr$(13) + "SpaceBlast (C)' 2013"
     wait
+
 
 
