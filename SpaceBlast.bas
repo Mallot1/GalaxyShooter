@@ -43,6 +43,12 @@ NOMAINWIN
     loadbmp "ship_down", "sprites\ship_down.bmp"
     loadbmp "ship_down_on", "sprites\ship_down_on.bmp"
     loadbmp "asteroid", "sprites\asteroid.bmp"
+    loadbmp "health(0)", "sprites\lives00.bmp"
+    loadbmp "health(1)", "sprites\lives01.bmp"
+    loadbmp "health(2)", "sprites\lives02.bmp"
+    loadbmp "health(3)", "sprites\lives03.bmp"
+    loadbmp "health(4)", "sprites\lives04.bmp"
+
     bulletname$ = "bullet";bulletnumber
     bulletnumber = 1
     loadbmp bulletname$, "sprites\bullet1.bmp"
@@ -54,6 +60,7 @@ NOMAINWIN
     print #game, "spritescale ship 250"
     print #game, "addsprite asteroid asteroid"
     print #game, "addsprite bullet ";bulletname$
+    print #game, "addsprite health health(0) health(1) health(2) health(3) health(4)"
     print #game, "when characterInput [userInput]"
     print #game, "when leftButtonDown [shoot]"
     print #game, "setfocus"
@@ -83,6 +90,8 @@ NOMAINWIN
     BulletBMP$(9) = "sprites\bullet9.bmp"
     BulletBMP$(10) = "sprites\bullet10.bmp"
     currentBulletNum = 1
+    health = 4
+    score = 0
 
     print #game, "spritexy ship "; shipX; " "; shipY
     print #game, "drawsprites"
@@ -95,7 +104,7 @@ NOMAINWIN
         timer 0
         confirm "Do you really want to quit?";quit$
         if quit$ = "yes" then
-            close #game
+   4        close #game   'if your out of health you come here and the game ends
             end
         end if
         if quit$ = "no" then
@@ -109,9 +118,52 @@ NOMAINWIN
         return
         wait
 
+    [loadHealth]
+        health = 4
+        print #game, "spriteimage health health(4)"
+        print #game, "spritescale health 200"
+        print #game, "spritexy health 500 0"
+        print #game, "drawsprites"
+        return
+
+        [AddHealth]
+            select health
+                case  4
+                    print #game, "spriteimage health health(4)"
+                    print #game, "drawsprites"
+
+                case  3
+                    print #game, "spriteimage health health(3)"
+                    print #game, "drawsprites"
+
+                case  2
+                    print #game, "spriteimage health health(2)"
+                    print #game, "drawsprites"
+
+                case  1
+                    print #game, "spriteimage health health(1)"
+                    print #game, "drawsprites"
+
+                case  0
+                    notice "Game Over!" + Chr$(13) + "Better Luck next time! Your final score is: ";score
+                    print #game, "drawsprites"
+                    goto 4
+
+            end select
+
+            print #game, "spritescale health 200"
+            print #game, "spritexy health 500 0"
+            print #game, "drawsprites"
+
+            goto [timeTicked]
+
     [timeTicked]
         bulletX = shipX
         bulletY = shipY
+        if gotHealth = 0 then
+            gosub [loadHealth]
+        end if
+
         gosub [loadAsteroids]
         print #game, "spritexy ship "; shipX; " "; shipY
         print #game, "drawsprites"
