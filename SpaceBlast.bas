@@ -31,8 +31,8 @@ NOMAINWIN
 
  [Game]
     close #main
-    WindowWidth = 640
-    WindowHeight = 480
+    'WindowWidth = 640
+    'WindowHeight = 480
     'sprites
     loadbmp "ship_up", "sprites\ship_up.bmp"
     loadbmp "ship_up_on", "sprites\ship_up_on.bmp"
@@ -241,20 +241,20 @@ NOMAINWIN
         print #game, "spritexy ship "; shipX; " ";shipY
         print #game, "drawsprites"
 
-        if shipX >= 580 then
-           shipX = 580
+        if shipX >= 1293 then '580
+           shipX = 1291
         end if
 
-        if shipX <= 0 then
-           shipX = 0
+        if shipX <= 0 then '0
+           shipX = 2
         end if
 
-        if shipY >= 370 then
-           shipY = 370
+        if shipY >= 632 then '370
+           shipY = 630
         end if
 
         if shipY <= 0 then
-           shipY = 0
+           shipY = 2
         end if
 
         if char$ = "" then
