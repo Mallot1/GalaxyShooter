@@ -7,6 +7,8 @@ NOMAINWIN
        WindowWidth = DisplayWidth
        WindowHeight = DisplayHeight
 
+'-------------------------------------------Main Menu---------------------------
+
  [MainMenu]
    'buttons and things
     button #main.play, "Play Game", [Game], UL, DisplayWidth/2-100, 200, 200, 50
@@ -16,6 +18,7 @@ NOMAINWIN
     print #main, "trapclose [quit]"
     'setup window
     print #main, "flush";
+    'if there is a user defined background, load it
     if ( backgroundLoaded$ = "") then
         loadbmp "menuBG", "media\menuBG.bmp"
         print #main, "background menuBG"
@@ -29,11 +32,14 @@ NOMAINWIN
         close #main
         end
 
+'-----------------------------------------Game-------------------------------------
+
  [Game]
     close #main
+    'Re-assign the screen size
     WindowWidth = 640
     WindowHeight = 480
-    'sprites
+    'load in the sprites
     loadbmp "ship_up", "sprites\ship_up.bmp"
     loadbmp "ship_up_on", "sprites\ship_up_on.bmp"
     loadbmp "ship_left", "sprites\ship_left.bmp"
@@ -48,18 +54,19 @@ NOMAINWIN
     loadbmp "health(2)", "sprites\lives02.bmp"
     loadbmp "health(3)", "sprites\lives03.bmp"
     loadbmp "health(4)", "sprites\lives04.bmp"
+    loadbmp "bullet", "sprites\bullet1.bmp"
 
-    bulletname$ = "bullet";bulletnumber
-    bulletnumber = 1
-    loadbmp bulletname$, "sprites\bullet1.bmp"
+   '''''' 'bulletname$ = "bullet";bulletnumber
+   '''''' 'bulletnumber = 1
 
+    'create the game window
     menu #game, "Options", "Change Background", [changeBackground],  "About", [About]
     open "SpaceBlast v1.0a" for graphics_nsb_nf as #game
     print #game, "trapclose [gameQuit]"
     print #game, "addsprite ship ship_up ship_up_on ship_left ship_left_on ship_right ship_right_on ship_down ship_down_on"
     print #game, "spritescale ship 250"
+    print #game, "addsprite bullet bullet"
     print #game, "addsprite asteroid asteroid"
-    print #game, "addsprite bullet ";bulletname$
     print #game, "addsprite health health(0) health(1) health(2) health(3) health(4)"
     print #game, "when characterInput [userInput]"
     print #game, "when leftButtonDown [shoot]"
@@ -72,24 +79,25 @@ NOMAINWIN
     print #game, "drawsprites"
 
    'Variables:
-    shipX = WindowWidth/2 - 100 ' ship x-pos
+    shipXstart = WindowWidth/2 - 100 '''
+    shipX = shipXstart ' ship x-pos  '''
     shipY = WindowHeight - 120  ' ship y-pos
-1   velx = 15.5 ' asteroid X-Axis speed
+    velx = 15.5 ' asteroid X-Axis speed
     vely = 15.5 ' asteroid Y-Axis speed
-    x = 1 ' asteroid x-pos
-    y = 1 ' asteroid y-pos
-    dim BulletBMP$(10)
-    BulletBMP$(1) = "sprites\bullet1.bmp"
-    BulletBMP$(2) = "sprites\bullet2.bmp"
-    BulletBMP$(3) = "sprites\bullet3.bmp"
-    BulletBMP$(4) = "sprites\bullet4.bmp"
-    BulletBMP$(5) = "sprites\bullet5.bmp"
-    BulletBMP$(6) = "sprites\bullet6.bmp"
-    BulletBMP$(7) = "sprites\bullet7.bmp"
-    BulletBMP$(8) = "sprites\bullet8.bmp"
-    BulletBMP$(9) = "sprites\bullet9.bmp"
-    BulletBMP$(10) = "sprites\bullet10.bmp"
-    currentBulletNum = 1
+    'x = 1 ' asteroid x-pos ''
+    'y = 1 ' asteroid y-pos ''
+    'dim BulletBMP$(10)
+    'BulletBMP$(1) = "sprites\bullet1.bmp"
+    'BulletBMP$(2) = "sprites\bullet2.bmp"
+    'BulletBMP$(3) = "sprites\bullet3.bmp"
+    'BulletBMP$(4) = "sprites\bullet4.bmp"
+    'BulletBMP$(5) = "sprites\bullet5.bmp"
+    'BulletBMP$(6) = "sprites\bullet6.bmp"
+    'BulletBMP$(7) = "sprites\bullet7.bmp"
+    'BulletBMP$(8) = "sprites\bullet8.bmp"
+    'BulletBMP$(9) = "sprites\bullet9.bmp"
+    'BulletBMP$(10) = "sprites\bullet10.bmp"
+    'currentBulletNum = 1
     health = 4
     score = 0
 
@@ -97,7 +105,7 @@ NOMAINWIN
     print #game, "drawsprites"
     scan
     gosub [loadShip]
-    timer 56,  [timeTicked]
+'1   timer 56,  [timeTicked]
     wait
 
     [gameQuit]
@@ -108,7 +116,7 @@ NOMAINWIN
             end
         end if
         if quit$ = "no" then
-            goto  1 ' goto line labeled "1"
+         '   goto  1 ' goto line labeled "1"
         end if
         wait
 
@@ -118,57 +126,20 @@ NOMAINWIN
         return
         wait
 
-    [loadHealth]
-        health = 4
-        print #game, "spriteimage health health(4)"
-        print #game, "spritescale health 200"
-        print #game, "spritexy health 500 0"
-        print #game, "drawsprites"
-        return
-
-        [AddHealth]
-            select health
-                case  4
-                    print #game, "spriteimage health health(4)"
-                    print #game, "drawsprites"
-
-                case  3
-                    print #game, "spriteimage health health(3)"
-                    print #game, "drawsprites"
-
-                case  2
-                    print #game, "spriteimage health health(2)"
-                    print #game, "drawsprites"
-
-                case  1
-                    print #game, "spriteimage health health(1)"
-                    print #game, "drawsprites"
-
-                case  0
-                    notice "Game Over!" + Chr$(13) + "Better Luck next time! Your final score is: ";score
-                    print #game, "drawsprites"
-                    goto 4
-
-            end select
-
-            print #game, "spritescale health 200"
-            print #game, "spritexy health 500 0"
-            print #game, "drawsprites"
-
-            goto [timeTicked]
-
     [timeTicked]
         bulletX = shipX
         bulletY = shipY
-        if gotHealth = 0 then
-            gosub [loadHealth]
-        end if
+        'if gotHealth = 0 then
+         '   gosub [loadHealth]
+        'end if
 
-        gosub [loadAsteroids]
+       ' gosub [collisionDetection]
+       ' gosub [loadAsteroids]
         print #game, "spritexy ship "; shipX; " "; shipY
         print #game, "drawsprites"
         char$ = ""
         wait
+
 
     [userInput]
         char$ = Inkey$
@@ -283,27 +254,6 @@ NOMAINWIN
         end if
         wait
 
-    [loadAsteroids]
-        print #game, "spriteimage asteroid asteroid"
-        print #game, "spritemovexy asteroid "; x+velx; " "; y+vely
-        print #game, "drawsprites"
-        return
-        wait
-
-    [changeBackground]
-
-        filedialog "Open Bitmap Image", "*.bmp", UserBGimage$
-        if (UserBGimage$ = "") then
-            notice "Background change aborted by user."
-            goto 1
-        end if
-
-        backgroundChanged$ = "true"
-3       loadbmp "UserBG",  UserBGimage$
-        print #game, "background UserBG"
-        print #game, "drawsprites"
-        wait
-
     [loadBullet]
         'print BulletBMP$(currentBulletNum)
             if currentBulletNum >= 10 then
@@ -334,27 +284,27 @@ NOMAINWIN
         end if
 
         if bulletX <= 0 then
-            print #game, "removesprite bullet"
+            print #game, "removesprite bullet bullet"
             print #game, "drawsprites"
         end if
 
         if bulletX >= 640 then
-            print #game, "removesprite bullet"
+            print #game, "removesprite bullet bullet"
             print #game, "drawsprites"
         end if
 
         if bulletY <= 0 then
-            print #game, "removesprite bullet"
+            print #game, "removesprite bullet bullet"
             print #game, "drawsprites"
         end if
 
         if bulletY >= 480 then
-            print #game, "removesprite bullet"
+            print #game, "removesprite bullet bullet"
             print #game, "drawsprites"
         end if
 
         if shot = 1 then
-            bulletname$ = "bullet";bulletnumber
+            bulletname$ = "bullet bullet"
             shot = 0
             return
         end if
@@ -362,34 +312,22 @@ NOMAINWIN
 
     [shoot]
         shot = 1
-
         gosub [loadBullet]
-
         if moving$ = "up" then
                 #game, "spritemovexy bullet 0 -5"
                 #game, "drawsprites"
         end if
-
         if moving$ = "left" then
-
             #game, "spritemovexy bullet -5 0"
             #game, "drawsprites"
         end if
-
         if moving$ = "down" then
             #game, "spritemovexy bullet 0 5"
             #game, "drawsprites"
         end if
-
         if moving$ = "right" then
             #game, "spritemovexy bullet 5 0"
             #game, "drawsprites"
         end if
         wait
-
-[About]
-    notice "About" + chr$(13) + "SpaceBlast (C)' 2013"
-    wait
-
-
 

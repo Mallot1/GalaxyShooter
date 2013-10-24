@@ -1,0 +1,18 @@
+
+required:
+*re-organize the code
+*Load the asteroids 
+*Setup the asteroids and ship collison detection
+*Setup the ship shooting 
+*Setup bullet and asteroid collision detection
+*Setup lives panel in game
+*Setup score panel in game
+-------------------------------
+
+Extras:
+**add game play music
+
+------------------------------------
+Advanced/Long term:
+***multiplayer
+***in game levels
