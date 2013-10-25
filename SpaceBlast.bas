@@ -8,16 +8,26 @@ NOMAINWIN
        WindowHeight = DisplayHeight
 
  [MainMenu]
+    if gameLaunched = 1 then
+        close #game
+    end if
+
+    if mainMenuButttonClicked = 1 then
+        paused = 1
+        goto [pause]
+    end if
+
    'buttons and things
     button #main.play, "Play Game", [Game], UL, DisplayWidth/2-100, 200, 200, 50
     button #main.about, "About", [About], UL, DisplayWidth/2-100, 250, 200, 50
+    button #main.background, "Change Background", [changeMenuBackground], UL, DisplayWidth/2-100,300, 200, 50
     'create window
     open "Main Menu" for graphics_nsb_nf as #main
     print #main, "trapclose [quit]"
     'setup window
     print #main, "flush";
-    if ( backgroundLoaded$ = "") then
-        loadbmp "menuBG", "media\menuBG.bmp"
+    if ( BackgroundLoaded$ = "") then
+        loadbmp "menuBG", "media\space.bmp"
         print #main, "background menuBG"
     end if
 
@@ -31,6 +41,7 @@ NOMAINWIN
 
  [Game]
     close #main
+    gameLaunched = 1
     'WindowWidth = 640
     'WindowHeight = 480
     'sprites
@@ -48,12 +59,17 @@ NOMAINWIN
     loadbmp "health(2)", "sprites\lives02.bmp"
     loadbmp "health(3)", "sprites\lives03.bmp"
     loadbmp "health(4)", "sprites\lives04.bmp"
+    loadbmp "paused", "media\pausescreen.bmp"
 
     bulletname$ = "bullet";bulletnumber
     bulletnumber = 1
     loadbmp bulletname$, "sprites\bullet1.bmp"
 
-    menu #game, "Options", "Change Background", [changeBackground],  "About", [About]
+    menu #game, "&Options", "Change Background", [changeBackground],  "About", [About], "Menu", [MainMenu]
+    menu #game, "&Change Background", "Change Background", [changeBackground]
+    menu #game, "&About", "About", [About]
+    menu #game, "&Menu", "Menu", [mainMenuButtonClicked]
+
     open "SpaceBlast v1.0a" for graphics_nsb_nf as #game
     print #game, "trapclose [gameQuit]"
     print #game, "addsprite ship ship_up ship_up_on ship_left ship_left_on ship_right ship_right_on ship_down ship_down_on"
@@ -74,7 +90,8 @@ NOMAINWIN
    'Variables:
     shipX = WindowWidth/2 - 100 ' ship x-pos
     shipY = WindowHeight - 120  ' ship y-pos
-1   velx = 15.5 ' asteroid X-Axis speed
+1   paused = 0
+    velx = 15.5 ' asteroid X-Axis speed
     vely = 15.5 ' asteroid Y-Axis speed
     x = 1 ' asteroid x-pos
     y = 1 ' asteroid y-pos
@@ -122,7 +139,7 @@ NOMAINWIN
         health = 4
         print #game, "spriteimage health health(4)"
         print #game, "spritescale health 200"
-        print #game, "spritexy health 500 0"
+        print #game, "spritexy health 1200 0"
         print #game, "drawsprites"
         return
 
@@ -130,18 +147,26 @@ NOMAINWIN
             select health
                 case  4
                     print #game, "spriteimage health health(4)"
+                    print #game, "spritescale health 200"
+                    print #game, "spritexy health 500 0"
                     print #game, "drawsprites"
 
                 case  3
                     print #game, "spriteimage health health(3)"
+                    print #game, "spritescale health 200"
+                    print #game, "spritexy health 500 0"
                     print #game, "drawsprites"
 
                 case  2
                     print #game, "spriteimage health health(2)"
+                    print #game, "spritescale health 200"
+                    print #game, "spritexy health 500 0"
                     print #game, "drawsprites"
 
                 case  1
                     print #game, "spriteimage health health(1)"
+                    print #game, "spritescale health 200"
+                    print #game, "spritexy health 500 0"
                     print #game, "drawsprites"
 
                 case  0
@@ -158,6 +183,7 @@ NOMAINWIN
             goto [timeTicked]
 
     [timeTicked]
+    if paused = 0 then
         bulletX = shipX
         bulletY = shipY
         if gotHealth = 0 then
@@ -169,9 +195,26 @@ NOMAINWIN
         print #game, "drawsprites"
         char$ = ""
         wait
+    end if
 
     [userInput]
         char$ = Inkey$
+
+        'un-pause the game
+        if char$ = "r" then
+            if paused = 1 then
+                goto [endPause]
+            end if
+        end if
+
+        if char$ = "R" then
+            if paused = 1 then
+                goto [endPause]
+            end if
+        end if
+
+
+    if paused = 0 then
         if char$ = "w" then
             shipY = shipY - 10
             print #game, "spriteimage ship ship_up_on"
@@ -237,19 +280,32 @@ NOMAINWIN
             char$ = ""
         end if
 
+        if char$ = "p" then
+            if paused = 1 then
+                goto [endPause]
+            end if
+
+            goto [Pause]
+        end if
+
+        if char$ = "P" then
+            goto [Pause]
+        end if
+
+
         print "X: ";shipX ;"   Y: ";shipY
         print #game, "spritexy ship "; shipX; " ";shipY
         print #game, "drawsprites"
 
-        if shipX >= 1293 then '580
+        if shipX >= 1293 then
            shipX = 1291
         end if
 
-        if shipX <= 0 then '0
+        if shipX <= 0 then
            shipX = 2
         end if
 
-        if shipY >= 632 then '370
+        if shipY >= 632 then
            shipY = 630
         end if
 
@@ -281,6 +337,8 @@ NOMAINWIN
         if shot = 1 then
             gosub [loadBullet]
         end if
+
+    end if
         wait
 
     [loadAsteroids]
@@ -288,6 +346,19 @@ NOMAINWIN
         print #game, "spritemovexy asteroid "; x+velx; " "; y+vely
         print #game, "drawsprites"
         return
+        wait
+
+    [changeMenuBackground]
+        filedialog "Open Bitmap Image", "*.bmp", UserBGimage$
+        if (UserBGimage$ = "") then
+            notice "Background change aborted by user."
+            goto 1
+        end if
+
+        MenuBackgroundChanged$ = "true"
+        loadbmp "UserBG",  UserBGimage$
+        print #main, "background UserBG"
+        print #main, "drawsprites"
         wait
 
     [changeBackground]
@@ -333,22 +404,22 @@ NOMAINWIN
                 print #game, "drawsprites"
         end if
 
-        if bulletX <= 0 then
+        if bulletX <= 18 then '18
             print #game, "removesprite bullet"
             print #game, "drawsprites"
         end if
 
-        if bulletX >= 640 then
+        if bulletX >= 1293 then
             print #game, "removesprite bullet"
             print #game, "drawsprites"
         end if
 
-        if bulletY <= 0 then
+        if bulletY <= 2 then
             print #game, "removesprite bullet"
             print #game, "drawsprites"
         end if
 
-        if bulletY >= 480 then
+        if bulletY >= 648 then
             print #game, "removesprite bullet"
             print #game, "drawsprites"
         end if
@@ -387,9 +458,91 @@ NOMAINWIN
         end if
         wait
 
+    [mainMenuButtonClicked]
+        mainMenuButtonClicked = 1
+        goto [MainMenu]
+        wait
+
+
+[Pause]
+    paused = 1
+    
+    print #game, "background paused"
+    print #game, "drawsprites"
+    
+    if mainMenuButtonClicked = 1 then
+        mainMenuButtonClicked = 0
+    end if
+    if noticeGiven = 0 then
+        notice "Game paused, press "+ "r" + " to resume the game."
+    end if
+
+    'Store data in temporary variables
+    TempshipX = shipX
+    TempshipY = shipY
+    TempbulletX = bulletX
+    TempbulletY = bulletY
+    Tempvelx = velx
+    Tempvely = vely
+    Tempx = x
+    Tempy = y
+
+    'Stop motion
+    shipX = shipX
+    shipY = shipY
+    bulletX = bulletX
+    bulletY = bulletY
+    velx = velx
+    vely = vely
+    x = x
+    y = y
+
+
+    'preserve the location of all sprites and everything going on in the game
+    wait
+
+[endPause]
+
+    'reload the variables
+    shipX = TempshipX
+    shipY = TempshipY
+    bulletX = TempbulletX
+    bulletY = TempbulletY
+    velx = Tempvelx
+    vely = Tempvely
+    x = Tempx
+    y = Tempy
+
+    'reset temporary variables
+    TempshipX = 0
+    TempshipY = 0
+    TempbulletX = 0
+    TempbulletY = 0
+    Tempvelx = 0
+    Tempvely = 0
+    Tempx = 0
+    Tempy = 0
+    paused = 0
+    wait
+
+
 [About]
+
     notice "About" + chr$(13) + "SpaceBlast (C)' 2013"
     wait
 
 
+[load]
+    if paused = 1 then
+        shipX = TempshipX
+        shipY = TempshipY
+        bulletX = TempbulletX
+        bulletY = TempbulletY
+        velx = Tempvelx
+        vely = Tempvely
+        x = Tempx
+        y = Tempy
+    end if
+    wait
+    
 
