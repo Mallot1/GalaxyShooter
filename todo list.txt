@@ -14,6 +14,9 @@ side stuff:
 *Setup the asteroids and ship collison detection
 *reorganizethe repository directory
 
+bugs:
+*fix the game crash when caneling backgground change on menu "unknown branch label #game"
+
 -------------------------------
 
 Extras:
