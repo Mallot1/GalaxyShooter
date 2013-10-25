@@ -29,9 +29,11 @@ NOMAINWIN
 
     if MenuBackgroundLoaded$ = "" then
         loadbmp "menuBG", "backgrounds\menuBG.bmp"
+    else
+        loadbmp "menuBG", menuBG$
     end if
 
-    if ( BackgroundLoaded$ = "") then
+    if ( backgroundLoaded$ = "") then
         loadbmp "gameBG", "backgrounds\space.bmp"
         print #main, "background menuBG"
     end if
@@ -79,7 +81,7 @@ NOMAINWIN
     loadbmp "health(2)", "sprites\lives02.bmp"
     loadbmp "health(3)", "sprites\lives03.bmp"
     loadbmp "health(4)", "sprites\lives04.bmp"
-    loadbmp "paused", "backgrounds\pausescreen.bmp"
+    loadbmp "paused", "media\pausescreen.bmp"
 
     bulletname$ = "bullet";bulletnumber
     bulletnumber = 1
@@ -391,14 +393,17 @@ NOMAINWIN
         wait
 
     [changeMenuBackground]
-        filedialog "Open Bitmap Image", "*.bmp", UserBGimage$
+        filedialog "Open Bitmap Image", "backgrounds/*.bmp", UserBGimage$
         if (UserBGimage$ = "") then
             notice "Background change aborted by user."
+            if MenuBackgroundChanged$ = "true" then
+                MenuBackgroundLoaded$ = UserBGimage$
+            end if
             goto 6
         end if
         MenuBackgroundLoaded$ = UserBGimage$
         MenuBackgroundChanged$ = "true"
-        loadbmp "UserBG",  UserBGimage$
+        loadbmp "UserBG",  UserBGimage$     
         print #main, "background UserBG"
         print #main, "drawsprites"
         wait
