@@ -8,14 +8,14 @@ NOMAINWIN
        WindowHeight = DisplayHeight
 
  [MainMenu]
-    if gameLaunched = 1 then
-       gameLaunched = 2
-    end if
+    'if gameLaunched = 1 then
+     '  gameLaunched = 2
+    'end if
 
-    if mainMenuButttonClicked = 1 then
-        paused = 1
-        goto [pause]
-    end if
+    'if mainMenuButttonClicked = 1 then
+     '   paused = 1
+     '   goto [pause]
+    'end if
 
    'buttons and things
     button #main.play, "Play Game", [Game], UL, DisplayWidth/2-100, 200, 200, 50
@@ -25,9 +25,14 @@ NOMAINWIN
     open "Main Menu" for graphics_nsb_nf as #main
     print #main, "trapclose [quit]"
     'setup window
-    print #main, "flush";
+6   print #main, "flush";
+
+    if MenuBackgroundLoaded$ = "" then
+        loadbmp "menuBG", "backgrounds\menuBG.bmp"
+    end if
+
     if ( BackgroundLoaded$ = "") then
-        loadbmp "menuBG", "media\space.bmp"
+        loadbmp "gameBG", "backgrounds\space.bmp"
         print #main, "background menuBG"
     end if
 
@@ -74,7 +79,7 @@ NOMAINWIN
     loadbmp "health(2)", "sprites\lives02.bmp"
     loadbmp "health(3)", "sprites\lives03.bmp"
     loadbmp "health(4)", "sprites\lives04.bmp"
-    loadbmp "paused", "media\pausescreen.bmp"
+    loadbmp "paused", "backgrounds\pausescreen.bmp"
 
     bulletname$ = "bullet";bulletnumber
     bulletnumber = 1
@@ -100,7 +105,7 @@ NOMAINWIN
 
     'load Background
     if (backgroundChanged$ = "true") then goto 3                'now game will always show the user chosen background
-    loadbmp "bg", "media\space.bmp"
+    loadbmp "bg", "backgrounds\space.bmp"
     print #game, "background bg"
     print #game, "drawsprites"
 
@@ -389,9 +394,9 @@ NOMAINWIN
         filedialog "Open Bitmap Image", "*.bmp", UserBGimage$
         if (UserBGimage$ = "") then
             notice "Background change aborted by user."
-            goto 1
+            goto 6
         end if
-
+        MenuBackgroundLoaded$ = UserBGimage$
         MenuBackgroundChanged$ = "true"
         loadbmp "UserBG",  UserBGimage$
         print #main, "background UserBG"
@@ -400,7 +405,7 @@ NOMAINWIN
 
     [changeBackground]
 
-        filedialog "Open Bitmap Image", "*.bmp", UserBGimage$
+        filedialog "Open Bitmap Image", "backgrounds/*.bmp", UserBGimage$
         if (UserBGimage$ = "") then
             notice "Background change aborted by user."
             goto 1
