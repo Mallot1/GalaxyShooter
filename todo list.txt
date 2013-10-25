@@ -12,7 +12,6 @@ side stuff:
 
 *add game resuming after exit to menu and back( i have to get the switching to the menu working so i can test this)
 *Setup the asteroids and ship collison detection
-*reorganizethe repository directory
 
 bugs:
 *fix the game crash when caneling backgground change on menu "unknown branch label #game"
