@@ -9,7 +9,7 @@ NOMAINWIN
 
  [MainMenu]
     if gameLaunched = 1 then
-        close #game
+       gameLaunched = 2
     end if
 
     if mainMenuButttonClicked = 1 then
@@ -41,7 +41,22 @@ NOMAINWIN
 
  [Game]
     close #main
-    gameLaunched = 1
+
+    if gameLaunched = 2 then
+        close #game
+    end if
+
+    if SavedGame = 1 then
+        notice "would you like to continue your previous game, or start over?" + chr$(13) + "Start Over" + chr$(13) + "Continue";askcontinue$
+            if askcontinue$ = "Start Over" then
+                goto [timeTicked]
+            end if
+
+            if askcontinue$ = "Continue" then
+                goto [Load]
+            end if
+    end if
+
     'WindowWidth = 640
     'WindowHeight = 480
     'sprites
@@ -65,7 +80,7 @@ NOMAINWIN
     bulletnumber = 1
     loadbmp bulletname$, "sprites\bullet1.bmp"
 
-    menu #game, "&Options", "Change Background", [changeBackground],  "About", [About], "Menu", [MainMenu]
+    menu #game, "&Options", "Change Background", [changeBackground],  "About", [About], "Menu", [mainMenuButtonClicked]
     menu #game, "&Change Background", "Change Background", [changeBackground]
     menu #game, "&About", "About", [About]
     menu #game, "&Menu", "Menu", [mainMenuButtonClicked]
@@ -77,6 +92,8 @@ NOMAINWIN
     print #game, "addsprite asteroid asteroid"
     print #game, "addsprite bullet ";bulletname$
     print #game, "addsprite health health(0) health(1) health(2) health(3) health(4)"
+    print #game, "spritescale health 500"
+    print #game, "spritexy health 1200 0"
     print #game, "when characterInput [userInput]"
     print #game, "when leftButtonDown [shoot]"
     print #game, "setfocus"
@@ -129,6 +146,26 @@ NOMAINWIN
         end if
         wait
 
+    [quitToMenu]
+     confirm "Are you sure you want to leave? Y/N?";QTMenu$
+     if QTMenu$ = "yes" then
+        confirm "Would you like to save your game?( you can currently only resume while the game is open ) Y/N?";asksave$
+            if asksave$ = "yes" then
+                goto [Save]
+            end if
+
+            if asksave$ = "no" then
+                notice "Leaving to menu..."
+            end if
+5       close #game
+        goto [MainMenu]
+     end if
+
+     if QTMenu$ = "no" then
+        goto 1
+     end if
+     wait
+
     [loadShip]
         print #game, "spritexy ship "; shipX; " "; shipY
         print #game, "drawsprites"
@@ -138,7 +175,7 @@ NOMAINWIN
     [loadHealth]
         health = 4
         print #game, "spriteimage health health(4)"
-        print #game, "spritescale health 200"
+        print #game, "spritescale health 500"
         print #game, "spritexy health 1200 0"
         print #game, "drawsprites"
         return
@@ -147,26 +184,26 @@ NOMAINWIN
             select health
                 case  4
                     print #game, "spriteimage health health(4)"
-                    print #game, "spritescale health 200"
-                    print #game, "spritexy health 500 0"
+                    print #game, "spritescale health 500"
+                    print #game, "spritexy health 1200 0"
                     print #game, "drawsprites"
 
                 case  3
                     print #game, "spriteimage health health(3)"
-                    print #game, "spritescale health 200"
-                    print #game, "spritexy health 500 0"
+                    print #game, "spritescale health 500"
+                    print #game, "spritexy health 1200 0"
                     print #game, "drawsprites"
 
                 case  2
                     print #game, "spriteimage health health(2)"
-                    print #game, "spritescale health 200"
-                    print #game, "spritexy health 500 0"
+                    print #game, "spritescale health 500"
+                    print #game, "spritexy health 1200 0"
                     print #game, "drawsprites"
 
                 case  1
                     print #game, "spriteimage health health(1)"
-                    print #game, "spritescale health 200"
-                    print #game, "spritexy health 500 0"
+                    print #game, "spritescale health 500"
+                    print #game, "spritexy health 1200 0"
                     print #game, "drawsprites"
 
                 case  0
@@ -176,8 +213,8 @@ NOMAINWIN
 
             end select
 
-            print #game, "spritescale health 200"
-            print #game, "spritexy health 500 0"
+            print #game, "spritescale health 500"
+            print #game, "spritexy health 1200 0"
             print #game, "drawsprites"
 
             goto [timeTicked]
@@ -459,17 +496,18 @@ NOMAINWIN
         wait
 
     [mainMenuButtonClicked]
+
         mainMenuButtonClicked = 1
-        goto [MainMenu]
+        goto [quitToMenu]
         wait
 
 
 [Pause]
     paused = 1
-    
+
     print #game, "background paused"
     print #game, "drawsprites"
-    
+
     if mainMenuButtonClicked = 1 then
         mainMenuButtonClicked = 0
     end if
@@ -523,6 +561,10 @@ NOMAINWIN
     Tempx = 0
     Tempy = 0
     paused = 0
+
+    print #game, "background bg"
+    print #game, "drawsprites"
+
     wait
 
 
@@ -531,8 +573,22 @@ NOMAINWIN
     notice "About" + chr$(13) + "SpaceBlast (C)' 2013"
     wait
 
+[Save]
+    TempshipX = shipX
+    TempshipY = shipY
+    TempbulletX = bulletX
+    TempbulletY = bulletY
+    Tempvelx = velx
+    Tempvely = vely
+    Tempx = x
+    Tempy = y
+    SavedGame = 1
+    notice "Save successful!"
+    goto 5
+    wait
 
-[load]
+
+[Load]
     if paused = 1 then
         shipX = TempshipX
         shipY = TempshipY
@@ -544,5 +600,5 @@ NOMAINWIN
         y = Tempy
     end if
     wait
-    
+
 

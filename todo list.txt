@@ -1,19 +1,30 @@
+SpaceBlast v1.0 by Mallot1(Daniel Robinson mallot111@gmail.com) 
 
-required:
-*re-organize the code
-*Load the asteroids 
+
+core:
+#Load the asteroids 
+#Setup the ship shooting 
+#Setup bullet and asteroid collision detection
+
+--------------------------------------------------------------------------------
+
+side stuff:
+
+*add game resuming after exit to menu and back( i have to get the switching to the menu working so i can test this)
 *Setup the asteroids and ship collison detection
-**Setup the ship shooting 
-**Setup bullet and asteroid collision detection
-*Setup score panel in game
-*scale lives bar to a good size
-*add pause feature(  new branch label name [pauseGame] when someone clicks the "Menu" menu label at the top, or when someone clicks the "p" button )
+*reorganizethe repository directory
 
 -------------------------------
 
 Extras:
 **add game play music
-**a boost bar( 10 boost at game start )
+*re-organize the code
+
+
+bars:
+*a boost bar( 10 boost at game start )
+*scale lives bar to a good size
+*Setup score panel in game and give it a good size
 
 ------------------------------------
 Advanced/Long term:
