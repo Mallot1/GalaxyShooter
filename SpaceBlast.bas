@@ -27,12 +27,8 @@ NOMAINWIN
     'setup window
 6   print #main, "flush";
 
-    if MenuBackgroundLoaded$ = "" then
+    if ( MenuBackgroundLoaded$ = "") then
         loadbmp "menuBG", "backgrounds\menuBG.bmp"
-    end if
-
-    if ( BackgroundLoaded$ = "") then
-        loadbmp "gameBG", "backgrounds\space.bmp"
         print #main, "background menuBG"
     end if
 
@@ -53,6 +49,7 @@ NOMAINWIN
 
     if SavedGame = 1 then
         notice "would you like to continue your previous game, or start over?" + chr$(13) + "Start Over" + chr$(13) + "Continue";askcontinue$
+        start = 1
             if askcontinue$ = "Start Over" then
                 goto [timeTicked]
             end if
@@ -62,8 +59,6 @@ NOMAINWIN
             end if
     end if
 
-    'WindowWidth = 640
-    'WindowHeight = 480
     'sprites
     loadbmp "ship_up", "sprites\ship_up.bmp"
     loadbmp "ship_up_on", "sprites\ship_up_on.bmp"
@@ -80,7 +75,20 @@ NOMAINWIN
     loadbmp "health(3)", "sprites\lives03.bmp"
     loadbmp "health(4)", "sprites\lives04.bmp"
     loadbmp "paused", "media\pausescreen.bmp"
-
+    loadbmp "start", "media\startscreen.bmp"
+    loadbmp "countdown1", "media\startcountdown1.bmp"
+    loadbmp "countdown2", "media\startcountdown2.bmp"
+    loadbmp "countdown3", "media\startcountdown3.bmp"
+    loadbmp "countdown4", "media\startcountdown4.bmp"
+    loadbmp "countdown5", "media\startcountdown5.bmp"
+    loadbmp "countdown6", "media\startcountdown6.bmp"
+    loadbmp "countdown7", "media\startcountdown7.bmp"
+    loadbmp "countdown8", "media\startcountdown8.bmp"
+    loadbmp "countdown9", "media\startcountdown9.bmp"
+    loadbmp "countdown10", "media\startcountdown10.bmp"
+    loadbmp "countdowntrans1", "media\startcountdowntrans1.bmp"
+    loadbmp "countdowntrans2", "media\startcountdowntrans2.bmp"
+    loadbmp "countdowntrans3", "media\startcountdowntrans3.bmp"
     bulletname$ = "bullet";bulletnumber
     bulletnumber = 1
     loadbmp bulletname$, "sprites\bullet1.bmp"
@@ -92,6 +100,13 @@ NOMAINWIN
 
     open "SpaceBlast v1.0a" for graphics_nsb_nf as #game
     print #game, "trapclose [gameQuit]"
+
+    'start game?
+    print #game, "background start"
+    print #game, "drawsprites"
+    notice "Ready to start?"
+    gosub [Start]
+
     print #game, "addsprite ship ship_up ship_up_on ship_left ship_left_on ship_right ship_right_on ship_down ship_down_on"
     print #game, "spritescale ship 250"
     print #game, "addsprite asteroid asteroid"
@@ -110,6 +125,7 @@ NOMAINWIN
     print #game, "drawsprites"
 
    'Variables:
+    start = 1
     shipX = WindowWidth/2 - 100 ' ship x-pos
     shipY = WindowHeight - 120  ' ship y-pos
 1   paused = 0
@@ -143,7 +159,8 @@ NOMAINWIN
         timer 0
         confirm "Do you really want to quit?";quit$
         if quit$ = "yes" then
-   4        close #game   'if your out of health you come here and the game ends
+            start = 0
+4           close #game   'if your out of health you come here and the game ends
             end
         end if
         if quit$ = "no" then
@@ -152,8 +169,9 @@ NOMAINWIN
         wait
 
     [quitToMenu]
-     confirm "Are you sure you want to leave? Y/N?";QTMenu$
-     if QTMenu$ = "yes" then
+     confirm "Are you sure you want to leave? Y/N?";GTMenu$
+     if GTMenu$ = "yes" then
+        start = 0
         confirm "Would you like to save your game?( you can currently only resume while the game is open ) Y/N?";asksave$
             if asksave$ = "yes" then
                 goto [Save]
@@ -166,10 +184,103 @@ NOMAINWIN
         goto [MainMenu]
      end if
 
-     if QTMenu$ = "no" then
+     if GTMenu$ = "no" then
         goto 1
      end if
      wait
+
+    [Start]
+        'game start countdown
+        print #game, "background countdowntrans1"
+        print #game, "drawsprites"
+        print #game, "background countdowntrans2"
+        print #game, "drawsprites"
+        print #game, "background countdown10"
+        print #game, "drawsprites"
+        print #game, "background countdowntrans3"
+        print #game, "drawsprites"
+
+        print #game, "background countdowntrans1"
+        print #game, "drawsprites"
+        print #game, "background countdowntrans2"
+        print #game, "drawsprites"
+        print #game, "background countdown9"
+        print #game, "drawsprites"
+        print #game, "background countdowntrans3"
+        print #game, "drawsprites"
+
+        print #game, "background countdowntrans1"
+        print #game, "drawsprites"
+        print #game, "background countdowntrans2"
+        print #game, "drawsprites"
+        print #game, "background countdown8"
+        print #game, "drawsprites"
+        print #game, "background countdowntrans3"
+        print #game, "drawsprites"
+
+        print #game, "background countdowntrans1"
+        print #game, "drawsprites"
+        print #game, "background countdowntrans2"
+        print #game, "drawsprites"
+        print #game, "background countdown7"
+        print #game, "drawsprites"
+        print #game, "background countdowntrans3"
+        print #game, "drawsprites"
+
+        print #game, "background countdowntrans1"
+        print #game, "drawsprites"
+        print #game, "background countdowntrans2"
+        print #game, "drawsprites"
+        print #game, "background countdown6"
+        print #game, "drawsprites"
+        print #game, "background countdowntrans3"
+        print #game, "drawsprites"
+
+        print #game, "background countdowntrans1"
+        print #game, "drawsprites"
+        print #game, "background countdowntrans2"
+        print #game, "drawsprites"
+        print #game, "background countdown5"
+        print #game, "drawsprites"
+        print #game, "background countdowntrans3"
+        print #game, "drawsprites"
+
+        print #game, "background countdowntrans1"
+        print #game, "drawsprites"
+        print #game, "background countdowntrans2"
+        print #game, "drawsprites"
+        print #game, "background countdown4"
+        print #game, "drawsprites"
+        print #game, "background countdowntrans3"
+        print #game, "drawsprites"
+
+        print #game, "background countdowntrans1"
+        print #game, "drawsprites"
+        print #game, "background countdowntrans2"
+        print #game, "drawsprites"
+        print #game, "background countdown3"
+        print #game, "drawsprites"
+        print #game, "background countdowntrans3"
+        print #game, "drawsprites"
+
+        print #game, "background countdowntrans1"
+        print #game, "drawsprites"
+        print #game, "background countdowntrans2"
+        print #game, "drawsprites"
+        print #game, "background countdown2"
+        print #game, "drawsprites"
+        print #game, "background countdowntrans3"
+        print #game, "drawsprites"
+
+        print #game, "background countdowntrans1"
+        print #game, "drawsprites"
+        print #game, "background countdowntrans2"
+        print #game, "drawsprites"
+        print #game, "background countdown1"
+        print #game, "drawsprites"
+        print #game, "background countdowntrans3"
+        print #game, "drawsprites"
+    return
 
     [loadShip]
         print #game, "spritexy ship "; shipX; " "; shipY
@@ -237,10 +348,25 @@ NOMAINWIN
         print #game, "drawsprites"
         char$ = ""
         wait
+
     end if
 
     [userInput]
         char$ = Inkey$
+    'while start = 0
+        'start game?
+
+     '   if char$ = "s" then
+      '      start = 1
+       '     EXIT WHILE
+        'end if
+
+        'if char$ = "S" then
+         '   start = 1
+          '  EXIT WHILE
+        'end if
+    'EXIT WHILE
+    'wend
 
         'un-pause the game
         if char$ = "r" then
@@ -323,10 +449,6 @@ NOMAINWIN
         end if
 
         if char$ = "p" then
-            if paused = 1 then
-                goto [endPause]
-            end if
-
             goto [Pause]
         end if
 
@@ -379,8 +501,8 @@ NOMAINWIN
         if shot = 1 then
             gosub [loadBullet]
         end if
+    end if ' pause = 0 end if
 
-    end if
         wait
 
     [loadAsteroids]

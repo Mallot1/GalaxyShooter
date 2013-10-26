@@ -12,9 +12,16 @@ side stuff:
 
 *add game resuming after exit to menu and back( i have to get the switching to the menu working so i can test this)
 *Setup the asteroids and ship collison detection
+*add damage ship sprites( 4 of them)
+*corrolate the damages ship sprites with the lives ( damagedship1 = lives4, damagedship2 = lives3, etc)
+*add start screen
+*start using functions
+*fix startup menu focusing ( gets ruined if the screen is moved (setfocus)
+*create an label for the start countdown animation
+
 
 bugs:
-*fix the game crash when caneling backgground change on menu "unknown branch label #game"
+
 
 -------------------------------
 
