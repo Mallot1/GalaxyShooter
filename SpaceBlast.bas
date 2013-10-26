@@ -79,7 +79,7 @@ NOMAINWIN
     loadbmp "health(2)", "sprites\lives02.bmp"
     loadbmp "health(3)", "sprites\lives03.bmp"
     loadbmp "health(4)", "sprites\lives04.bmp"
-    loadbmp "paused", "backgrounds\pausescreen.bmp"
+    loadbmp "paused", "media\pausescreen.bmp"
 
     bulletname$ = "bullet";bulletnumber
     bulletnumber = 1
