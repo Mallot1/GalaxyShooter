@@ -130,6 +130,49 @@ NOMAINWIN
     loadbmp "countdowntrans3", "screens\startcountdowntrans3.bmp"
     loadbmp "gameover", "screens\gameoverscreen.bmp"
 
+    loadbmp "ship_boost_left", "sprites\ship_boost_left.bmp"
+    loadbmp "ship_boost_left_damage_1", "sprites\ship_boost_left_damage_1.bmp"
+    loadbmp "ship_boost_left_damage_2", "sprites\ship_boost_left_damage_2.bmp"
+    loadbmp "ship_boost_left_damage_3", "sprites\ship_boost_left_damage_3.bmp"
+    loadbmp "ship_boost_left_damage_4", "sprites\ship_boost_left_damage_4.bmp"
+
+    loadbmp "ship_boost_right", "sprites\ship_boost_right.bmp"
+    loadbmp "ship_boost_right_damage_1", "sprites\ship_boost_right_damage_1.bmp"
+    loadbmp "ship_boost_right_damage_2", "sprites\ship_boost_right_damage_2.bmp"
+    loadbmp "ship_boost_right_damage_3", "sprites\ship_boost_right_damage_3.bmp"
+    loadbmp "ship_boost_right_damage_4", "sprites\ship_boost_right_damage_4.bmp"
+
+    loadbmp "ship_boost_down", "sprites\ship_boost_down.bmp"
+    loadbmp "ship_boost_up", "sprites\ship_boost_up.bmp"
+
+    loadbmp "boost25", "sprites\boost_25.bmp"
+    loadbmp "boost24", "sprites\boost_24.bmp"
+    loadbmp "boost23", "sprites\boost_23.bmp"
+    loadbmp "boost22", "sprites\boost_22.bmp"
+    loadbmp "boost21", "sprites\boost_21.bmp"
+    loadbmp "boost20", "sprites\boost_20.bmp"
+    loadbmp "boost19", "sprites\boost_19.bmp"
+    loadbmp "boost18", "sprites\boost_18.bmp"
+    loadbmp "boost17", "sprites\boost_17.bmp"
+    loadbmp "boost16", "sprites\boost_16.bmp"
+    loadbmp "boost15", "sprites\boost_15.bmp"
+    loadbmp "boost14", "sprites\boost_14.bmp"
+    loadbmp "boost13", "sprites\boost_13.bmp"
+    loadbmp "boost12", "sprites\boost_12.bmp"
+    loadbmp "boost11", "sprites\boost_11.bmp"
+    loadbmp "boost10", "sprites\boost_10.bmp"
+    loadbmp "boost09", "sprites\boost_09.bmp"
+    loadbmp "boost08", "sprites\boost_08.bmp"
+    loadbmp "boost07", "sprites\boost_07.bmp"
+    loadbmp "boost06", "sprites\boost_06.bmp"
+    loadbmp "boost05", "sprites\boost_05.bmp"
+    loadbmp "boost04", "sprites\boost_04.bmp"
+    loadbmp "boost03", "sprites\boost_03.bmp"
+    loadbmp "boost02", "sprites\boost_02.bmp"
+    loadbmp "boost01", "sprites\boost_01.bmp"
+    loadbmp "boost00", "sprites\boost_00.bmp"
+
+
     bulletname$ = "bullet";bulletnumber
     bulletnumber = 1
     loadbmp bulletname$, "sprites\bullet1.bmp"
@@ -148,11 +191,12 @@ NOMAINWIN
     notice "Ready to start?"
     gosub [Start]
 
-    print #game, "addsprite ship ship_up ship_up_damage_1 ship_up_damage_2 ship_up_damage_3 ship_up_damage_4 ship_up_on ship_up_on_damage_1 ship_up_on_damage_2 ship_up_on_damage_3 ship_up_on_damage_4 ship_left ship_left_damage_1 ship_left_damage_2 ship_left_damage_3 ship_left_damage_4 ship_left_on ship_left_on_damage_1 ship_left_on_damage_2 ship_left_on_damage_3 ship_left_on_damage_4 ship_right ship_right_damage_1 ship_right_damage_2 ship_right_damage_3 ship_right_damage_4 ship_right_on ship_right_on_damage_1 ship_right_on_damage_2 ship_right_on_damage_3 ship_right_on_damage_4 ship_down ship_down_on ship_down_on_damage_1 ship_down_on_damage_2 ship_down_on_damage_3 ship_down_on_damage_4"
+    print #game, "addsprite ship ship_up ship_up_damage_1 ship_up_damage_2 ship_up_damage_3 ship_up_damage_4 ship_up_on ship_up_on_damage_1 ship_up_on_damage_2 ship_up_on_damage_3 ship_up_on_damage_4 ship_left ship_left_damage_1 ship_left_damage_2 ship_left_damage_3 ship_left_damage_4 ship_left_on ship_left_on_damage_1 ship_left_on_damage_2 ship_left_on_damage_3 ship_left_on_damage_4 ship_right ship_right_damage_1 ship_right_damage_2 ship_right_damage_3 ship_right_damage_4 ship_right_on ship_right_on_damage_1 ship_right_on_damage_2 ship_right_on_damage_3 ship_right_on_damage_4 ship_down ship_down_on ship_down_on_damage_1 ship_down_on_damage_2 ship_down_on_damage_3 ship_down_on_damage_4 ship_boost_left ship_boost_left_damage_1 ship_boost_left_damage_2 ship_boost_left_damage_3 ship_boost_left_damage_4 ship_boost_right ship_boost_right_damage_1 ship_boost_right_damage_2 ship_boost_right_damage_3 ship_boost_right_damage_4 ship_boost_down ship_boost_up"
     print #game, "spritescale ship 250"
     print #game, "addsprite asteroid asteroid"
     print #game, "addsprite bullet ";bulletname$
     print #game, "addsprite health health(0) health(1) health(2) health(3) health(4) health(5)"
+    print #game, "addsprite boostbar boost25 boost24 boost23 boost22 boost21 boost20 boost19 boost18 boost17 boost16 boost15 boost14 boost13 boost12 boost11 boost10 boost09 boost08 boost07 boost06 boost05 boost04 boost03 boost02 boost01 boost00"
     print #game, "spritescale health 500"
     print #game, "spritexy health 1200 0"
     print #game, "when characterInput [userInput]"
@@ -330,7 +374,7 @@ NOMAINWIN
         wait
 
     [loadHealth]
-        health = -1
+        health = 5
         gotHealth = 1
         print #game, "spriteimage health health("; health; ")"
         print #game, "spritescale health 500"
@@ -424,6 +468,14 @@ NOMAINWIN
 
 
     if paused = 0 then
+        if char$ = "b" then
+            gosub [Boost]
+        end if
+
+        if char$ = "B" then
+            gosub [Boost]
+        end if
+
         if char$ = "w" then
             shipY = shipY - 10
                 if health = 5 then
@@ -811,6 +863,258 @@ NOMAINWIN
 
         wait
 
+    [Boost]
+        if boostLoaded = 0 then
+            print #game, "spritexy boostbar 1000 0"
+            print #game, "spritescale boostbar 500 0"
+            print #game, "drawsprites"
+            boost = 10 ' 10 boost 25 max
+            boostLoaded = 1
+        end if
+
+        if boost <> 0 then
+            if boost = 25 then
+                print #game, "spriteimage boostbar boost25"
+                print #game, "drawsprites"
+                boost = boost - 1
+                goto 7
+            end if
+
+            if boost = 24 then
+                print #game, "spriteimage boostbar boost24"
+                print #game, "drawsprites"
+                boost = boost - 1
+                goto 7
+            end if
+
+            if boost = 23 then
+                print #game, "spriteimage boostbar boost23"
+                print #game, "drawsprites"
+                boost = boost - 1
+                goto 7
+            end if
+
+            if boost = 22 then
+                print #game, "spriteimage boostbar boost22"
+                print #game, "drawsprites"
+                boost = boost - 1
+                goto 7
+            end if
+
+            if boost = 21 then
+                print #game, "spriteimage boostbar boost21"
+                print #game, "drawsprites"
+                boost = boost - 1
+                goto 7
+            end if
+
+            if boost = 20 then
+                print #game, "spriteimage boostbar boost20"
+                print #game, "drawsprites"
+                boost = boost - 1
+                goto 7
+            end if
+
+            if boost = 19 then
+                print #game, "spriteimage boostbar boost19"
+                print #game, "drawsprites"
+                boost = boost - 1
+                goto 7
+            end if
+            if boost = 18 then
+                print #game, "spriteimage boostbar boost18"
+                print #game, "drawsprites"
+                boost = boost - 1
+                goto 7
+            end if
+
+            if boost = 17 then
+                print #game, "spriteimage boostbar boost17"
+                print #game, "drawsprites"
+                boost = boost - 1
+                goto 7
+            end if
+
+            if boost = 16 then
+                print #game, "spriteimage boostbar boost16"
+                print #game, "drawsprites"
+                boost = boost - 1
+                goto 7
+            end if
+
+            if boost = 15 then
+                print #game, "spriteimage boostbar boost15"
+                print #game, "drawsprites"
+                boost = boost - 1
+                goto 7
+            end if
+
+            if boost = 14 then
+                print #game, "spriteimage boostbar boost14"
+                print #game, "drawsprites"
+                boost = boost - 1
+                goto 7
+            end if
+
+            if boost = 13 then
+                print #game, "spriteimage boostbar boost13"
+                print #game, "drawsprites"
+                boost = boost - 1
+                goto 7
+            end if
+
+            if boost = 12 then
+                print #game, "spriteimage boostbar boost12"
+                print #game, "drawsprites"
+                boost = boost - 1
+                goto 7
+            end if
+
+            if boost = 11 then
+                print #game, "spriteimage boostbar boost11"
+                print #game, "drawsprites"
+                boost = boost - 1
+                goto 7
+            end if
+
+
+            if boost = 10 then
+                print #game, "spriteimage boostbar boost10"
+                print #game, "drawsprites"
+                boost = boost - 1
+                goto 7
+            end if
+
+            if boost = 9 then
+                print #game, "spriteimage boostbar boost09"
+                print #game, "drawsprites"
+                boost = boost - 1
+                goto 7
+            end if
+
+            if boost = 8 then
+                print #game, "spriteimage boostbar boost08"
+                print #game, "drawsprites"
+                boost = boost - 1
+                goto 7
+            end if
+
+            if boost = 7 then
+                print #game, "spriteimage boostbar boost07"
+                print #game, "drawsprites"
+                boost = boost - 1
+                goto 7
+            end if
+
+            if boost = 6 then
+                print #game, "spriteimage boostbar boost06"
+                print #game, "drawsprites"
+                boost = boost - 1
+                goto 7
+            end if
+
+            if boost = 5 then
+                print #game, "spriteimage boostbar boost05"
+                print #game, "drawsprites"
+                boost = boost - 1
+                goto 7
+            end if
+
+            if boost = 4 then
+                print #game, "spriteimage boostbar boost04"
+                print #game, "drawsprites"
+                boost = boost - 1
+                goto 7
+            end if
+
+            if boost = 3 then
+                print #game, "spriteimage boostbar boost03"
+                print #game, "drawsprites"
+                boost = boost - 1
+                goto 7
+            end if
+
+            if boost = 2 then
+                print #game, "spriteimage boostbar boost02"
+                print #game, "drawsprites"
+                boost = boost - 1
+                goto 7
+            end if
+
+            if boost = 1 then
+
+                print #game, "spriteimage boostbar boost01"
+                print #game, "drawsprites"
+                boostIsAtOne$ = "true"
+                boost = boost - 2 ' to get less than 0 to be reset to 0
+                goto 7
+            end if
+
+        if boost < 0 then
+            print #game, "spriteimage boostbar boost00"
+            print #game, "drawsprites"
+            boost = 0
+            goto 7
+        end if
+
+7           if boost > -1 then
+                if moving$ = "left" then
+                    select health
+                        case 5
+                            print #game, "spriteimage ship ship_boost_left"
+                            print #game, "drawsprites"
+                        case 4
+                            print #game, "spriteimage ship ship_boost_left_damage_1"
+                            print #game, "drawsprites"
+                        case 3
+                            print #game, "spriteimage ship ship_boost_left_damage_2"
+                            print #game, "drawsprites"
+                        case 2
+                            print #game, "spriteimage ship ship_boost_left_damage_3"
+                            print #game, "drawsprites"
+                        case 1
+                            print #game, "spriteimage ship ship_boost_left_damage_4"
+                            print #game, "drawsprites"
+                    end select
+                  shipX = shipX - 100
+                end if
+
+                if moving$ = "right" then
+                    select health
+                        case 5
+                            print #game, "spriteimage ship ship_boost_right"
+                            print #game, "drawsprites"
+                        case 4
+                            print #game, "spriteimage ship ship_boost_right_damage_1"
+                            print #game, "drawsprites"
+                        case 3
+                            print #game, "spriteimage ship ship_boost_right_damage_2"
+                            print #game, "drawsprites"
+                        case 2
+                            print #game, "spriteimage ship ship_boost_right_damage_3"
+                            print #game, "drawsprites"
+                        case 1
+                            print #game, "spriteimage ship ship_boost_right_damage_4"
+                            print #game, "drawsprites"
+                    end select
+                    shipX = shipX + 100
+                end if
+
+                if moving$ = "up" then
+                    print #game, "spriteimage ship ship_boost_up"
+                    print #game, "drawsprites"
+                    shipY = shipY - 100
+                end if
+
+                if moving$ = "down" then
+                    print #game, "spriteimage ship ship_boost_down"
+                    print #game, "drawsprites"
+                    shipY = shipY + 100
+                end if
+            end if
+        end if
+        return
+
     [loadAsteroids]
         print #game, "spriteimage asteroid asteroid"
         print #game, "spritemovexy asteroid "; x+velx; " "; y+vely
@@ -1033,5 +1337,3 @@ NOMAINWIN
         y = Tempy
     end if
     wait
-
-
