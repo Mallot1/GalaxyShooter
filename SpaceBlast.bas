@@ -63,19 +63,56 @@ NOMAINWIN
 
     'sprites
     loadbmp "ship_up", "sprites\ship_up.bmp"
+    loadbmp "ship_up_damage_1", "sprites\ship_up_damage_1.bmp"
+    loadbmp "ship_up_damage_2", "sprites\ship_up_damage_2.bmp"
+    loadbmp "ship_up_damage_3", "sprites\ship_up_damage_3.bmp"
+    loadbmp "ship_up_damage_4", "sprites\ship_up_damage_4.bmp"
     loadbmp "ship_up_on", "sprites\ship_up_on.bmp"
+    loadbmp "ship_up_on_damage_1", "sprites\ship_up_on_damage_1.bmp"
+    loadbmp "ship_up_on_damage_2", "sprites\ship_up_on_damage_2.bmp"
+    loadbmp "ship_up_on_damage_3", "sprites\ship_up_on_damage_3.bmp"
+    loadbmp "ship_up_on_damage_4", "sprites\ship_up_on_damage_4.bmp"
+
     loadbmp "ship_left", "sprites\ship_left.bmp"
+    loadbmp "ship_left_damage_1", "sprites\ship_left_damage_1.bmp"
+    loadbmp "ship_left_damage_2", "sprites\ship_left_damage_2.bmp"
+    loadbmp "ship_left_damage_3", "sprites\ship_left_damage_3.bmp"
+    loadbmp "ship_left_damage_4", "sprites\ship_left_damage_4.bmp"
     loadbmp "ship_left_on", "sprites\ship_left_on.bmp"
+    loadbmp "ship_left_on_damage_1", "sprites\ship_left_on_damage_1.bmp"
+    loadbmp "ship_left_on_damage_2", "sprites\ship_left_on_damage_2.bmp"
+    loadbmp "ship_left_on_damage_3", "sprites\ship_left_on_damage_3.bmp"
+    loadbmp "ship_left_on_damage_4", "sprites\ship_left_on_damage_4.bmp"
+
     loadbmp "ship_right",  "sprites\ship_right.bmp"
+    loadbmp "ship_right_damage_1", "sprites\ship_right_damage_1.bmp"
+    loadbmp "ship_right_damage_2", "sprites\ship_right_damage_2.bmp"
+    loadbmp "ship_right_damage_3", "sprites\ship_right_damage_3.bmp"
+    loadbmp "ship_right_damage_4", "sprites\ship_right_damage_4.bmp"
     loadbmp "ship_right_on", "sprites\ship_right_on.bmp"
+    loadbmp "ship_right_on_damage_1", "sprites\ship_right_on_damage_1.bmp"
+    loadbmp "ship_right_on_damage_2", "sprites\ship_right_on_damage_2.bmp"
+    loadbmp "ship_right_on_damage_3", "sprites\ship_right_on_damage_3.bmp"
+    loadbmp "ship_right_on_damage_4", "sprites\ship_right_on_damage_4.bmp"
+
     loadbmp "ship_down", "sprites\ship_down.bmp"
+    loadbmp "ship_down_damage_1", "sprites\ship_down_damage_1.bmp"
+    loadbmp "ship_down_damage_2", "sprites\ship_down_damage_2.bmp"
+    loadbmp "ship_down_damage_3", "sprites\ship_down_damage_3.bmp"
+    loadbmp "ship_down_damage_4", "sprites\ship_down_damage_4.bmp"
     loadbmp "ship_down_on", "sprites\ship_down_on.bmp"
+    loadbmp "ship_down_on_damage_1", "sprites\ship_down_on_damage_1.bmp"
+    loadbmp "ship_down_on_damage_2", "sprites\ship_down_on_damage_2.bmp"
+    loadbmp "ship_down_on_damage_3", "sprites\ship_down_on_damage_3.bmp"
+    loadbmp "ship_down_on_damage_4", "sprites\ship_down_on_damage_4.bmp"
+
     loadbmp "asteroid", "sprites\asteroid.bmp"
     loadbmp "health(0)", "sprites\lives00.bmp"
     loadbmp "health(1)", "sprites\lives01.bmp"
     loadbmp "health(2)", "sprites\lives02.bmp"
     loadbmp "health(3)", "sprites\lives03.bmp"
     loadbmp "health(4)", "sprites\lives04.bmp"
+    loadbmp "health(5)", "sprites\lives05.bmp"
     loadbmp "paused", "media\pausescreen.bmp"
     loadbmp "start", "media\startscreen.bmp"
     loadbmp "countdown1", "media\startcountdown1.bmp"
@@ -91,6 +128,7 @@ NOMAINWIN
     loadbmp "countdowntrans1", "media\startcountdowntrans1.bmp"
     loadbmp "countdowntrans2", "media\startcountdowntrans2.bmp"
     loadbmp "countdowntrans3", "media\startcountdowntrans3.bmp"
+
     bulletname$ = "bullet";bulletnumber
     bulletnumber = 1
     loadbmp bulletname$, "sprites\bullet1.bmp"
@@ -109,11 +147,11 @@ NOMAINWIN
     notice "Ready to start?"
     gosub [Start]
 
-    print #game, "addsprite ship ship_up ship_up_on ship_left ship_left_on ship_right ship_right_on ship_down ship_down_on"
+    print #game, "addsprite ship ship_up ship_up_damage_1 ship_up_damage_2 ship_up_damage_3 ship_up_damage_4 ship_up_on ship_up_on_damage_1 ship_up_on_damage_2 ship_up_on_damage_3 ship_up_on_damage_4 ship_left ship_left_damage_1 ship_left_damage_2 ship_left_damage_3 ship_left_damage_4 ship_left_on ship_left_on_damage_1 ship_left_on_damage_2 ship_left_on_damage_3 ship_left_on_damage_4 ship_right ship_right_damage_1 ship_right_damage_2 ship_right_damage_3 ship_right_damage_4 ship_right_on ship_right_on_damage_1 ship_right_on_damage_2 ship_right_on_damage_3 ship_right_on_damage_4 ship_down ship_down_on ship_down_on_damage_1 ship_down_on_damage_2 ship_down_on_damage_3 ship_down_on_damage_4"
     print #game, "spritescale ship 250"
     print #game, "addsprite asteroid asteroid"
     print #game, "addsprite bullet ";bulletname$
-    print #game, "addsprite health health(0) health(1) health(2) health(3) health(4)"
+    print #game, "addsprite health health(0) health(1) health(2) health(3) health(4) health(5)"
     print #game, "spritescale health 500"
     print #game, "spritexy health 1200 0"
     print #game, "when characterInput [userInput]"
@@ -147,7 +185,7 @@ NOMAINWIN
     BulletBMP$(9) = "sprites\bullet9.bmp"
     BulletBMP$(10) = "sprites\bullet10.bmp"
     currentBulletNum = 1
-    health = 4
+    health = 5
     score = 0
 
     print #game, "spritexy ship "; shipX; " "; shipY
@@ -291,15 +329,23 @@ NOMAINWIN
         wait
 
     [loadHealth]
-        health = 4
-        print #game, "spriteimage health health(4)"
+        health = 5
+        gotHealth = 1
+        print #game, "spriteimage health health(5)"
         print #game, "spritescale health 500"
         print #game, "spritexy health 1200 0"
         print #game, "drawsprites"
-        return
+        firdtAddedHealth = 1
+        goto [Health]
 
-        [AddHealth]
+        [Health]
             select health
+                case 5
+                    print #game, "spriteimage health health(5)"
+                    print #game, "spritescale health 500"
+                    print #game, "spritexy health 1200 0"
+                    print #game, "drawsprites"
+
                 case  4
                     print #game, "spriteimage health health(4)"
                     print #game, "spritescale health 500"
@@ -330,12 +376,12 @@ NOMAINWIN
                     goto 4
 
             end select
-
-            print #game, "spritescale health 500"
-            print #game, "spritexy health 1200 0"
-            print #game, "drawsprites"
-
-            goto [timeTicked]
+            if firstAddedHealth = 1 then
+                goto [timeTicked]
+                firstAddedHealth = 0
+            else
+                return
+            end if
 
     [timeTicked]
     if paused = 0 then
@@ -344,7 +390,7 @@ NOMAINWIN
         if gotHealth = 0 then
             gosub [loadHealth]
         end if
-
+        gosub [Health]
         gosub [loadAsteroids]
         print #game, "spritexy ship "; shipX; " "; shipY
         print #game, "drawsprites"
@@ -373,39 +419,149 @@ NOMAINWIN
     if paused = 0 then
         if char$ = "w" then
             shipY = shipY - 10
-            print #game, "spriteimage ship ship_up_on"
-            print #game, "drawsprites"
+                if health = 5 then
+                    print #game, "spriteimage ship ship_up_on"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 4 then
+                    print #game, "spriteimage ship ship_up_on_damage_1"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 3 then
+                    print #game, "spriteimage ship ship_up_on_damage_2"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 2 then
+                    print #game, "spriteimage ship ship_up_on_damage_3"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 1 then
+                    print #game, "spriteimage ship ship_up_on_damage_4"
+                    print #game, "drawsprites"
+                end if
             moving$ = "up"
             char$ = ""
         end if
 
          if char$ = "W" then                                    'if Caps Lock is on
              shipY = shipY - 10
-             print #game, "spriteimage ship ship_up_on"
-             print #game, "drawsprites"
+                if health = 5 then
+                    print #game, "spriteimage ship ship_up_on"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 4 then
+                    print #game, "spriteimage ship ship_up_on_damage_1"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 3 then
+                    print #game, "spriteimage ship ship_up_on_damage_2"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 2 then
+                    print #game, "spriteimage ship ship_up_on_damage_3"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 1 then
+                    print #game, "spriteimage ship ship_up_on_damage_4"
+                    print #game, "drawsprites"
+                end if
              moving$ = "up"
              char$ = ""
          end if
 
         if char$ = "a" then
-            print #game, "spriteimage ship ship_left_on"
-            print #game, "drawsprites"
+                if health = 5 then
+                    print #game, "spriteimage ship ship_left_on"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 4 then
+                    print #game, "spriteimage ship ship_left_on_damage_1"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 3 then
+                    print #game, "spriteimage ship ship_left_on_damage_2"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 2 then
+                    print #game, "spriteimage ship ship_left_on_damage_3"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 1 then
+                    print #game, "spriteimage ship ship_left_on_damage_4"
+                    print #game, "drawsprites"
+                end if
             shipX = shipX - 10
             moving$ = "left"
             char$ = ""
         end if
 
         if char$ = "A" then                                    'if Caps Lock is on
-            print #game, "spriteimage ship ship_left_on"
-            print #game, "drawsprites"
+                if health = 5 then
+                    print #game, "spriteimage ship ship_left_on"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 4 then
+                    print #game, "spriteimage ship ship_left_on_damage_1"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 3 then
+                    print #game, "spriteimage ship ship_left_on_damage_2"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 2 then
+                    print #game, "spriteimage ship ship_left_on_damage_3"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 1 then
+                    print #game, "spriteimage ship ship_left_on_damage_4"
+                    print #game, "drawsprites"
+                end if
             shipX = shipX - 10
             moving$ = "left"
             char$ = ""
         end if
 
         if char$ = "s" then
-            print #game, "spriteimage ship ship_down_on"
-            print #game, "drawsprites"
+                if health = 5 then
+                    print #game, "spriteimage ship ship_down_on"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 4 then
+                    print #game, "spriteimage ship ship_down_on_damage_1"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 3 then
+                    print #game, "spriteimage ship ship_down_on_damage_2"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 2 then
+                    print #game, "spriteimage ship ship_down_on_damage_3"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 1 then
+                    print #game, "spriteimage ship ship_down_on_damage_4"
+                    print #game, "drawsprites"
+                end if
             shipY = shipY + 10
             moving$ = "down"
             char$ = ""
@@ -413,24 +569,90 @@ NOMAINWIN
 
 
         if char$ = "S" then                                    'if Caps Lock is on
-            print #game, "spriteimage ship ship_down_on"
-            print #game, "drawsprites"
+                if health = 5 then
+                    print #game, "spriteimage ship ship_down_on"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 4 then
+                    print #game, "spriteimage ship ship_down_on_damage_1"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 3 then
+                    print #game, "spriteimage ship ship_down_on_damage_2"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 2 then
+                    print #game, "spriteimage ship ship_down_on_damage_3"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 1 then
+                    print #game, "spriteimage ship ship_down_on_damage_4"
+                    print #game, "drawsprites"
+                end if
             shipY = shipY + 10
             moving$ = "down"
             char$ = ""
         end if
 
         if char$ = "d" then
-            print #game, "spriteimage ship ship_right_on"
-            print #game, "drawsprites"
+                if health = 5 then
+                    print #game, "spriteimage ship ship_right_on"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 4 then
+                    print #game, "spriteimage ship ship_right_on_damage_1"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 3 then
+                    print #game, "spriteimage ship ship_right_on_damage_2"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 2 then
+                    print #game, "spriteimage ship ship_right_on_damage_3"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 1 then
+                    print #game, "spriteimage ship ship_right_on_damage_4"
+                    print #game, "drawsprites"
+                end if
             shipX = shipX + 10
             moving$ = "right"
             char$ = ""
         end if
 
         if char$ = "D" then                                    'if Caps Lock is on
-            print #game, "spriteimage ship ship_right_on"
-            print #game, "drawsprites"
+                if health = 5 then
+                    print #game, "spriteimage ship ship_right_on"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 4 then
+                    print #game, "spriteimage ship ship_right_on_damage_1"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 3 then
+                    print #game, "spriteimage ship ship_right_on_damage_2"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 2 then
+                    print #game, "spriteimage ship ship_right_on_damage_3"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 1 then
+                    print #game, "spriteimage ship ship_right_on_damage_4"
+                    print #game, "drawsprites"
+                end if
             shipX = shipX + 10
             moving$ = "right"
             char$ = ""
@@ -467,25 +689,114 @@ NOMAINWIN
 
         if char$ = "" then
             if moving$ = "up" then
-                print #game, "spriteimage ship ship_up"
-                print #game, "drawsprites"
+                if health = 5 then
+                    print #game, "spriteimage ship ship_up"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 4 then
+                    print #game, "spriteimage ship ship_up_damage_1"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 3 then
+                    print #game, "spriteimage ship ship_up_damage_2"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 2 then
+                    print #game, "spriteimage ship ship_up_damage_3"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 1 then
+                    print #game, "spriteimage ship ship_up_damage_4"
+                    print #game, "drawsprites"
+                end if
             end if
 
             if moving$ = "left" then
-                print #game, "spriteimage ship ship_left"
-                print #game, "drawsprites"
+                if health = 5 then
+                    print #game, "spriteimage ship ship_left"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 4 then
+                    print #game, "spriteimage ship ship_left_damage_1"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 3 then
+                    print #game, "spriteimage ship ship_left_damage_2"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 2 then
+                    print #game, "spriteimage ship ship_left_damage_3"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 1 then
+                    print #game, "spriteimage ship ship_left_damage_4"
+                    print #game, "drawsprites"
+                end if
             end if
 
             if moving$ = "down" then
-                print #game, "spriteimage ship ship_down"
-                print #game, "drawsprites"
+                if health = 5 then
+                    print #game, "spriteimage ship ship_down"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 4 then
+                    print #game, "spriteimage ship ship_down_damage_1"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 3 then
+                    print #game, "spriteimage ship ship_down_damage_2"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 2 then
+                    print #game, "spriteimage ship ship_down_damage_3"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 1 then
+                    print #game, "spriteimage ship ship_down_damage_4"
+                    print #game, "drawsprites"
+                end if
             end if
 
             if moving$ = "right" then
-                print #game, "spriteimage ship ship_right"
-                print #game, "drawsprites"
+                if health = 5 then
+                    print #game, "spriteimage ship ship_right"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 4 then
+                    print #game, "spriteimage ship ship_right_damage_1"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 3 then
+                    print #game, "spriteimage ship ship_right_damage_2"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 2 then
+                    print #game, "spriteimage ship ship_right_damage_3"
+                    print #game, "drawsprites"
+                end if
+
+                if health = 1 then
+                    print #game, "spriteimage ship ship_right_damage_4"
+                    print #game, "drawsprites"
+                end if
             end if
         end if
+
         if shot = 1 then
             gosub [loadBullet]
         end if
