@@ -113,21 +113,22 @@ NOMAINWIN
     loadbmp "health(3)", "sprites\lives03.bmp"
     loadbmp "health(4)", "sprites\lives04.bmp"
     loadbmp "health(5)", "sprites\lives05.bmp"
-    loadbmp "paused", "media\pausescreen.bmp"
-    loadbmp "start", "media\startscreen.bmp"
-    loadbmp "countdown1", "media\startcountdown1.bmp"
-    loadbmp "countdown2", "media\startcountdown2.bmp"
-    loadbmp "countdown3", "media\startcountdown3.bmp"
-    loadbmp "countdown4", "media\startcountdown4.bmp"
-    loadbmp "countdown5", "media\startcountdown5.bmp"
-    loadbmp "countdown6", "media\startcountdown6.bmp"
-    loadbmp "countdown7", "media\startcountdown7.bmp"
-    loadbmp "countdown8", "media\startcountdown8.bmp"
-    loadbmp "countdown9", "media\startcountdown9.bmp"
-    loadbmp "countdown10", "media\startcountdown10.bmp"
-    loadbmp "countdowntrans1", "media\startcountdowntrans1.bmp"
-    loadbmp "countdowntrans2", "media\startcountdowntrans2.bmp"
-    loadbmp "countdowntrans3", "media\startcountdowntrans3.bmp"
+    loadbmp "paused", "screens\pausescreen.bmp"
+    loadbmp "start", "screens\startscreen.bmp"
+    loadbmp "countdown1", "screens\startcountdown1.bmp"
+    loadbmp "countdown2", "screens\startcountdown2.bmp"
+    loadbmp "countdown3", "screens\startcountdown3.bmp"
+    loadbmp "countdown4", "screens\startcountdown4.bmp"
+    loadbmp "countdown5", "screens\startcountdown5.bmp"
+    loadbmp "countdown6", "screens\startcountdown6.bmp"
+    loadbmp "countdown7", "screens\startcountdown7.bmp"
+    loadbmp "countdown8", "screens\startcountdown8.bmp"
+    loadbmp "countdown9", "screens\startcountdown9.bmp"
+    loadbmp "countdown10", "screens\startcountdown10.bmp"
+    loadbmp "countdowntrans1", "screens\startcountdowntrans1.bmp"
+    loadbmp "countdowntrans2", "screens\startcountdowntrans2.bmp"
+    loadbmp "countdowntrans3", "screens\startcountdowntrans3.bmp"
+    loadbmp "gameover", "screens\gameoverscreen.bmp"
 
     bulletname$ = "bullet";bulletnumber
     bulletnumber = 1
@@ -329,9 +330,9 @@ NOMAINWIN
         wait
 
     [loadHealth]
-        health = 5
+        health = -1
         gotHealth = 1
-        print #game, "spriteimage health health(5)"
+        print #game, "spriteimage health health("; health; ")"
         print #game, "spritescale health 500"
         print #game, "spritexy health 1200 0"
         print #game, "drawsprites"
@@ -339,6 +340,10 @@ NOMAINWIN
         goto [Health]
 
         [Health]
+            if health < 0 then
+                health = 0
+            end if
+
             select health
                 case 5
                     print #game, "spriteimage health health(5)"
@@ -371,6 +376,8 @@ NOMAINWIN
                     print #game, "drawsprites"
 
                 case  0
+                    print #game, "background gameover"
+                    print #game, "drawsprites"
                     notice "Game Over!" + Chr$(13) + "Better Luck next time! Your final score is: ";score
                     print #game, "drawsprites"
                     goto 4

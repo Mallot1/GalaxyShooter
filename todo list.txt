@@ -12,8 +12,6 @@ core:
 side stuff:
 
 *add game resuming after exit to menu and back( i have to get the switching to the menu working so i can test this)
-*add damage ship sprites( 4 of them)
-*corrolate the damages ship sprites with the lives ( damagedship1 = lives4, damagedship2 = lives3, etc)
 *start using functions
 
 
