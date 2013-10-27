@@ -30,10 +30,12 @@ NOMAINWIN
     if ( MenuBackgroundLoaded$ = "") then
         loadbmp "menuBG", "backgrounds\menuBG.bmp"
         print #main, "background menuBG"
+        print #main, "drawsprites"
+        MenuBackgroundLoaded$ = "true"
     end if
 
+    print #main, "background menuBG"
     print #main, "drawsprites"
-    backgroundLoaded$ = "true"
     wait
 
     [quit]
@@ -116,7 +118,7 @@ NOMAINWIN
     print #game, "spritexy health 1200 0"
     print #game, "when characterInput [userInput]"
     print #game, "when leftButtonDown [shoot]"
-    print #game, "setfocus"
+   ' print #game, "setfocus"
 
     'load Background
     if (backgroundChanged$ = "true") then goto 3                'now game will always show the user chosen background
