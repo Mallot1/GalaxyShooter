@@ -355,20 +355,6 @@ NOMAINWIN
 
     [userInput]
         char$ = Inkey$
-    'while start = 0
-        'start game?
-
-     '   if char$ = "s" then
-      '      start = 1
-       '     EXIT WHILE
-        'end if
-
-        'if char$ = "S" then
-         '   start = 1
-          '  EXIT WHILE
-        'end if
-    'EXIT WHILE
-    'wend
 
         'un-pause the game
         if char$ = "r" then
