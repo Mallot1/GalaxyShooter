@@ -23,6 +23,9 @@ NOMAINWIN
     button #main.background, "Change Background", [changeMenuBackground], UL, DisplayWidth/2-100,300, 200, 50
     'create window
     open "Main Menu" for graphics_nsb_nf as #main
+    loadbmp "cursor1", "sprites\ship_up_on.bmp"
+    print #main, "addsprite cursor cursor1"
+    print #main, "when mouseMove [mouseMotion]"
     print #main, "trapclose [quit]"
     'setup window
 6   print #main, "flush";
@@ -1336,4 +1339,11 @@ NOMAINWIN
         x = Tempx
         y = Tempy
     end if
+    wait
+
+[mouseMotion]
+    shipX = MouseX
+    shipY = MouseY
+    print #main, "spritexy cursor ";shipX; " ";shipY
+    print #main, "drawsprites"
     wait

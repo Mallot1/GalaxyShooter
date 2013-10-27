@@ -12,7 +12,6 @@ core:
 side stuff:
 
 *add game resuming after exit to menu and back( i have to get the switching to the menu working so i can test this)
-*start using functions
 
 bugs:
 
@@ -21,6 +20,8 @@ bugs:
 
 *Extras:
 **add game play music
+**make main menu ship sprite cursor
+
 
 
 bars:
@@ -31,3 +32,8 @@ Advanced/Long term:
 ***multiplayer
 ***in game levels
 ***powerups
+
+
+
+str(45) -- changes 45 into the string "45"
+rnd(generates a random number
