@@ -15,7 +15,6 @@ side stuff:
 *add damage ship sprites( 4 of them)
 *corrolate the damages ship sprites with the lives ( damagedship1 = lives4, damagedship2 = lives3, etc)
 *start using functions
-*fix startup menu focusing ( gets ruined if the screen is moved (setfocus)
 
 
 bugs:
@@ -23,15 +22,14 @@ bugs:
 
 -------------------------------
 
-Extras:
+*Extras:
 **add game play music
 *re-organize the code
 
 
 bars:
 *a boost bar( 10 boost at game start )
-*scale lives bar to a good size
-*Setup score panel in game and give it a good size
+*setup score panel and give it a good size
 
 ------------------------------------
 Advanced/Long term:
