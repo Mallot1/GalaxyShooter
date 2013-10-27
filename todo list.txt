@@ -14,7 +14,6 @@ side stuff:
 *add game resuming after exit to menu and back( i have to get the switching to the menu working so i can test this)
 *start using functions
 
-
 bugs:
 
 
@@ -22,11 +21,9 @@ bugs:
 
 *Extras:
 **add game play music
-*re-organize the code
 
 
 bars:
-*a boost bar( 10 boost at game start )
 *setup score panel and give it a good size
 
 ------------------------------------
