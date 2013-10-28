@@ -2,7 +2,7 @@
 'By: Mallot1
 '(C) 2013
 
-'NOMAINWIN
+NOMAINWIN
 
 global score
 global cursor$
@@ -33,7 +33,7 @@ WindowHeight = DisplayHeight
     button #main.quit, "Quit", [Quit], UL, DisplayWidth/2-100, 450, 200, 50
 
     button #main.reset, "Reset", [resetMainMenu], LL, 10, 10, 200, 50
-   ' texteditor #main.textbox, 50, 50, 500, 500
+    loadbmp "cursor", "sprites\ship_up_on.bmp"
 
     'create window
     open "Main Menu" for graphics_nsb_nf as #main
@@ -1463,7 +1463,8 @@ WindowHeight = DisplayHeight
 [changeCursor]
     if cursorChanged = 1 then
         print ChangeCursor(cursor$)
-    print ChangeCursor(cursor$)
+        print ChangeCursor(cursor$)
+    end if
     wait
 
 'functions
