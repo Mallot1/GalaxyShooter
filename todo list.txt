@@ -2,7 +2,9 @@ SpaceBlast v1.0 by Mallot1(Daniel Robinson mallot111@gmail.com)
 
 today todo 10/28:
 **possibly add changing cursors( use a combobox, the curssor folder, and be able to click a cursor from the combo box to use
-*fix change cursor, and maybe window resizing buttons and functions of the game
+**fix change cursor,
+ 	*and maybe window resizing buttons and functions of the game
+
 --check point--
 *game keeps saying "no sprite named bullet"
 
@@ -20,6 +22,9 @@ side stuff:
 
 
 bugs:
+
+
+fix:
 
 -------------------------------
 
