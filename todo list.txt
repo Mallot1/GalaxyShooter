@@ -1,30 +1,30 @@
 SpaceBlast v1.0 by Mallot1(Daniel Robinson mallot111@gmail.com) 
 
 today todo 10/28:
-**possibly add changing cursors( use a combobox, the curssor folder, and be able to click a cursor from the combo box to use
-**fix change cursor,
- 	*and maybe window resizing buttons and functions of the game
+**fix/possibly add changing cursors( use a combobox, the curssor folder, and be able to click a cursor from the combo box to use
+**and maybe window resizing buttons and functions of the game
 
 --check point--
 *game keeps saying "no sprite named bullet"
 
-
 core:
-#Load the asteroids 
+#Load the asteroids random generation pattern and directional values
 #Setup the ship shooting 
 #Setup bullet and asteroid collision detection
 #setup asteroid and ship collision
 
 --------------------------------------------------------------------------------
 
-side stuff:
-*add game resuming after exit to menu and back( i have to get the switching to the menu working so i can test this)
 
+add-ons/enhancements:
+*finish making the menu button( this button lets you travel back to the main menu )
 
 bugs:
-
+--
 
 fix:
+--
+
 
 -------------------------------
 
@@ -43,5 +43,5 @@ Advanced/Long term:
 
 
 str(45) -- changes 45 into the string "45"
-val("45") does the reverse of str()
+val$("45") does the reverse of str()
 rnd(generates a random number
