@@ -10,30 +10,30 @@ core:
 --------------------------------------------------------------------------------
 
 side stuff:
-
 *add game resuming after exit to menu and back( i have to get the switching to the menu working so i can test this)
 
 bugs:
+*game keeps saying "no sprite named bullet"
 
 
 -------------------------------
 
 *Extras:
 **add game play music
-**make main menu ship sprite cursor
-
+**possibly add changing cursors( use a combobox, the curssor folder, and be able to click a cursor from the combo box to use
 
 
 bars:
-*setup score panel and give it a good size
 
 ------------------------------------
 Advanced/Long term:
 ***multiplayer
 ***in game levels
 ***powerups
+***add cheat codes like a text box and if a certain code is entered they get like maybe 10 more boost , something like that
 
 
 
 str(45) -- changes 45 into the string "45"
+val("45") does the reverse of str()
 rnd(generates a random number

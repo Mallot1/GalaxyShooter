@@ -2,12 +2,19 @@
 'By: Mallot1
 '(C) 2013
 
-NOMAINWIN
+'NOMAINWIN
 
-       WindowWidth = DisplayWidth
-       WindowHeight = DisplayHeight
+global score
+global cursor$
+global cursordir$
+
+WindowWidth = DisplayWidth
+WindowHeight = DisplayHeight
+
+
 
  [MainMenu]
+    fromMenu = 1
     'if gameLaunched = 1 then
      '  gameLaunched = 2
     'end if
@@ -20,13 +27,20 @@ NOMAINWIN
    'buttons and things
     button #main.play, "Play Game", [Game], UL, DisplayWidth/2-100, 200, 200, 50
     button #main.about, "About", [About], UL, DisplayWidth/2-100, 250, 200, 50
-    button #main.background, "Change Background", [changeMenuBackground], UL, DisplayWidth/2-100,300, 200, 50
+    button #main.background, "Change Background", [changeMenuBackground], UL, DisplayWidth/2-100, 300, 200, 50
+    button #main.WS, "Change Window Size", [changeWindowSize], UL, DisplayWidth/2-100, 350, 200, 50
+    button #main.cursor, "Change Cursor", [changeCursor], UL, DisplayWidth/2-100, 400, 200, 50
+    button #main.quit, "Quit", [Quit], UL, DisplayWidth/2-100, 450, 200, 50
+
+    button #main.reset, "Reset", [resetMainMenu], LL, 10, 10, 200, 50
+   ' texteditor #main.textbox, 50, 50, 500, 500
+
     'create window
     open "Main Menu" for graphics_nsb_nf as #main
-    loadbmp "cursor1", "sprites\ship_up_on.bmp"
-    print #main, "addsprite cursor cursor1"
+8   print #main, "addsprite cursor cursor"
     print #main, "when mouseMove [mouseMotion]"
-    print #main, "trapclose [quit]"
+    print #main, "down"
+    print #main, "trapclose [Quit]"
     'setup window
 6   print #main, "flush";
 
@@ -41,9 +55,17 @@ NOMAINWIN
     print #main, "drawsprites"
     wait
 
-    [quit]
+    [Quit]
+        fromMenu = 0
         close #main
         end
+
+    [resetMainMenu]
+    shipX = MouseX
+    shipY = MouseY
+
+    goto 8
+    wait
 
  [Game]
     close #main
@@ -180,12 +202,20 @@ NOMAINWIN
     bulletnumber = 1
     loadbmp bulletname$, "sprites\bullet1.bmp"
 
-    menu #game, "&Options", "Change Background", [changeBackground],  "About", [About], "Menu", [mainMenuButtonClicked]
+    menu #game, "&Options", "Change Background", [changeBackground],  "About", [About], "Menu", [mainMenuButtonClicked], "Change Window Size", [changeWindowSize]
     menu #game, "&Change Background", "Change Background", [changeBackground]
     menu #game, "&About", "About", [About]
     menu #game, "&Menu", "Menu", [mainMenuButtonClicked]
+    menu #game, "&Change Window Size", "&Change Window Size", [changeWindowSize]
+    textbox #game.scorebox, 0, 0, 100, 20
+    fromMenu = 0
+    fromGame = 1
+    statictext #game.score, "Score: ", 1, 0, 100, 20
 
     open "SpaceBlast v1.0a" for graphics_nsb_nf as #game
+    print #game, "down"
+    print #game, "font times_new_roman 12"
+    gosub [Score]
     print #game, "trapclose [gameQuit]"
 
     'start game?
@@ -204,7 +234,7 @@ NOMAINWIN
     print #game, "spritexy health 1200 0"
     print #game, "when characterInput [userInput]"
     print #game, "when leftButtonDown [shoot]"
-   ' print #game, "setfocus"
+   'print #game, "setfocus"
 
     'load Background
     if (backgroundChanged$ = "true") then goto 3                'now game will always show the user chosen background
@@ -235,6 +265,7 @@ NOMAINWIN
     currentBulletNum = 1
     health = 5
     score = 0
+    fromGame = 0
 
     print #game, "spritexy ship "; shipX; " "; shipY
     print #game, "drawsprites"
@@ -244,10 +275,13 @@ NOMAINWIN
     wait
 
     [gameQuit]
+
         timer 0
         confirm "Do you really want to quit?";quit$
         if quit$ = "yes" then
             start = 0
+            fromGame = 0
+            notice "Game Over!" + Chr$(13) + " Your final score is: ";score
 4           close #game   'if your out of health you come here and the game ends
             end
         end if
@@ -260,6 +294,7 @@ NOMAINWIN
      confirm "Are you sure you want to leave? Y/N?";GTMenu$
      if GTMenu$ = "yes" then
         start = 0
+        fromGame = 0
         confirm "Would you like to save your game?( you can currently only resume while the game is open ) Y/N?";asksave$
             if asksave$ = "yes" then
                 goto [Save]
@@ -438,6 +473,12 @@ NOMAINWIN
             end if
 
     [timeTicked]
+    if WindowWidth = 0 then WindowWidth = newwidth
+    if WindowHeight = 0 then WindowHeight = newheight
+
+    if WindowWidth = 0 then WindowWidth = DisplayWidth
+    if WindowHeight = 0 then WindowHeight = DisplayHeight
+
     if paused = 0 then
         bulletX = shipX
         bulletY = shipY
@@ -445,6 +486,7 @@ NOMAINWIN
             gosub [loadHealth]
         end if
         gosub [Health]
+        'gosub [Score]
         gosub [loadAsteroids]
         print #game, "spritexy ship "; shipX; " "; shipY
         print #game, "drawsprites"
@@ -872,6 +914,7 @@ NOMAINWIN
             print #game, "spritescale boostbar 500 0"
             print #game, "drawsprites"
             boost = 10 ' 10 boost 25 max
+
             boostLoaded = 1
         end if
 
@@ -1126,7 +1169,7 @@ NOMAINWIN
         wait
 
     [changeMenuBackground]
-        filedialog "Open Bitmap Image", "*.bmp", UserBGimage$
+        filedialog "Open Bitmap Image", "backgrounds/*.bmp", UserBGimage$
         if (UserBGimage$ = "") then
             notice "Background change aborted by user."
             goto 6
@@ -1139,7 +1182,6 @@ NOMAINWIN
         wait
 
     [changeBackground]
-
         filedialog "Open Bitmap Image", "backgrounds/*.bmp", UserBGimage$
         if (UserBGimage$ = "") then
             notice "Background change aborted by user."
@@ -1347,3 +1389,101 @@ NOMAINWIN
     print #main, "spritexy cursor ";shipX; " ";shipY
     print #main, "drawsprites"
     wait
+
+[Score]
+    print #game.score, "!enable"
+    print #game.score, "font times_new_roman 14 bold"
+    print #game.score, "Score: ";score
+    print #game, "drawsprites"
+    return
+
+[changeWindowSize]
+    confirm "You want to change the window/display size";anwser$
+    if anwser$ = "yes" then
+
+        'back up the previous values in case of error
+        TempWidth = WindowWidth
+        TempHeight = WindowHeight
+
+        WindowWidth = 500
+        WindowHeight = 250
+
+        statictext #window, "X-Position", 135, 38, 100, 30
+        textbox #window.xpos, 150, 80, 30, 55
+        statictext #window, "Y-Position", 255, 38, 100, 30
+        textbox #window.ypos, 270, 80, 30, 55
+        loadbmp "WindowResizeBackground", "backgrounds\window_resize_background.bmp"
+        button #window, "RESIZE", [windowResize], UL, 195, 100, 50, 150
+
+        open "Window Resize" for graphics_nsb_nf AS #window
+        print #window, "down"
+        print #window, "font times_new_roman 14 bold"
+        print #window, "flush"
+        print #window, "trapclose [windowQuit]"
+        wait
+        gosub [windowResize]
+    end if
+    wait
+
+
+[windowQuit]
+    fromMenu = 0
+    fromGame = 0
+    print window(newwidth, newheight)
+    close #window
+    wait
+
+[windowResize]
+    print #window.xpos, "!contents? ";newwidthr$
+    print #window.ypos, "!contents? ";newheightr$
+
+    print #window, newheightr$
+    print #window, newwidthr$
+
+    WindowWidth = val(newwidthr$)
+    WindowHeight = val(newheightr$)
+
+    newwidth = val(newwidthr$)
+    newheight = val(newheightr$)
+
+    print window(newwidth, newheight)
+    print "Done."
+    resized = 1
+
+    'if there was an error
+    if WindowWidth = 0 then
+        if WindowHeight = 0 then
+           print window(TempWidth, TempHeight)
+        end if
+    end if
+
+    goto [windowQuit]
+    wait
+
+[changeCursor]
+    if cursorChanged = 1 then
+        print ChangeCursor(cursor$)
+    print ChangeCursor(cursor$)
+    wait
+
+'functions
+'-----------------------
+
+function score(addpoints, subtractpoints)
+    score = score + addpoints
+    score = score - subtractpoints
+end function
+
+function window(width, height)
+    WindowWidth = width
+    WindowHeight = height
+end function
+
+function ChangeCursor(cursor$)
+    filedialog "Open new cursor", "cursors/*.bmp",cursordir$
+    if (cursordir$ = "") then
+        notice "cursor change aborted by user."
+    end if
+    loadbmp cursor$, cursordir$
+    print #main, "drawsprites"
+end function
