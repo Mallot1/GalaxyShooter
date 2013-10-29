@@ -24,7 +24,7 @@ core:
 #setup asteroid and ship collision
 
 
-Add-Ons/Enhancements
+Add-Ons/Enhancements:
 =================================================================================
 *finish making the menu button( this button lets you travel back to the main menu )
 
