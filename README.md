@@ -18,10 +18,10 @@ today todo 10/29:
 *game keeps saying "no sprite named bullet"
 
 core:
-*Load the asteroids random generation pattern and directional values
-*Setup the ship shooting 
-*Setup bullet and asteroid collision detection
-*setup asteroid and ship collision
+#Load the asteroids random generation pattern and directional values
+#Setup the ship shooting 
+#Setup bullet and asteroid collision detection
+#setup asteroid and ship collision
 
 
 Add-Ons/Enhancements
