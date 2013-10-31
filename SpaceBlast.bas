@@ -42,7 +42,7 @@ WindowHeight = DisplayHeight
     print #main, "down"
     print #main, "trapclose [Quit]"
     'setup window
-6   print #main, "flush";
+6   print #main, "flush"
 
     if ( MenuBackgroundLoaded$ = "") then
         loadbmp "menuBG", "backgrounds\menuBG.bmp"
@@ -234,7 +234,6 @@ WindowHeight = DisplayHeight
     print #game, "spritexy health 1200 0"
     print #game, "when characterInput [userInput]"
     print #game, "when leftButtonDown [shoot]"
-   'print #game, "setfocus"
 
     'load Background
     if (backgroundChanged$ = "true") then goto 3                'now game will always show the user chosen background
