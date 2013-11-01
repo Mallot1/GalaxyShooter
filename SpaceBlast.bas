@@ -7,6 +7,8 @@ NOMAINWIN
 global score
 global cursor$
 global cursordir$
+global width
+global height
 
 WindowWidth = DisplayWidth
 WindowHeight = DisplayHeight
@@ -30,7 +32,8 @@ WindowHeight = DisplayHeight
     button #main.background, "Change Background", [changeMenuBackground], UL, DisplayWidth/2-100, 300, 200, 50
     button #main.WS, "Change Window Size", [changeWindowSize], UL, DisplayWidth/2-100, 350, 200, 50
     button #main.cursor, "Change Cursor", [changeCursor], UL, DisplayWidth/2-100, 400, 200, 50
-    button #main.quit, "Quit", [Quit], UL, DisplayWidth/2-100, 450, 200, 50
+    button #main.cheatcode, "Enter cheat code", [startCheatCodeValidator], UL, DisplayWidth/2-100, 450, 200, 50
+    button #main.quit, "Quit", [Quit], UL, DisplayWidth/2-100, 500, 200, 50
 
     button #main.reset, "Reset", [resetMainMenu], LL, 10, 10, 200, 50
     loadbmp "cursor", "sprites\ship_up_on.bmp"
@@ -170,6 +173,7 @@ WindowHeight = DisplayHeight
     loadbmp "ship_boost_down", "sprites\ship_boost_down.bmp"
     loadbmp "ship_boost_up", "sprites\ship_boost_up.bmp"
 
+    loadbmp "boost25+", "sprites\boost_25+.bmp"
     loadbmp "boost25", "sprites\boost_25.bmp"
     loadbmp "boost24", "sprites\boost_24.bmp"
     loadbmp "boost23", "sprites\boost_23.bmp"
@@ -229,7 +233,7 @@ WindowHeight = DisplayHeight
     print #game, "addsprite asteroid asteroid"
     print #game, "addsprite bullet ";bulletname$
     print #game, "addsprite health health(0) health(1) health(2) health(3) health(4) health(5)"
-    print #game, "addsprite boostbar boost25 boost24 boost23 boost22 boost21 boost20 boost19 boost18 boost17 boost16 boost15 boost14 boost13 boost12 boost11 boost10 boost09 boost08 boost07 boost06 boost05 boost04 boost03 boost02 boost01 boost00"
+    print #game, "addsprite boostbar boost25+ boost25 boost24 boost23 boost22 boost21 boost20 boost19 boost18 boost17 boost16 boost15 boost14 boost13 boost12 boost11 boost10 boost09 boost08 boost07 boost06 boost05 boost04 boost03 boost02 boost01 boost00"
     print #game, "spritescale health 500"
     print #game, "spritexy health 1200 0"
     print #game, "when characterInput [userInput]"
@@ -270,6 +274,10 @@ WindowHeight = DisplayHeight
     print #game, "drawsprites"
     scan
     gosub [loadShip]
+    if resized = 1 then
+        WindowWidth = width
+        WindowHeight = height
+    end if
     timer 56,  [timeTicked]
     wait
 
@@ -472,8 +480,8 @@ WindowHeight = DisplayHeight
             end if
 
     [timeTicked]
-    if WindowWidth = 0 then WindowWidth = newwidth
-    if WindowHeight = 0 then WindowHeight = newheight
+    if WindowWidth = 0 then WindowWidth = width
+    if WindowHeight = 0 then WindowHeight = height
 
     if WindowWidth = 0 then WindowWidth = DisplayWidth
     if WindowHeight = 0 then WindowHeight = DisplayHeight
@@ -912,12 +920,20 @@ WindowHeight = DisplayHeight
             print #game, "spritexy boostbar 1000 0"
             print #game, "spritescale boostbar 500 0"
             print #game, "drawsprites"
-            boost = 10 ' 10 boost 25 max
+            boost = boost + 10 ' 10 boost 25 max is the most with a personal sprite
 
             boostLoaded = 1
         end if
 
         if boost <> 0 then
+
+            if boost > 25 then
+                print #game, "spriteimage boostbar boost25+"
+                print #game, "drawsprites"
+                boost = boost - 1
+                goto 7
+            end if
+
             if boost = 25 then
                 print #game, "spriteimage boostbar boost25"
                 print #game, "drawsprites"
@@ -1397,12 +1413,18 @@ WindowHeight = DisplayHeight
     return
 
 [changeWindowSize]
+    'back up the previous values early in case of error
+    TempWidth = WindowWidth
+    TempHeight = WindowHeight
+    if resize = 0 then
+        newwidth = 500
+        newheight = 500
+    end if
+    WindowWidth = 500
+    WindowHeight = 500
+
     confirm "You want to change the window/display size";anwser$
     if anwser$ = "yes" then
-
-        'back up the previous values in case of error
-        TempWidth = WindowWidth
-        TempHeight = WindowHeight
 
         WindowWidth = 500
         WindowHeight = 250
@@ -1419,8 +1441,6 @@ WindowHeight = DisplayHeight
         print #window, "font times_new_roman 14 bold"
         print #window, "flush"
         print #window, "trapclose [windowQuit]"
-        wait
-        gosub [windowResize]
     end if
     wait
 
@@ -1428,7 +1448,7 @@ WindowHeight = DisplayHeight
 [windowQuit]
     fromMenu = 0
     fromGame = 0
-    print window(newwidth, newheight)
+    'print window(newwidth, newheight)
     close #window
     wait
 
@@ -1436,23 +1456,28 @@ WindowHeight = DisplayHeight
     print #window.xpos, "!contents? ";newwidthr$
     print #window.ypos, "!contents? ";newheightr$
 
-    print #window, newheightr$
-    print #window, newwidthr$
+    width = val(newwidthr$)
+    height = val(newheightr$)
 
-    WindowWidth = val(newwidthr$)
-    WindowHeight = val(newheightr$)
+    WindowWidth = width
+    WindowHeight = height
 
-    newwidth = val(newwidthr$)
-    newheight = val(newheightr$)
-
-    print window(newwidth, newheight)
-    print "Done."
+    print "Window Resize successful!"
+    notice "Window Resize Complete!"
     resized = 1
 
     'if there was an error
     if WindowWidth = 0 then
         if WindowHeight = 0 then
-           print window(TempWidth, TempHeight)
+           WindowHeight = TempHeight
+           WindowWidth = TempWidth
+        end if
+    end if
+
+    if WindowHeight = 0 then
+        if WindowWidth = 0 then
+            WindowWidth = TempWidth
+            WindowHeight = TempHeight
         end if
     end if
 
@@ -1465,6 +1490,48 @@ WindowHeight = DisplayHeight
         print ChangeCursor(cursor$)
     end if
     wait
+
+
+
+[startCheatCodeValidator]
+    TempWidth = WindowWidth
+    TempHeight = WindowHeight
+    newwidth = 500
+    newheight = 500
+    WindowWidth = newwidth
+    WindowHeight = newheight
+
+    textbox #cheat.code, 0, 0, 800, 500
+    button #cheat.validate, "Validate", [cheatCodeValidator], LL, WindowWidth/2-100, 100, 80, 80
+    open "Cheat code test" for graphics_nsb_nf as #cheat
+    print #cheat, "when leftButtonClicked [clearCode]"
+    print #cheat, "trapclose [closeCheatCodeWindow]"
+    wait
+
+[clearCode]
+    print #cheat.code, "!enable"
+    print #cheat.code, "!selectall"
+    print #cheat.code, "!Cls"
+    wait
+
+[cheatCodeValidator]
+    print #cheat.code, "!contents? code$"
+    if code$ = "XYZ" then
+        boost = boost + 10
+        print boost
+        print #cheat.code, " -- Code Valid! -- , plus 10 boost!"
+    'add else if here to add new codes to the game
+    else
+        print #cheat.code," -- Code Invalid! -- "
+    end if
+    wait
+
+[closeCheatCodeWindow]
+    if resized = 0 then
+        WindowWidth = TempWidth
+        WindowHeight = TempWidth
+    end if
+    close #cheat : wait
 
 'functions
 '-----------------------
