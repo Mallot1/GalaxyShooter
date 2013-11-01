@@ -23,6 +23,7 @@ bugs:
 --
 
 fix:
+*set the lives sprites based on the display window size so like DisplaWidth-50(set it compaired to the current position so DisplayWidth-(DisplayWidth-spritepos)
 --
 
 
