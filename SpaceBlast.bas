@@ -27,13 +27,11 @@ WindowHeight = DisplayHeight
     'end if
 
    'buttons and things
-    button #main.play, "Play Game", [Game], UL, DisplayWidth/2-100, 200, 200, 50
-    button #main.about, "About", [About], UL, DisplayWidth/2-100, 250, 200, 50
-    button #main.background, "Change Background", [changeMenuBackground], UL, DisplayWidth/2-100, 300, 200, 50
-    button #main.WS, "Change Window Size", [changeWindowSize], UL, DisplayWidth/2-100, 350, 200, 50
-    button #main.cursor, "Change Cursor", [changeCursor], UL, DisplayWidth/2-100, 400, 200, 50
-    button #main.cheatcode, "Enter cheat code", [startCheatCodeValidator], UL, DisplayWidth/2-100, 450, 200, 50
-    button #main.quit, "Quit", [Quit], UL, DisplayWidth/2-100, 500, 200, 50
+    button #main.play, "Play Game", [Game], UL, DisplayWidth/3, 100, 500, 100
+    button #main.about, "About", [About], UL, DisplayWidth/3, 200, 500, 100
+    button #main.background, "Change Background", [changeMenuBackground], UL, DisplayWidth/3, 300, 500, 100
+    button #main.cheatcode, "Enter Cheat Code", [startCheatCodeValidator], UL, DisplayWidth/3, 400, 500, 100
+    button #main.quit, "Quit", [Quit], UL, DisplayWidth/3, 500, 500, 100
 
     button #main.reset, "Reset", [resetMainMenu], LL, 10, 10, 200, 50
     loadbmp "cursor", "sprites\ship_up_on.bmp"
@@ -206,11 +204,10 @@ WindowHeight = DisplayHeight
     bulletnumber = 1
     loadbmp bulletname$, "sprites\bullet1.bmp"
 
-    menu #game, "&Options", "Change Background", [changeBackground],  "About", [About], "Menu", [mainMenuButtonClicked], "Change Window Size", [changeWindowSize]
+    menu #game, "&Options", "Change Background", [changeBackground],  "About", [About], "Menu", [mainMenuButtonClicked]
     menu #game, "&Change Background", "Change Background", [changeBackground]
     menu #game, "&About", "About", [About]
     menu #game, "&Menu", "Menu", [mainMenuButtonClicked]
-    menu #game, "&Change Window Size", "&Change Window Size", [changeWindowSize]
     textbox #game.scorebox, 0, 0, 100, 20
     fromMenu = 0
     fromGame = 1
@@ -1494,15 +1491,8 @@ WindowHeight = DisplayHeight
 
 
 [startCheatCodeValidator]
-    TempWidth = WindowWidth
-    TempHeight = WindowHeight
-    newwidth = 500
-    newheight = 500
-    WindowWidth = newwidth
-    WindowHeight = newheight
-
-    textbox #cheat.code, 0, 0, 800, 500
-    button #cheat.validate, "Validate", [cheatCodeValidator], LL, WindowWidth/2-100, 100, 80, 80
+    textbox #cheat.code, 0, 0, WindowWidth, 300
+    button #cheat.validate, "Validate", [cheatCodeValidator], LL, 0, 400, WindowWidth, 600
     open "Cheat code test" for graphics_nsb_nf as #cheat
     print #cheat, "when leftButtonClicked [clearCode]"
     print #cheat, "trapclose [closeCheatCodeWindow]"
@@ -1527,10 +1517,6 @@ WindowHeight = DisplayHeight
     wait
 
 [closeCheatCodeWindow]
-    if resized = 0 then
-        WindowWidth = TempWidth
-        WindowHeight = TempWidth
-    end if
     close #cheat : wait
 
 'functions
