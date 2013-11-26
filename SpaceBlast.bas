@@ -208,10 +208,10 @@ WindowHeight = DisplayHeight
     menu #game, "&Change Background", "Change Background", [changeBackground]
     menu #game, "&About", "About", [About]
     menu #game, "&Menu", "Menu", [mainMenuButtonClicked]
-    textbox #game.scorebox, 0, 0, 100, 20
+    textbox #game.scorebox, 0, 0, 100, 50
     fromMenu = 0
     fromGame = 1
-    statictext #game.score, "Score: ", 1, 0, 100, 20
+    statictext #game.score, "Score: ", 1, 0, 100, 50
 
     open "SpaceBlast v1.0a" for graphics_nsb_nf as #game
     print #game, "down"
@@ -416,11 +416,12 @@ WindowHeight = DisplayHeight
         wait
 
     [loadHealth]
+        healthposX = DisplayWidth - 150
         health = 5
         gotHealth = 1
         print #game, "spriteimage health health("; health; ")"
         print #game, "spritescale health 500"
-        print #game, "spritexy health 1200 0"
+        print #game, "spritexy health ";healthposX; " -40"
         print #game, "drawsprites"
         firdtAddedHealth = 1
         goto [Health]
@@ -434,31 +435,31 @@ WindowHeight = DisplayHeight
                 case 5
                     print #game, "spriteimage health health(5)"
                     print #game, "spritescale health 500"
-                    print #game, "spritexy health 1200 0"
+                    print #game, "spritexy health ";healthposX; " -40"
                     print #game, "drawsprites"
 
                 case  4
                     print #game, "spriteimage health health(4)"
                     print #game, "spritescale health 500"
-                    print #game, "spritexy health 1200 0"
+                    print #game, "spritexy health ";healthposX; " -40"
                     print #game, "drawsprites"
 
                 case  3
                     print #game, "spriteimage health health(3)"
                     print #game, "spritescale health 500"
-                    print #game, "spritexy health 1200 0"
+                    print #game, "spritexy health ";healthposX; " -40"
                     print #game, "drawsprites"
 
                 case  2
                     print #game, "spriteimage health health(2)"
                     print #game, "spritescale health 500"
-                    print #game, "spritexy health 1200 0"
+                    print #game, "spritexy health ";healthposX; " -40"
                     print #game, "drawsprites"
 
                 case  1
                     print #game, "spriteimage health health(1)"
                     print #game, "spritescale health 500"
-                    print #game, "spritexy health 1200 0"
+                    print #game, "spritexy health ";healthposX; " -40"
                     print #game, "drawsprites"
 
                 case  0
