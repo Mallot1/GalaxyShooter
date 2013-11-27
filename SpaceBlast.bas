@@ -2,6 +2,8 @@
 'By: Mallot1
 '(C) 2013
 
+'NEW!!!
+
 NOMAINWIN
 
 global score
@@ -13,30 +15,20 @@ global height
 WindowWidth = DisplayWidth
 WindowHeight = DisplayHeight
 
-
-
  [MainMenu]
-    fromMenu = 1
-    'if gameLaunched = 1 then
-     '  gameLaunched = 2
-    'end if
-
-    'if mainMenuButttonClicked = 1 then
-     '   paused = 1
-     '   goto [pause]
-    'end if
-
+    if running$ = "true" then
+        close #game
+    end if
+    MouseMotion$ = "On"
    'buttons and things
     button #main.play, "Play Game", [Game], UL, DisplayWidth/3, 100, 500, 100
     button #main.about, "About", [About], UL, DisplayWidth/3, 200, 500, 100
     button #main.background, "Change Background", [changeMenuBackground], UL, DisplayWidth/3, 300, 500, 100
     button #main.cheatcode, "Enter Cheat Code", [startCheatCodeValidator], UL, DisplayWidth/3, 400, 500, 100
     button #main.quit, "Quit", [Quit], UL, DisplayWidth/3, 500, 500, 100
-
     button #main.reset, "Reset", [resetMainMenu], LL, 10, 10, 200, 50
-    loadbmp "cursor", "sprites\ship_up_on.bmp"
 
-    'create window
+    loadbmp "cursor", "sprites\ship_up_on.bmp"
     open "Main Menu" for graphics_nsb_nf as #main
 8   print #main, "addsprite cursor cursor"
     print #main, "when mouseMove [mouseMotion]"
@@ -54,29 +46,26 @@ WindowHeight = DisplayHeight
 
     print #main, "background menuBG"
     print #main, "drawsprites"
+
     wait
 
     [Quit]
         fromMenu = 0
-        close #main
-        end
+        timer 0
+        close #main : end
 
     [resetMainMenu]
-    shipX = MouseX
-    shipY = MouseY
+        shipX = MouseX
+        shipY = MouseY
 
-    goto 8
-    wait
+        goto 8
+        wait
 
  [Game]
     close #main
-
-    if gameLaunched = 2 then
-        close #game
-    end if
-
+    MouseMotion$ = "Off"
     if SavedGame = 1 then
-        notice "would you like to continue your previous game, or start over?" + chr$(13) + "Start Over" + chr$(13) + "Continue";askcontinue$
+        confirm "would you like to continue your previous game, or start over?" + chr$(13) + "Start Over" + chr$(13) + "Continue";askcontinue$
         start = 1
             if askcontinue$ = "Start Over" then
                 goto [timeTicked]
@@ -207,7 +196,7 @@ WindowHeight = DisplayHeight
     menu #game, "&Options", "Change Background", [changeBackground],  "About", [About], "Menu", [mainMenuButtonClicked]
     menu #game, "&Change Background", "Change Background", [changeBackground]
     menu #game, "&About", "About", [About]
-    menu #game, "&Menu", "Menu", [mainMenuButtonClicked]
+    menu #game, "&Menu", "Menu", [quitToMenu] 'mainMenuButtonClicked
     textbox #game.scorebox, 0, 0, 100, 50
     fromMenu = 0
     fromGame = 1
@@ -218,6 +207,7 @@ WindowHeight = DisplayHeight
     print #game, "font times_new_roman 12"
     gosub [Score]
     print #game, "trapclose [gameQuit]"
+    running$ = "true"
 
     'start game?
     print #game, "background start"
@@ -286,8 +276,7 @@ WindowHeight = DisplayHeight
             start = 0
             fromGame = 0
             notice "Game Over!" + Chr$(13) + " Your final score is: ";score
-4           close #game   'if your out of health you come here and the game ends
-            end
+4           close #game : end  'if your out of health you come here and the game ends
         end if
         if quit$ = "no" then
             goto  1 ' goto line labeled "1"
@@ -306,9 +295,9 @@ WindowHeight = DisplayHeight
 
             if asksave$ = "no" then
                 notice "Leaving to menu..."
+                goto [MainMenu]
             end if
-5       close #game
-        goto [MainMenu]
+
      end if
 
      if GTMenu$ = "no" then
@@ -423,53 +412,25 @@ WindowHeight = DisplayHeight
         print #game, "spritescale health 500"
         print #game, "spritexy health ";healthposX; " -40"
         print #game, "drawsprites"
-        firdtAddedHealth = 1
+        firstAddedHealth = 1
         goto [Health]
 
         [Health]
-            if health < 0 then
+
+           print #game, "spriteimage health health("; health; ")"
+           print #game, "spritescale health 500"
+           print #game, "spritexy health ";healthposX; " -40"
+           print #game, "drawsprites"
+
+           if health <= 0 then
                 health = 0
-            end if
+                print #game, "background gameover"
+                print #game, "drawsprites"
+                notice "Game Over!" + Chr$(13) + "Better Luck next time! Your final score is: ";score
+                print #game, "drawsprites"
+                goto 4
+           end if
 
-            select health
-                case 5
-                    print #game, "spriteimage health health(5)"
-                    print #game, "spritescale health 500"
-                    print #game, "spritexy health ";healthposX; " -40"
-                    print #game, "drawsprites"
-
-                case  4
-                    print #game, "spriteimage health health(4)"
-                    print #game, "spritescale health 500"
-                    print #game, "spritexy health ";healthposX; " -40"
-                    print #game, "drawsprites"
-
-                case  3
-                    print #game, "spriteimage health health(3)"
-                    print #game, "spritescale health 500"
-                    print #game, "spritexy health ";healthposX; " -40"
-                    print #game, "drawsprites"
-
-                case  2
-                    print #game, "spriteimage health health(2)"
-                    print #game, "spritescale health 500"
-                    print #game, "spritexy health ";healthposX; " -40"
-                    print #game, "drawsprites"
-
-                case  1
-                    print #game, "spriteimage health health(1)"
-                    print #game, "spritescale health 500"
-                    print #game, "spritexy health ";healthposX; " -40"
-                    print #game, "drawsprites"
-
-                case  0
-                    print #game, "background gameover"
-                    print #game, "drawsprites"
-                    notice "Game Over!" + Chr$(13) + "Better Luck next time! Your final score is: ";score
-                    print #game, "drawsprites"
-                    goto 4
-
-            end select
             if firstAddedHealth = 1 then
                 goto [timeTicked]
                 firstAddedHealth = 0
@@ -478,27 +439,26 @@ WindowHeight = DisplayHeight
             end if
 
     [timeTicked]
-    if WindowWidth = 0 then WindowWidth = width
-    if WindowHeight = 0 then WindowHeight = height
+        if WindowWidth = 0 then WindowWidth = width
+        if WindowHeight = 0 then WindowHeight = height
 
-    if WindowWidth = 0 then WindowWidth = DisplayWidth
-    if WindowHeight = 0 then WindowHeight = DisplayHeight
+        if WindowWidth = 0 then WindowWidth = DisplayWidth
+        if WindowHeight = 0 then WindowHeight = DisplayHeight
 
-    if paused = 0 then
-        bulletX = shipX
-        bulletY = shipY
-        if gotHealth = 0 then
-            gosub [loadHealth]
+        if paused = 0 then
+            bulletX = shipX
+            bulletY = shipY
+            if gotHealth = 0 then
+                gosub [loadHealth]
+            end if
+            gosub [Health]
+            gosub [Score]
+            gosub [loadAsteroids]
+            print #game, "spritexy ship "; shipX; " "; shipY
+            print #game, "drawsprites"
+            char$ = ""
         end if
-        gosub [Health]
-        'gosub [Score]
-        gosub [loadAsteroids]
-        print #game, "spritexy ship "; shipX; " "; shipY
-        print #game, "drawsprites"
-        char$ = ""
-        wait
-
-    end if
+    wait
 
     [userInput]
         char$ = Inkey$
@@ -1084,7 +1044,7 @@ WindowHeight = DisplayHeight
                 print #game, "drawsprites"
                 boost = boost - 1
                 goto 7
-            end if
+           end if
 
             if boost = 3 then
                 print #game, "spriteimage boostbar boost03"
@@ -1269,24 +1229,24 @@ WindowHeight = DisplayHeight
         gosub [loadBullet]
 
         if moving$ = "up" then
-                #game, "spritemovexy bullet 0 -5"
-                #game, "drawsprites"
+                print #game, "spritemovexy bullet 0 -5"
+                print #game, "drawsprites"
         end if
 
         if moving$ = "left" then
 
-            #game, "spritemovexy bullet -5 0"
-            #game, "drawsprites"
+            print #game, "spritemovexy bullet -5 0"
+            print #game, "drawsprites"
         end if
 
         if moving$ = "down" then
-            #game, "spritemovexy bullet 0 5"
-            #game, "drawsprites"
+            print #game, "spritemovexy bullet 0 5"
+            print #game, "drawsprites"
         end if
 
         if moving$ = "right" then
-            #game, "spritemovexy bullet 5 0"
-            #game, "drawsprites"
+            print #game, "spritemovexy bullet 5 0"
+            print #game, "drawsprites"
         end if
         wait
 
@@ -1379,12 +1339,12 @@ WindowHeight = DisplayHeight
     Tempy = y
     SavedGame = 1
     notice "Save successful!"
-    goto 5
-    wait
+    notice "Leaving to menu..."
+    goto [MainMenu]
 
 
 [Load]
-    if paused = 1 then
+    if paused = 0 then 'i changed the 1 to a zero on 11/27/13
         shipX = TempshipX
         shipY = TempshipY
         bulletX = TempbulletX
@@ -1397,15 +1357,16 @@ WindowHeight = DisplayHeight
     wait
 
 [mouseMotion]
+if MouseMotion$ = "On" then
     shipX = MouseX
     shipY = MouseY
     print #main, "spritexy cursor ";shipX; " ";shipY
     print #main, "drawsprites"
+end if
     wait
 
 [Score]
     print #game.score, "!enable"
-    print #game.score, "font times_new_roman 14 bold"
     print #game.score, "Score: ";score
     print #game, "drawsprites"
     return
@@ -1460,7 +1421,6 @@ WindowHeight = DisplayHeight
     WindowWidth = width
     WindowHeight = height
 
-    print "Window Resize successful!"
     notice "Window Resize Complete!"
     resized = 1
 
