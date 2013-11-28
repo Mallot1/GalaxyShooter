@@ -4,13 +4,14 @@
 
 'NEW!!!
 
-NOMAINWIN
+'NOMAINWIN
 
 global score
 global cursor$
 global cursordir$
 global width
 global height
+codenum = 1
 
 WindowWidth = DisplayWidth
 WindowHeight = DisplayHeight
@@ -64,14 +65,17 @@ WindowHeight = DisplayHeight
  [Game]
     close #main
     MouseMotion$ = "Off"
+    useGameLabel = 1
     if SavedGame = 1 then
         confirm "would you like to continue your previous game, or start over?" + chr$(13) + "Start Over" + chr$(13) + "Continue";askcontinue$
         start = 1
             if askcontinue$ = "Start Over" then
-                goto [timeTicked]
+                useGameLabel = 1
+                'goto [timeTicked]
             end if
 
             if askcontinue$ = "Continue" then
+                useGameLabel = 1
                 goto [Load]
             end if
     end if
@@ -222,9 +226,9 @@ WindowHeight = DisplayHeight
     print #game, "addsprite health health(0) health(1) health(2) health(3) health(4) health(5)"
     print #game, "addsprite boostbar boost25+ boost25 boost24 boost23 boost22 boost21 boost20 boost19 boost18 boost17 boost16 boost15 boost14 boost13 boost12 boost11 boost10 boost09 boost08 boost07 boost06 boost05 boost04 boost03 boost02 boost01 boost00"
     print #game, "spritescale health 500"
-    print #game, "spritexy health 1200 0"
+    print #game, "spritexy health "; DisplayWidth-150 ;" -40"
     print #game, "when characterInput [userInput]"
-    print #game, "when leftButtonDown [shoot]"
+    'print #game, "when leftButtonDown [shoot]"
 
     'load Background
     if (backgroundChanged$ = "true") then goto 3                'now game will always show the user chosen background
@@ -265,7 +269,7 @@ WindowHeight = DisplayHeight
         WindowWidth = width
         WindowHeight = height
     end if
-    timer 56,  [timeTicked]
+    'timer 56,  [timeTicked]
     wait
 
     [gameQuit]
@@ -432,8 +436,8 @@ WindowHeight = DisplayHeight
            end if
 
             if firstAddedHealth = 1 then
-                goto [timeTicked]
                 firstAddedHealth = 0
+                goto [timeTicked]
             else
                 return
             end if
@@ -451,12 +455,19 @@ WindowHeight = DisplayHeight
             if gotHealth = 0 then
                 gosub [loadHealth]
             end if
-            gosub [Health]
-            gosub [Score]
-            gosub [loadAsteroids]
-            print #game, "spritexy ship "; shipX; " "; shipY
-            print #game, "drawsprites"
-            char$ = ""
+            if useGameLabel = 1 then
+                gosub [Health]
+                gosub [Score]
+                gosub [loadAsteroids]
+
+                print #game, "spritexy ship "; shipX; " "; shipY
+                print #game, "drawsprites"
+            else
+                useGameLabel = 1
+                goto [Game]
+            end if
+
+           char$ = ""
         end if
     wait
 
@@ -1357,13 +1368,17 @@ WindowHeight = DisplayHeight
     wait
 
 [mouseMotion]
-if MouseMotion$ = "On" then
-    shipX = MouseX
-    shipY = MouseY
-    print #main, "spritexy cursor ";shipX; " ";shipY
-    print #main, "drawsprites"
-end if
-    wait
+    if MouseMotion$ = "On" then
+        shipX = MouseX
+        shipY = MouseY
+        print #main, "spritexy cursor ";shipX; " ";shipY
+        print #main, "drawsprites"
+        goto 6 'continue
+    else
+        useGameLabel = 1
+        goto [timeTicked]
+    end if
+
 
 [Score]
     print #game.score, "!enable"
@@ -1455,7 +1470,7 @@ end if
     textbox #cheat.code, 0, 0, WindowWidth, 300
     button #cheat.validate, "Validate", [cheatCodeValidator], LL, 0, 400, WindowWidth, 600
     open "Cheat code test" for graphics_nsb_nf as #cheat
-    print #cheat, "when leftButtonClicked [clearCode]"
+    'print #cheat, "when leftButtonClicked [clearCode]"
     print #cheat, "trapclose [closeCheatCodeWindow]"
     wait
 
@@ -1467,15 +1482,75 @@ end if
 
 [cheatCodeValidator]
     print #cheat.code, "!contents? code$"
-    if code$ = "XYZ" then
-        boost = boost + 10
-        print boost
-        print #cheat.code, " -- Code Valid! -- , plus 10 boost!"
-    'add else if here to add new codes to the game
-    else
-        print #cheat.code," -- Code Invalid! -- "
-    end if
+
+    select case code$
+        case "XYZ"
+            gosub [checkCode]
+            if codeValid$ = "true" then
+                if codeXYZ$ <> "used" then
+                    boost = boost + 10
+                    print boost
+                    print #cheat.code, " -- Code Valid! -- , plus 10 boost!"
+                end if
+            codeXYZ$ = "used"
+            end if
+
+        case "1x349B"
+            gosub [checkCode]
+            if codeValid$ = "true" then
+                if codeXYZ$ <> "used" then
+                    lives = lives + 1
+                    print lives
+                    print #cheat.code, " -- Code Valid! -- , +1 health"
+                end if
+            code1x349B$ = "used"
+            end if
+
+        case "4949258"
+            gosub [checkCode]
+            if codeValid$ = "true" then
+                if codeXYZ$ <> "used" then
+                    score = score + 10
+                    print score
+                    print #cheat.code, " -- Code Valid! -- , extra 10 points *dont tell anyone B)*"
+                end if
+            code4949258$ = "used"
+            end if
+        'add new codes here
+
+        case else
+            print #cheat.code," -- Code Invalid! -- "
+    end select
+    codeValid$ = ""
     wait
+
+[checkCode]
+    codeIdentity$ = "code"; "";code$; "$"
+    open "codeslog.txt" for APPEND as #getcodes
+    if codenum > 1 then
+        if instr(entries, " --*") <> 0 then
+            print #getcodes, ""
+        end if
+    else
+        if codenum <= 1 then
+            print #getcodes, ""
+            print #getcodes, "---------- ";date$() ;": "; time$(); "----------"
+        end if
+    end if
+
+
+    print #getcodes, codenum; ". -- ";code$ ;" --*"
+    close #getcodes
+
+        if codeIdentity$ = "used" then
+            codeValid$ = "false"
+        else
+            codeValid$ = "true"
+            codenum = codenum + 1
+        end if
+
+    'close #check
+    return
 
 [closeCheatCodeWindow]
     close #cheat : wait

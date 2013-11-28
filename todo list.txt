@@ -11,10 +11,8 @@ core:
 
 
 add-ons/enhancements:
-*finish making the menu button( this button lets you travel back to the main menu )
 
 bugs:
-*"no sprite named "bullet" error
 --
 
 fix:
@@ -29,6 +27,10 @@ fix:
 bars:
 
 ------------------------------------
+
+version 2:
+
+
 Advanced/Long term:
 ***multiplayer
 ***in game levels
