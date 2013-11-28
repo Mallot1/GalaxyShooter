@@ -16,8 +16,9 @@ bugs:
 --
 
 fix:
-*Saving doesnt work yet
 --
+
+*debug program for all aspects all buttons on the menu and in the game 
 
 
 -------------------------------

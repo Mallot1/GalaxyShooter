@@ -11,6 +11,7 @@ global cursor$
 global cursordir$
 global width
 global height
+savingMode$ = "Off"
 codenum = 1
 
 WindowWidth = DisplayWidth
@@ -23,6 +24,7 @@ WindowHeight = DisplayHeight
     MouseMotion$ = "On"
    'buttons and things
     button #main.play, "Play Game", [Game], UL, DisplayWidth/3, 100, 500, 100
+    'button #main.continue, "Resume Game", [Load], UL, DisplayWidth/3, 200, 500, 100
     button #main.about, "About", [About], UL, DisplayWidth/3, 200, 500, 100
     button #main.background, "Change Background", [changeMenuBackground], UL, DisplayWidth/3, 300, 500, 100
     button #main.cheatcode, "Enter Cheat Code", [startCheatCodeValidator], UL, DisplayWidth/3, 400, 500, 100
@@ -66,19 +68,7 @@ WindowHeight = DisplayHeight
     close #main
     MouseMotion$ = "Off"
     useGameLabel = 1
-    if SavedGame = 1 then
-        confirm "would you like to continue your previous game, or start over?" + chr$(13) + "Start Over" + chr$(13) + "Continue";askcontinue$
-        start = 1
-            if askcontinue$ = "Start Over" then
-                useGameLabel = 1
-                'goto [timeTicked]
-            end if
 
-            if askcontinue$ = "Continue" then
-                useGameLabel = 1
-                goto [Load]
-            end if
-    end if
 
     'sprites
     loadbmp "ship_up", "sprites\ship_up.bmp"
@@ -288,25 +278,31 @@ WindowHeight = DisplayHeight
         wait
 
     [quitToMenu]
-     confirm "Are you sure you want to leave? Y/N?";GTMenu$
-     if GTMenu$ = "yes" then
-        start = 0
-        fromGame = 0
-        confirm "Would you like to save your game?( you can currently only resume while the game is open ) Y/N?";asksave$
-            if asksave$ = "yes" then
-                goto [Save]
-            end if
+    if savingMode$ = "On" then
+        confirm "Are you sure you want to leave? Y/N?";GTMenu$
+        if GTMenu$ = "yes" then
+              start = 0
+             fromGame = 0
+            confirm "Would you like to save your game?( you can currently only resume while the game is open ) Y/N?";asksave$
+               if asksave$ = "yes" then
+                  goto [Save]
+                end if
+        end if
 
             if asksave$ = "no" then
                 notice "Leaving to menu..."
                 goto [MainMenu]
             end if
 
+        if GTMenu$ = "no" then
+            goto 1
+        end if
+
+     else
+         notice "Leaving to menu..."
+         goto [MainMenu]
      end if
 
-     if GTMenu$ = "no" then
-        goto 1
-     end if
      wait
 
     [Start]
@@ -1349,23 +1345,75 @@ WindowHeight = DisplayHeight
     Tempx = x
     Tempy = y
     SavedGame = 1
+    open "SaveFiles/save.save" for output as #save
+    print #save, "shipX: ";shipX
+    print #save, "shipY: ";shipY
+    print #save, "bulletX: ";bulletX
+    print #save, "bulletY: ";bulletY
+    print #save, "velx: ";velx
+    print #save, "vely: ";vely
+    print #save, "x: ";x
+    print #save, "y: ";y
+    close #save
     notice "Save successful!"
     notice "Leaving to menu..."
     goto [MainMenu]
 
-
 [Load]
     if paused = 0 then 'i changed the 1 to a zero on 11/27/13
-        shipX = TempshipX
-        shipY = TempshipY
-        bulletX = TempbulletX
-        bulletY = TempbulletY
-        velx = Tempvelx
-        vely = Tempvely
-        x = Tempx
-        y = Tempy
+        filedialog "choose a .save to load", "SaveFiles\*.save",savefile$
+            if savefile$ <> "" then
+                open savefile$ for random as #load LEN=76
+
+                'letter$ = "?"
+                'while letter$ <> ""
+                 '   word = word + 1
+                  '  print shipX
+                   ' shipX = val(word$(savefile$, word))
+                   ' print letter$
+                'wend
+                'FIELD #load,_
+                 '   10 AS shipX,
+                 '   print shipX
+                 '   10 AS shipY,
+                 '   print shipY
+                 '   12 AS bulletX,_
+                 '   print bulletX
+                 '   12 AS bulletY,_
+                 '   print bulletY
+                 '   10 AS velx,_
+                 '   print velx
+                 '   10 AS vely,_
+                 '   print vely
+                 '   6 AS x,_
+                 '   print x
+                 '   6 AS y,_
+                '    print y
+                'PUT, #load
+            else
+                notice "Load Aborted!"
+                BEEP
+            end if
+
+        'shipX = TempshipX
+        'shipY = TempshipY
+        'bulletX = TempbulletX
+        'bulletY = TempbulletY
+        'velx = Tempvelx
+        'vely = Tempvely
+        'x = Tempx
+        'y = Tempy
     end if
-    wait
+    SavedGame = 0
+   ' goto [timeTicked]
+
+
+       'filedialog "choose a saved game to load...", "SaveFiles\*.save", savefile$
+        'if savefile$ = "" then
+         '   notice "Game Load Aborted!"
+        'else
+         '   open savefile$ for input as #load
+        'end if
 
 [mouseMotion]
     if MouseMotion$ = "On" then
