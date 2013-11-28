@@ -2,9 +2,7 @@
 'By: Mallot1
 '(C) 2013
 
-'NEW!!!
-
-'NOMAINWIN
+NOMAINWIN
 
 global score
 global cursor$
@@ -68,7 +66,6 @@ WindowHeight = DisplayHeight
     close #main
     MouseMotion$ = "Off"
     useGameLabel = 1
-
 
     'sprites
     loadbmp "ship_up", "sprites\ship_up.bmp"
@@ -259,7 +256,7 @@ WindowHeight = DisplayHeight
         WindowWidth = width
         WindowHeight = height
     end if
-    'timer 56,  [timeTicked]
+    timer 56,  [timeTicked]
     wait
 
     [gameQuit]
@@ -278,30 +275,35 @@ WindowHeight = DisplayHeight
         wait
 
     [quitToMenu]
-    if savingMode$ = "On" then
-        confirm "Are you sure you want to leave? Y/N?";GTMenu$
-        if GTMenu$ = "yes" then
-              start = 0
-             fromGame = 0
-            confirm "Would you like to save your game?( you can currently only resume while the game is open ) Y/N?";asksave$
-               if asksave$ = "yes" then
-                  goto [Save]
+    if paused = 1 then
+        if savingMode$ = "On" then
+            confirm "Are you sure you want to leave? Y/N?";GTMenu$
+            if GTMenu$ = "yes" then
+                start = 0
+                fromGame = 0
+                confirm "Would you like to save your game?( you can currently only resume while the game is open ) Y/N?";asksave$
+                if asksave$ = "yes" then
+                    goto [Save]
                 end if
-        end if
+            end if
 
             if asksave$ = "no" then
                 notice "Leaving to menu..."
                 goto [MainMenu]
             end if
 
-        if GTMenu$ = "no" then
-            goto 1
-        end if
+            if GTMenu$ = "no" then
+                goto 1
+            end if
 
-     else
-         notice "Leaving to menu..."
-         goto [MainMenu]
-     end if
+        else
+            notice "Leaving to menu..."
+            goto [MainMenu]
+        end if
+    else
+        BEEP
+        notice "Pause the game first!"
+    end if
 
      wait
 
@@ -407,28 +409,33 @@ WindowHeight = DisplayHeight
     [loadHealth]
         healthposX = DisplayWidth - 150
         health = 5
-        gotHealth = 1
-        print #game, "spriteimage health health("; health; ")"
-        print #game, "spritescale health 500"
-        print #game, "spritexy health ";healthposX; " -40"
-        print #game, "drawsprites"
-        firstAddedHealth = 1
+        if useGameLabel = 1 then
+            print #game, "spriteimage health health("; health; ")"
+            print #game, "spritescale health 500"
+            print #game, "spritexy health ";healthposX; " -40"
+            print #game, "drawsprites"
+            gotHealth = 1
+            firstAddedHealth = 1
+        end if
         goto [Health]
 
         [Health]
-
-           print #game, "spriteimage health health("; health; ")"
-           print #game, "spritescale health 500"
-           print #game, "spritexy health ";healthposX; " -40"
-           print #game, "drawsprites"
+            if useGameLabel = 1 then
+                print #game, "spriteimage health health("; health; ")"
+                print #game, "spritescale health 500"
+                print #game, "spritexy health ";healthposX; " -40"
+                print #game, "drawsprites"
+            end if
 
            if health <= 0 then
                 health = 0
-                print #game, "background gameover"
-                print #game, "drawsprites"
-                notice "Game Over!" + Chr$(13) + "Better Luck next time! Your final score is: ";score
-                print #game, "drawsprites"
-                goto 4
+                if useGameLabel = 1 then
+                    print #game, "background gameover"
+                    print #game, "drawsprites"
+                    notice "Game Over!" + Chr$(13) + "Better Luck next time! Your final score is: ";score
+                    print #game, "drawsprites"
+                    goto 4
+                end if
            end if
 
             if firstAddedHealth = 1 then
@@ -452,6 +459,7 @@ WindowHeight = DisplayHeight
                 gosub [loadHealth]
             end if
             if useGameLabel = 1 then
+                print #game, "when characterInput [userInput]"
                 gosub [Health]
                 gosub [Score]
                 gosub [loadAsteroids]
@@ -1149,16 +1157,17 @@ WindowHeight = DisplayHeight
         wait
 
     [changeMenuBackground]
-        filedialog "Open Bitmap Image", "backgrounds/*.bmp", UserBGimage$
-        if (UserBGimage$ = "") then
+        filedialog "Open Bitmap Image", "backgrounds/*.bmp", UserMenuBGimage$
+        if (UserMenuBGimage$ = "") then
             notice "Background change aborted by user."
             goto 6
         end if
-        MenuBackgroundLoaded$ = UserBGimage$
+        MenuBackgroundLoaded$ = UserMenuBGimage$
         MenuBackgroundChanged$ = "true"
-        loadbmp "UserBG",  UserBGimage$
-        print #main, "background UserBG"
+        loadbmp "menuBG",  UserMenuBGimage$
+        print #main, "background menuBG"
         print #main, "drawsprites"
+        MenuBackgroundChanged$ = "true"
         wait
 
     [changeBackground]

@@ -18,15 +18,13 @@ bugs:
 fix:
 --
 
-*debug program for all aspects all buttons on the menu and in the game 
-
-
 -------------------------------
 
 *Extras:
+--
 
 bars:
-
+--
 ------------------------------------
 
 version 2:
@@ -37,7 +35,7 @@ Advanced/Long term:
 ***in game levels
 ***powerups
 ***add game play music
-
+***save game loading
 
 
 str(45) -- changes 45 into the string "45"
