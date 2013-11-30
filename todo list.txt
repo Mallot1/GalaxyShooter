@@ -1,31 +1,31 @@
 SpaceBlast v1.0 by Mallot1(Daniel Robinson mallot111@gmail.com) 
 
+
 core:
 #Load the asteroids random generation pattern and directional values
 #Setup the ship shooting 
 #Setup bullet and asteroid collision detection
 #setup asteroid and ship collision
-#Make the game auto run on a game disk
-
---------------------------------------------------------------------------------
 
 
-add-ons/enhancements:
+--CD/DVD needed for the release of the game and to test the autorun function of the game.
 
-bugs:
---
 
-fix:
---
 
--------------------------------
 
-*Extras:
---
 
-bars:
---
-------------------------------------
+
+
+
+
+
+
+
+
+==============================================================
+
+
+
 
 version 2:
 
