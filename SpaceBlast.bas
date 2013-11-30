@@ -463,7 +463,7 @@ WindowHeight = DisplayHeight
                 gosub [Health]
                 gosub [Score]
                 gosub [loadAsteroids]
-
+                
                 print #game, "spritexy ship "; shipX; " "; shipY
                 print #game, "drawsprites"
             else
