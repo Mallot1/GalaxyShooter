@@ -8,9 +8,7 @@ Needed for v1.0.0 release:
 
 core:
 #Load the asteroids random generation pattern and directional values
-#Setup the ship shooting 
-#Setup bullet and asteroid collision detection
-#setup asteroid and ship collision
+#Setup the ship shooting
 
 Version 2/long term:
 ==================================================================================

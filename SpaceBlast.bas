@@ -2,7 +2,7 @@
 'By: Mallot1
 '(C) 2013
 
-NOMAINWIN
+'NOMAINWIN
 
 global score
 global cursor$
@@ -182,8 +182,8 @@ WindowHeight = DisplayHeight
 
     bulletname$ = "bullet";bulletnumber
     bulletnumber = 1
-    loadbmp bulletname$, "sprites\bullet1.bmp"
-
+    'loadbmp bulletname$, "sprites\bullet1.bmp"
+    loadbmp "bullet", "sprites\bullet1.bmp"
     menu #game, "&Options", "Change Background", [changeBackground],  "About", [About], "Menu", [mainMenuButtonClicked]
     menu #game, "&Change Background", "Change Background", [changeBackground]
     menu #game, "&About", "About", [About]
@@ -209,13 +209,13 @@ WindowHeight = DisplayHeight
     print #game, "addsprite ship ship_up ship_up_damage_1 ship_up_damage_2 ship_up_damage_3 ship_up_damage_4 ship_up_on ship_up_on_damage_1 ship_up_on_damage_2 ship_up_on_damage_3 ship_up_on_damage_4 ship_left ship_left_damage_1 ship_left_damage_2 ship_left_damage_3 ship_left_damage_4 ship_left_on ship_left_on_damage_1 ship_left_on_damage_2 ship_left_on_damage_3 ship_left_on_damage_4 ship_right ship_right_damage_1 ship_right_damage_2 ship_right_damage_3 ship_right_damage_4 ship_right_on ship_right_on_damage_1 ship_right_on_damage_2 ship_right_on_damage_3 ship_right_on_damage_4 ship_down ship_down_on ship_down_on_damage_1 ship_down_on_damage_2 ship_down_on_damage_3 ship_down_on_damage_4 ship_boost_left ship_boost_left_damage_1 ship_boost_left_damage_2 ship_boost_left_damage_3 ship_boost_left_damage_4 ship_boost_right ship_boost_right_damage_1 ship_boost_right_damage_2 ship_boost_right_damage_3 ship_boost_right_damage_4 ship_boost_down ship_boost_up"
     print #game, "spritescale ship 250"
     print #game, "addsprite asteroid asteroid"
-    print #game, "addsprite bullet ";bulletname$
+    print #game, "addsprite bullet bullet"';bulletname$
     print #game, "addsprite health health(0) health(1) health(2) health(3) health(4) health(5)"
     print #game, "addsprite boostbar boost25+ boost25 boost24 boost23 boost22 boost21 boost20 boost19 boost18 boost17 boost16 boost15 boost14 boost13 boost12 boost11 boost10 boost09 boost08 boost07 boost06 boost05 boost04 boost03 boost02 boost01 boost00"
     print #game, "spritescale health 500"
     print #game, "spritexy health "; DisplayWidth-150 ;" -40"
     print #game, "when characterInput [userInput]"
-    'print #game, "when leftButtonDown [shoot]"
+    print #game, "when leftButtonDown [shoot]"
 
     'load Background
     if (backgroundChanged$ = "true") then goto 3                'now game will always show the user chosen background
@@ -1154,7 +1154,6 @@ WindowHeight = DisplayHeight
         print #game, "spritemovexy asteroid "; x+velx; " "; y+vely
         print #game, "drawsprites"
         return
-        wait
 
     [changeMenuBackground]
         filedialog "Open Bitmap Image", "backgrounds/*.bmp", UserMenuBGimage$
@@ -1192,24 +1191,28 @@ WindowHeight = DisplayHeight
             end if
                                               'Load up new bullet
 
-              if moving$ = "up" then
+        if moving$ = "up" then
+            print #game, "spriteimage bullet bullet"
             print #game, "spritexy bullet ";bulletX+24; " ";bulletY-10
             print #game, "drawsprites"
         end if
 
         if moving$ = "left" then
+            print #game, "spriteimage bullet bullet"
             print #game, "spritexy bullet ";bulletX-5; " ";bulletY+18
             print #game, "drawsprites"
         end if
 
         if moving$ = "down" then
+            print #game, "spriteimage bullet bullet"
             print #game, "spritexy bullet ";bulletX+22; " ";bulletY+50
             print #game, "drawsprites"
         end if
 
         if moving$ = "right" then
-                print #game, "spritexy bullet ";bulletX+53; " ";bulletY+22
-                print #game, "drawsprites"
+            print #game, "spriteimage bullet bullet"
+            print #game, "spritexy bullet ";bulletX+53; " ";bulletY+22
+            print #game, "drawsprites"
         end if
 
         if bulletX <= 18 then '18
@@ -1245,22 +1248,25 @@ WindowHeight = DisplayHeight
         gosub [loadBullet]
 
         if moving$ = "up" then
-                print #game, "spritemovexy bullet 0 -5"
-                print #game, "drawsprites"
+            print #game, "spriteimage bullet bullet"
+            print #game, "spritemovexy bullet 0 -5"
+            print #game, "drawsprites"
         end if
 
         if moving$ = "left" then
-
+            print #game, "spriteimage bullet bullet"
             print #game, "spritemovexy bullet -5 0"
             print #game, "drawsprites"
         end if
 
         if moving$ = "down" then
+            print #game, "spriteimage bullet bullet"
             print #game, "spritemovexy bullet 0 5"
             print #game, "drawsprites"
         end if
 
         if moving$ = "right" then
+            print #game, "spriteimage bullet bullet"
             print #game, "spritemovexy bullet 5 0"
             print #game, "drawsprites"
         end if
@@ -1613,13 +1619,23 @@ WindowHeight = DisplayHeight
     close #cheat : wait
 
 [CollisionDetection]
+    'Ship to Asteroids
     print #game, "spritecollides ship ";
     input #game, shipcollides$
     if shipcollides$ = "asteroid" then
         print "Hit! -1 health"
         health = health - 1
     end if
+
+    'Bullet to Asteroids
+    print #game, "spritecollides bullet ";
+    input #game, bulletcollides$
+    if bulletcollides$ = "asteroid" then
+        print "Good shot! +1 point!"
+        score = score + 1
+    end if
     return
+
 
 'functions
 '-----------------------
@@ -1642,3 +1658,15 @@ function ChangeCursor(cursor$)
     loadbmp cursor$, cursordir$
     print #main, "drawsprites"
 end function
+
+
+
+    'Bullet to Asteroids
+    print #game, "spritecollides bullet ";
+    input #game, bulletcollides$
+    if bulletcollides$ = "asteroid" then
+        print "Good shot! +1 point!"
+        score = score + 1
+    end if
+    return
+
