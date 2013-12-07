@@ -460,12 +460,12 @@ WindowHeight = DisplayHeight
             end if
             if useGameLabel = 1 then
                 print #game, "when characterInput [userInput]"
-                gosub [Health]
-                gosub [Score]
-                gosub [loadAsteroids]
-                
+                gosub [Health] 'Refresh health bar
+                gosub [Score] 'Refresh score bar
+                gosub [loadAsteroids] 'refresh asteroids
                 print #game, "spritexy ship "; shipX; " "; shipY
                 print #game, "drawsprites"
+                gosub [CollisionDetection] 'check for collision detection
             else
                 useGameLabel = 1
                 goto [Game]
@@ -1611,6 +1611,15 @@ WindowHeight = DisplayHeight
 
 [closeCheatCodeWindow]
     close #cheat : wait
+
+[CollisionDetection]
+    print #game, "spritecollides ship ";
+    input #game, shipcollides$
+    if shipcollides$ = "asteroid" then
+        print "Hit! -1 health"
+        health = health - 1
+    end if
+    return
 
 'functions
 '-----------------------
