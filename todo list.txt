@@ -5,9 +5,6 @@ core:
 #Load the asteroids random generation pattern and directional values
 #Setup the ship shooting 
 
---CD/DVD needed for the release of the game and to test the autorun function of the game.
-
-
 
 
 
@@ -31,7 +28,7 @@ Advanced/Long term:
 ***multiplayer
 ***in game levels
 ***powerups
-***add game play music
+***add game play music and SFX
 ***save game loading
 
 
