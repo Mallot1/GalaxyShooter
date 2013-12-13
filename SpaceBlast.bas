@@ -215,7 +215,7 @@ WindowHeight = DisplayHeight
     print #game, "spritescale health 500"
     print #game, "spritexy health "; DisplayWidth-150 ;" -40"
     print #game, "when characterInput [userInput]"
-    print #game, "when leftButtonDown [shoot]"
+    'print #game, "when leftButtonDown [shoot]"
 
     'load Background
     if (backgroundChanged$ = "true") then goto 3                'now game will always show the user chosen background
