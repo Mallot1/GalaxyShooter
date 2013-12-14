@@ -2,7 +2,7 @@
 'By: Mallot1
 '(C) 2013
 
-NOMAINWIN
+'NOMAINWIN
 
 global score
 global cursor$
@@ -17,7 +17,6 @@ WindowHeight = DisplayHeight
 
  [MainMenu]
     if running$ = "true" then
-        moving$ = ""
         close #game
     end if
     MouseMotion$ = "On"
@@ -2693,3 +2692,14 @@ end function
 function newsprite$(spritename$, spritebmp$)
     print #game, "addsprite ";spritename$;" ";spritebmp$
 end function
+
+
+    'Bullet to Asteroids
+    print #game, "spritecollides bullet ";
+    input #game, bulletcollides$
+    if bulletcollides$ = "asteroid" then
+        print "Good shot! +1 point!"
+        score = score + 1
+    end if
+    return
+
