@@ -152,6 +152,8 @@ WindowHeight = DisplayHeight
     loadbmp "ship_boost_down", "sprites\ship_boost_down.bmp"
     loadbmp "ship_boost_up", "sprites\ship_boost_up.bmp"
 
+    loadbmp "ship_destroyed", "sprites\ship_destroyed.bmp"
+
     loadbmp "boost25+", "sprites\boost_25+.bmp"
     loadbmp "boost25", "sprites\boost_25.bmp"
     loadbmp "boost24", "sprites\boost_24.bmp"
@@ -216,7 +218,7 @@ WindowHeight = DisplayHeight
     notice "Ready to start?"
     gosub [Start]
 
-    print #game, "addsprite ship ship_up ship_up_damage_1 ship_up_damage_2 ship_up_damage_3 ship_up_damage_4 ship_up_on ship_up_on_damage_1 ship_up_on_damage_2 ship_up_on_damage_3 ship_up_on_damage_4 ship_left ship_left_damage_1 ship_left_damage_2 ship_left_damage_3 ship_left_damage_4 ship_left_on ship_left_on_damage_1 ship_left_on_damage_2 ship_left_on_damage_3 ship_left_on_damage_4 ship_right ship_right_damage_1 ship_right_damage_2 ship_right_damage_3 ship_right_damage_4 ship_right_on ship_right_on_damage_1 ship_right_on_damage_2 ship_right_on_damage_3 ship_right_on_damage_4 ship_down ship_down_on ship_down_on_damage_1 ship_down_on_damage_2 ship_down_on_damage_3 ship_down_on_damage_4 ship_boost_left ship_boost_left_damage_1 ship_boost_left_damage_2 ship_boost_left_damage_3 ship_boost_left_damage_4 ship_boost_right ship_boost_right_damage_1 ship_boost_right_damage_2 ship_boost_right_damage_3 ship_boost_right_damage_4 ship_boost_down ship_boost_up"
+    print #game, "addsprite ship ship_up ship_up_damage_1 ship_up_damage_2 ship_up_damage_3 ship_up_damage_4 ship_up_on ship_up_on_damage_1 ship_up_on_damage_2 ship_up_on_damage_3 ship_up_on_damage_4 ship_left ship_left_damage_1 ship_left_damage_2 ship_left_damage_3 ship_left_damage_4 ship_left_on ship_left_on_damage_1 ship_left_on_damage_2 ship_left_on_damage_3 ship_left_on_damage_4 ship_right ship_right_damage_1 ship_right_damage_2 ship_right_damage_3 ship_right_damage_4 ship_right_on ship_right_on_damage_1 ship_right_on_damage_2 ship_right_on_damage_3 ship_right_on_damage_4 ship_down ship_down_on ship_down_on_damage_1 ship_down_on_damage_2 ship_down_on_damage_3 ship_down_on_damage_4 ship_boost_left ship_boost_left_damage_1 ship_boost_left_damage_2 ship_boost_left_damage_3 ship_boost_left_damage_4 ship_boost_right ship_boost_right_damage_1 ship_boost_right_damage_2 ship_boost_right_damage_3 ship_boost_right_damage_4 ship_boost_down ship_boost_up ship_destroyed"
     print #game, "spritescale ship 250"
     print #game, "addsprite asteroid asteroid"
     'print #game, "addsprite bullet bullet"';bulletname$
@@ -452,6 +454,7 @@ WindowHeight = DisplayHeight
            if health <= 0 then
                 health = 0
                 if useGameLabel = 1 then
+                    print #game, "spriteimage ship ship_destroyed"
                     print #game, "background gameover"
                     print #game, "drawsprites"
                     notice "Game Over!" + Chr$(13) + "Better Luck next time! Your final score is: ";score
@@ -550,6 +553,12 @@ WindowHeight = DisplayHeight
                     print #game, "spriteimage ship ship_up_on_damage_4"
                     print #game, "drawsprites"
                 end if
+
+                if health <= 0 then
+                    print #game, "spriteimage ship ship_up_destroyed"
+                    print #game, "drawsprites"
+                end if
+
             moving$ = "up"
             char$ = ""
         end if
@@ -580,6 +589,12 @@ WindowHeight = DisplayHeight
                     print #game, "spriteimage ship ship_up_on_damage_4"
                     print #game, "drawsprites"
                 end if
+
+                if health <= 0 then
+                    print #game, "spriteimage ship ship_destroyed"
+                    print #game, "drawsprites"
+                end if
+
              moving$ = "up"
              char$ = ""
          end if
@@ -609,6 +624,12 @@ WindowHeight = DisplayHeight
                     print #game, "spriteimage ship ship_left_on_damage_4"
                     print #game, "drawsprites"
                 end if
+
+                if health <= 0 then
+                    print #game, "spriteimage ship ship_destroyed"
+                    print #game, "drawsprites"
+                end if
+
             shipX = shipX - 10
             moving$ = "left"
             char$ = ""
@@ -639,6 +660,12 @@ WindowHeight = DisplayHeight
                     print #game, "spriteimage ship ship_left_on_damage_4"
                     print #game, "drawsprites"
                 end if
+
+                if health <= 0 then
+                    print #game, "spriteimage ship ship_destroyed"
+                    print #game, "drawsprites"
+                end if
+
             shipX = shipX - 10
             moving$ = "left"
             char$ = ""
@@ -669,6 +696,12 @@ WindowHeight = DisplayHeight
                     print #game, "spriteimage ship ship_down_on_damage_4"
                     print #game, "drawsprites"
                 end if
+
+                if health <= 0 then
+                    print #game, "spriteimage ship ship_destroyed"
+                    print #game, "drawsprites"
+                end if
+
             shipY = shipY + 10
             moving$ = "down"
             char$ = ""
@@ -700,6 +733,12 @@ WindowHeight = DisplayHeight
                     print #game, "spriteimage ship ship_down_on_damage_4"
                     print #game, "drawsprites"
                 end if
+
+                if health <= 0 then
+                    print #game, "spriteimage ship ship_destroyed"
+                    print #game, "drawsprites"
+                end if
+
             shipY = shipY + 10
             moving$ = "down"
             char$ = ""
@@ -730,6 +769,12 @@ WindowHeight = DisplayHeight
                     print #game, "spriteimage ship ship_right_on_damage_4"
                     print #game, "drawsprites"
                 end if
+
+                if health <= 0 then
+                    print #game, "spriteimage ship ship_destroyed"
+                    print #game, "drawsprites"
+                end if
+
             shipX = shipX + 10
             moving$ = "right"
             char$ = ""
@@ -760,6 +805,12 @@ WindowHeight = DisplayHeight
                     print #game, "spriteimage ship ship_right_on_damage_4"
                     print #game, "drawsprites"
                 end if
+
+                if health <= 0 then
+                    print #game, "spriteimage ship ship_destroyed"
+                    print #game, "drawsprites"
+                end if
+
             shipX = shipX + 10
             moving$ = "right"
             char$ = ""
