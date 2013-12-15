@@ -23,7 +23,6 @@ WindowHeight = DisplayHeight
     MouseMotion$ = "On"
    'buttons and things
     button #main.play, "Play Game", [Game], UL, DisplayWidth/3, 100, 500, 100
-    'button #main.continue, "Resume Game", [Load], UL, DisplayWidth/3, 200, 500, 100
     button #main.about, "About", [About], UL, DisplayWidth/3, 200, 500, 100
     button #main.background, "Change Background", [changeMenuBackground], UL, DisplayWidth/3, 300, 500, 100
     button #main.cheatcode, "Enter Cheat Code", [startCheatCodeValidator], UL, DisplayWidth/3, 400, 500, 100
@@ -185,7 +184,6 @@ WindowHeight = DisplayHeight
 
     bulletname$ = "bullet";bulletnumber
     bulletnumber = 1
-    'loadbmp bulletname$, "sprites\bullet1.bmp"
     loadbmp "bulletone", "sprites\bullet1.bmp"
     loadbmp "bullettwo", "sprites\bullet2.bmp"
     loadbmp "bulletthree", "sprites\bullet3.bmp"
@@ -221,7 +219,6 @@ WindowHeight = DisplayHeight
     print #game, "addsprite ship ship_up ship_up_damage_1 ship_up_damage_2 ship_up_damage_3 ship_up_damage_4 ship_up_on ship_up_on_damage_1 ship_up_on_damage_2 ship_up_on_damage_3 ship_up_on_damage_4 ship_left ship_left_damage_1 ship_left_damage_2 ship_left_damage_3 ship_left_damage_4 ship_left_on ship_left_on_damage_1 ship_left_on_damage_2 ship_left_on_damage_3 ship_left_on_damage_4 ship_right ship_right_damage_1 ship_right_damage_2 ship_right_damage_3 ship_right_damage_4 ship_right_on ship_right_on_damage_1 ship_right_on_damage_2 ship_right_on_damage_3 ship_right_on_damage_4 ship_down ship_down_on ship_down_on_damage_1 ship_down_on_damage_2 ship_down_on_damage_3 ship_down_on_damage_4 ship_boost_left ship_boost_left_damage_1 ship_boost_left_damage_2 ship_boost_left_damage_3 ship_boost_left_damage_4 ship_boost_right ship_boost_right_damage_1 ship_boost_right_damage_2 ship_boost_right_damage_3 ship_boost_right_damage_4 ship_boost_down ship_boost_up ship_destroyed"
     print #game, "spritescale ship 250"
     print #game, "addsprite asteroid asteroid"
-    'print #game, "addsprite bullet bullet"';bulletname$
     print #game, "addsprite health health(0) health(1) health(2) health(3) health(4) health(5)"
     print #game, "addsprite boostbar boost25+ boost25 boost24 boost23 boost22 boost21 boost20 boost19 boost18 boost17 boost16 boost15 boost14 boost13 boost12 boost11 boost10 boost09 boost08 boost07 boost06 boost05 boost04 boost03 boost02 boost01 boost00"
     print newsprite$("bullet1", "bulletone")
@@ -280,7 +277,6 @@ WindowHeight = DisplayHeight
         WindowWidth = width
         WindowHeight = height
     end if
-    'timer 10, [CollisionDetection]
     timer 100,  [timeTicked] 'was at 56
     wait
 
@@ -2517,55 +2513,13 @@ WindowHeight = DisplayHeight
             if savefile$ <> "" then
                 open savefile$ for random as #load LEN=76
 
-                'letter$ = "?"
-                'while letter$ <> ""
-                 '   word = word + 1
-                  '  print shipX
-                   ' shipX = val(word$(savefile$, word))
-                   ' print letter$
-                'wend
-                'FIELD #load,_
-                 '   10 AS shipX,
-                 '   print shipX
-                 '   10 AS shipY,
-                 '   print shipY
-                 '   12 AS bulletX,_
-                 '   print bulletX
-                 '   12 AS bulletY,_
-                 '   print bulletY
-                 '   10 AS velx,_
-                 '   print velx
-                 '   10 AS vely,_
-                 '   print vely
-                 '   6 AS x,_
-                 '   print x
-                 '   6 AS y,_
-                '    print y
-                'PUT, #load
+
             else
                 notice "Load Aborted!"
                 BEEP
             end if
-
-        'shipX = TempshipX
-        'shipY = TempshipY
-        'bulletX = TempbulletX
-        'bulletY = TempbulletY
-        'velx = Tempvelx
-        'vely = Tempvely
-        'x = Tempx
-        'y = Tempy
     end if
     SavedGame = 0
-   ' goto [timeTicked]
-
-
-       'filedialog "choose a saved game to load...", "SaveFiles\*.save", savefile$
-        'if savefile$ = "" then
-         '   notice "Game Load Aborted!"
-        'else
-         '   open savefile$ for input as #load
-        'end if
 
 [mouseMotion]
     if MouseMotion$ = "On" then
@@ -2622,7 +2576,6 @@ WindowHeight = DisplayHeight
 [windowQuit]
     fromMenu = 0
     fromGame = 0
-    'print window(newwidth, newheight)
     close #window
     wait
 
@@ -2670,7 +2623,6 @@ WindowHeight = DisplayHeight
     textbox #cheat.code, 0, 0, WindowWidth, 300
     button #cheat.validate, "Validate", [cheatCodeValidator], LL, 0, 400, WindowWidth, 600
     open "Cheat code test" for graphics_nsb_nf as #cheat
-    'print #cheat, "when leftButtonClicked [clearCode]"
     print #cheat, "trapclose [closeCheatCodeWindow]"
     wait
 
@@ -2748,8 +2700,6 @@ WindowHeight = DisplayHeight
             codeValid$ = "true"
             codenum = codenum + 1
         end if
-
-    'close #check
     return
 
 [closeCheatCodeWindow]
@@ -2807,3 +2757,5 @@ end function
 function newsprite$(spritename$, spritebmp$)
     print #game, "addsprite ";spritename$;" ";spritebmp$
 end function
+
+
