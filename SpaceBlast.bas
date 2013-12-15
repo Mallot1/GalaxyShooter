@@ -2,6 +2,8 @@
 'By: Mallot1
 '(C) 2013
 
+'Verison 1: Finished 12/15/13 1:05 AM
+
 NOMAINWIN
 
 global score
@@ -53,6 +55,7 @@ WindowHeight = DisplayHeight
     [Quit]
         fromMenu = 0
         playwave ""
+        stopmidi
         timer 0
         close #main : end
 
@@ -69,7 +72,7 @@ WindowHeight = DisplayHeight
     if music$ <> "" then
         playwave music$, loop
     else
-        playwave "SFX\music.wav", loop
+        playmidi "SFX\music.mid", length
     end if
     'sprites
     loadbmp "ship_up", "sprites\ship_up.bmp"
@@ -294,6 +297,7 @@ WindowHeight = DisplayHeight
             fromGame = 0
             notice "Game Over!" + Chr$(13) + " Your final score is: ";score
             playwave ""
+            stopmidi
 4           close #game : end  'if your out of health you come here and the game ends
         end if
         if quit$ = "no" then
@@ -2665,7 +2669,7 @@ WindowHeight = DisplayHeight
         case "1x349B"
             gosub [checkCode]
             if codeValid$ = "true" then
-                if codeXYZ$ <> "used" then
+                if code1x349B$ <> "used" then
                     lives = lives + 1
                     print lives
                     print #cheat.code, " -- Code Valid! -- , +1 health"
@@ -2676,7 +2680,7 @@ WindowHeight = DisplayHeight
         case "4949258"
             gosub [checkCode]
             if codeValid$ = "true" then
-                if codeXYZ$ <> "used" then
+                if code4949258$ <> "used" then
                     score = score + 10
                     print score
                     print #cheat.code, " -- Code Valid! -- , extra 10 points *dont tell anyone B)*"
