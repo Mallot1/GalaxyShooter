@@ -252,10 +252,10 @@ WindowHeight = DisplayHeight
     shipX = WindowWidth/2 - 100 ' ship x-pos
     shipY = WindowHeight - 120  ' ship y-pos
 1   paused = 0
-    velx = 15.5 ' asteroid X-Axis speed
-    vely = 15.5 ' asteroid Y-Axis speed
-    x = 1 ' asteroid x-pos
-    y = 1 ' asteroid y-pos
+    velx = 0 ' asteroid X-Axis speed was 15.5 then was 7.5
+    vely = 0 ' asteroid Y-Axis speed was 15.5 then was 7.5
+    x = 100 ' asteroid x-pos was 1
+    y = 40 ' asteroid y-pos was 1
     dim BulletBMP$(10)
     BulletBMP$(1) = "sprites\bullet1.bmp"
     BulletBMP$(2) = "sprites\bullet2.bmp"
@@ -280,6 +280,7 @@ WindowHeight = DisplayHeight
         WindowWidth = width
         WindowHeight = height
     end if
+    'timer 10, [CollisionDetection]
     timer 100,  [timeTicked] 'was at 56
     wait
 
@@ -484,13 +485,10 @@ WindowHeight = DisplayHeight
                 gosub [loadHealth]
             end if
             if useGameLabel = 1 then
-                print #game, "when characterInput [userInput]"
                 gosub [Health] 'Refresh health bar
                 gosub [Score] 'Refresh score bar
                 gosub [loadAsteroids] 'Refresh asteroids
                 gosub [loadBullet] 'Refresh and render bullets
-                'print #game, "spritexy ship "; shipX; " "; shipY
-                'print #game, "drawsprites"
                 gosub [CollisionDetection] 'check for collision detection
             else
                 useGameLabel = 1
@@ -1224,8 +1222,67 @@ WindowHeight = DisplayHeight
         return
 
     [loadAsteroids]
-        print #game, "spriteimage asteroid asteroid"
-        print #game, "spritemovexy asteroid "; x+velx; " "; y+vely
+        x = int(rnd(1)* DisplayWidth-70)
+        y = int(rnd(1)* DisplayHeight-70)
+        if loadedAsteroid$<>"true" then
+            print #game, "spritevisible asteroid on"
+            print #game, "spriteimage asteroid asteroid"
+            print #game, "spritexy asteroid ";x;" ";y
+            print #game, "drawsprites"
+            loadedAsteroid$ = "true"
+            direction = int(rnd(1) * 4) ' 1=up 2=left 3=right 4=down
+        end if
+        if loadedAsteroid$ = "true" then
+            if direction = 1 then
+                print #game, "spriteimage asteroid asteroid"
+                print #game, "spritemovexy asteroid 0 -5"  'was"; x+velx; " "; y+vely
+                print #game, "drawsprites"
+                print "direction: up"
+            end if
+
+            if direction = 2 then
+                print #game, "spriteimage asteroid asteroid"
+                print #game, "spritemovexy asteroid -5 0"
+                print #game, "drawsprites"
+                print "direction: left"
+            end if
+
+            if direction = 3 then
+                print #game, "spriteimage asteroid asteroid"
+                print #game, "spritemovexy asteroid 0 5"
+                print #game, "drawsprites"
+                print "direction: down"
+            end if
+
+            if direction = 4 then
+                print #game, "spriteimage asteroid asteroid"
+                print #game, "spritemovexy asteroid 5 0"
+                print #game, "drawsprites"
+                print "direction: right"
+            end if
+
+        end if
+
+        print "AsteroidX: ";x ;" AsteroidY: ";y
+        print "ShipX: ";shipX ;" ShipY: ";shipY
+        print ""
+
+        print #game, "spritexy? asteroid asteroidx asteroidy"
+        if asteroidx > DisplayWidth then
+            loadedAsteroid$ = "false"
+        end if
+
+        if asteroidx < 0 then
+            loadedAsteroid$ = "false"
+        end if
+
+        if asteroidy > DisplayHeight then
+            loadedAsteroid$ = "false"
+        end if
+
+        if asteroidy < 0 then
+            loadedAsteroid$ = "false"
+        end if
         print #game, "drawsprites"
         return
 
@@ -1936,8 +1993,7 @@ WindowHeight = DisplayHeight
                 B10$ = ""
         end if
     end if
-
-    wait
+    return
 
     [shoot]
     if moving$ = "up" then
@@ -2351,7 +2407,6 @@ WindowHeight = DisplayHeight
             sprite$ = "bullettwo"
         end if
     end if
-
     wait
 
     [mainMenuButtonClicked]
@@ -2707,15 +2762,23 @@ WindowHeight = DisplayHeight
     if shipcollides$ = "asteroid" then
         print "Hit! -1 health"
         health = health - 1
+        print #game, "spritevisible asteroid off"
+        print #game, "drawsprites"
+        shipcollides$ = ""
     end if
 
     'Bullet to Asteroids
-    print #game, "spritecollides bullet ";
-    input #game, bulletcollides$
-    if bulletcollides$ = "asteroid" then
-        print "Good shot! +1 point!"
-        score = score + 1
-    end if
+    for i = 1 to 10
+        print #game, "spritecollides bullet";i
+        input #game, bulletcollides$
+        if bulletcollides$ = "asteroid" then
+            print #game, "spritevisible asteroid off"
+            print "Good shot! +1 point!"
+            score = score + 1
+            loadedAsteroid$ = "false"
+            bulletcollides$ = ""
+        end if
+    next
     return
 
 
