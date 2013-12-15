@@ -52,13 +52,13 @@ WindowHeight = DisplayHeight
 
     [Quit]
         fromMenu = 0
+        playwave ""
         timer 0
         close #main : end
 
     [resetMainMenu]
         shipX = MouseX
         shipY = MouseY
-
         goto 8
         wait
 
@@ -66,7 +66,11 @@ WindowHeight = DisplayHeight
     close #main
     MouseMotion$ = "Off"
     useGameLabel = 1
-
+    if music$ <> "" then
+        playwave music$, loop
+    else
+        playwave "SFX\music.wav", loop
+    end if
     'sprites
     loadbmp "ship_up", "sprites\ship_up.bmp"
     loadbmp "ship_up_damage_1", "sprites\ship_up_damage_1.bmp"
@@ -194,10 +198,11 @@ WindowHeight = DisplayHeight
     loadbmp "bulleteight", "sprites\bullet8.bmp"
     loadbmp "bulletnine", "sprites\bullet9.bmp"
     loadbmp "bulletten","sprites\bullet10.bmp"
-    menu #game, "&Options", "Change Background", [changeBackground],  "About", [About], "Menu", [mainMenuButtonClicked]
+    menu #game, "&Options", "Change Background", [changeBackground],  "About", [About], "Menu", [mainMenuButtonClicked], "Change Music", [Music]
     menu #game, "&Change Background", "Change Background", [changeBackground]
     menu #game, "&About", "About", [About]
     menu #game, "&Menu", "Menu", [quitToMenu] 'mainMenuButtonClicked
+    menu #game, "&Change Music", "Change Music", [Music]
     textbox #game.scorebox, 0, 0, 100, 50
     fromMenu = 0
     fromGame = 1
@@ -288,6 +293,7 @@ WindowHeight = DisplayHeight
             start = 0
             fromGame = 0
             notice "Game Over!" + Chr$(13) + " Your final score is: ";score
+            playwave ""
 4           close #game : end  'if your out of health you come here and the game ends
         end if
         if quit$ = "no" then
@@ -451,6 +457,7 @@ WindowHeight = DisplayHeight
            if health <= 0 then
                 health = 0
                 if useGameLabel = 1 then
+                    playwave, "SFX\explode.wav", async
                     print #game, "spriteimage ship ship_destroyed"
                     print #game, "background gameover"
                     print #game, "drawsprites"
@@ -818,6 +825,13 @@ WindowHeight = DisplayHeight
             goto [Pause]
         end if
 
+        if char$ = "m" then
+            goto [toggleMusic]
+        end if
+
+        if char$ = "M" then
+            goto [toggleMusic]
+        end if
 
         print "X: ";shipX ;"   Y: ";shipY
         print #game, "spritexy ship "; shipX; " ";shipY
@@ -1992,6 +2006,7 @@ WindowHeight = DisplayHeight
     return
 
     [shoot]
+    playwave "SFX\shoot.wav", async
     if moving$ = "up" then
         if sprite$ = "bulletten" then'
             if B10$<>"loaded" then    '
@@ -2001,7 +2016,7 @@ WindowHeight = DisplayHeight
                 B10$ = "loaded"        '
             end if
             sprite$ = "bulletone"       '
-            goto [loadBullet]                  'return
+            gosub [loadBullet]
         end if
 
         if sprite$ = "bulletnine" then
@@ -2710,6 +2725,7 @@ WindowHeight = DisplayHeight
     print #game, "spritecollides ship ";
     input #game, shipcollides$
     if shipcollides$ = "asteroid" then
+        playwave "SFX\damage.wav", async
         print "Hit! -1 health"
         health = health - 1
         print #game, "spritevisible asteroid off"
@@ -2723,6 +2739,7 @@ WindowHeight = DisplayHeight
         input #game, bulletcollides$
         if bulletcollides$ = "asteroid" then
             print #game, "spritevisible asteroid off"
+            playwave "SFX\score.wav", async
             print "Good shot! +1 point!"
             score = score + 1
             loadedAsteroid$ = "false"
@@ -2731,6 +2748,47 @@ WindowHeight = DisplayHeight
     next
     return
 
+[Music]
+    if music$ <> "" then
+        confirm "would you like to change the music back to the default track?";musicbacktodefault$
+        if musicbacktodefault$ = "yes" then
+            music$ = ""
+            playwave "SFX\music.wav"
+            musicState$ = "On"
+        else
+            goto 5
+        end if
+    else
+5       filedialog "Open a .wav file to play", "music\*.wav", music$
+        if music$ = "" then
+            notice "music change aborted!"
+        else
+            playwave music$, loop
+        end if
+    musicState$ = "On"
+    end if
+
+[toggleMusic]
+    if musicState$ = "" then
+        musicState$ = "Off"
+    end if
+
+    if musicState$ = "On" then
+        musicState$ = "Off"
+        playwave ""
+        goto [timeTicked]
+    end if
+
+    if musicState$ = "Off" then
+        musicState$ = "On"
+        if music$ <> "" then
+            playwave music$, loop
+        else
+            playwave "SFX\music.wav", loop
+        end if
+    end if
+
+    wait
 
 'functions
 '-----------------------

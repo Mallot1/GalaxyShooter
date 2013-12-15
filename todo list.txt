@@ -1,14 +1,6 @@
 SpaceBlast v1.0 by Mallot1(Daniel Robinson mallot111@gmail.com) 
 
-
-core:
-#Load the asteroids random generation pattern and directional values
-
-
-==============================================================
-
-
-
+verson 1: Finished 12/14/13 at 7:34PM
 
 version 2:
 
