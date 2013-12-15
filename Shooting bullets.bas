@@ -1,4 +1,3 @@
-'*Its in!
 NOMAINWIN
 
 WindowWidth = 640
@@ -40,8 +39,7 @@ wait
     gosub [loadBullet]
     wait
 
-[shoot]'* 1/4 in!
-    'shot$ = "true" 'Its good!
+[shoot]
 
     print #shoot, "addsprite ship ship"
     print #shoot, "spriteimage ship ship"
@@ -55,8 +53,8 @@ wait
             print #shoot, "drawsprites"
             B10$ = "loaded"        '
         end if
-        sprite$ = "bulletone"       '
-        goto [loadBullet]                  'return
+        sprite$ = "bulletone"
+        goto [loadBullet]
     end if
 
     if sprite$ = "bulletnine" then
