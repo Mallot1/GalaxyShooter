@@ -11,6 +11,7 @@ global cursor$
 global cursordir$
 global width
 global height
+global shipSpeed
 savingMode$ = "Off"
 codenum = 1
 
@@ -19,6 +20,7 @@ WindowHeight = DisplayHeight
 
  [MainMenu]
     if running$ = "true" then
+        stopmidi
         moving$ = ""
         close #game
     end if
@@ -256,6 +258,7 @@ WindowHeight = DisplayHeight
     start = 1
     shipX = WindowWidth/2 - 100 ' ship x-pos
     shipY = WindowHeight - 120  ' ship y-pos
+    shipSpeed = 50 'The ships speed
 1   paused = 0
     velx = 0 ' asteroid X-Axis speed was 15.5 then was 7.5
     vely = 0 ' asteroid Y-Axis speed was 15.5 then was 7.5
@@ -533,7 +536,7 @@ WindowHeight = DisplayHeight
         end if
 
         if char$ = "w" then
-            shipY = shipY - 10
+            shipY = shipY - shipSpeed
                 if health = 5 then
                     print #game, "spriteimage ship ship_up_on"
                     print #game, "drawsprites"
@@ -569,7 +572,7 @@ WindowHeight = DisplayHeight
         end if
 
          if char$ = "W" then                                    'if Caps Lock is on
-             shipY = shipY - 10
+             shipY = shipY - shipSpeed
                 if health = 5 then
                     print #game, "spriteimage ship ship_up_on"
                     print #game, "drawsprites"
@@ -605,6 +608,7 @@ WindowHeight = DisplayHeight
          end if
 
         if char$ = "a" then
+                shipX = shipX - shipSpeed
                 if health = 5 then
                     print #game, "spriteimage ship ship_left_on"
                     print #game, "drawsprites"
@@ -634,13 +638,12 @@ WindowHeight = DisplayHeight
                     print #game, "spriteimage ship ship_destroyed"
                     print #game, "drawsprites"
                 end if
-
-            shipX = shipX - 10
             moving$ = "left"
             char$ = ""
         end if
 
-        if char$ = "A" then                                    'if Caps Lock is on
+        if char$ = "A" then
+                shipX = shipX - shipSpeed
                 if health = 5 then
                     print #game, "spriteimage ship ship_left_on"
                     print #game, "drawsprites"
@@ -671,12 +674,12 @@ WindowHeight = DisplayHeight
                     print #game, "drawsprites"
                 end if
 
-            shipX = shipX - 10
             moving$ = "left"
             char$ = ""
         end if
 
         if char$ = "s" then
+                shipY = shipY + shipSpeed
                 if health = 5 then
                     print #game, "spriteimage ship ship_down_on"
                     print #game, "drawsprites"
@@ -707,13 +710,13 @@ WindowHeight = DisplayHeight
                     print #game, "drawsprites"
                 end if
 
-            shipY = shipY + 10
             moving$ = "down"
             char$ = ""
         end if
 
 
-        if char$ = "S" then                                    'if Caps Lock is on
+        if char$ = "S" then
+                shipY = shipY + shipSpeed                              'if Caps Lock is on
                 if health = 5 then
                     print #game, "spriteimage ship ship_down_on"
                     print #game, "drawsprites"
@@ -744,12 +747,12 @@ WindowHeight = DisplayHeight
                     print #game, "drawsprites"
                 end if
 
-            shipY = shipY + 10
             moving$ = "down"
             char$ = ""
         end if
 
         if char$ = "d" then
+                shipX = shipX + shipSpeed
                 if health = 5 then
                     print #game, "spriteimage ship ship_right_on"
                     print #game, "drawsprites"
@@ -780,12 +783,12 @@ WindowHeight = DisplayHeight
                     print #game, "drawsprites"
                 end if
 
-            shipX = shipX + 10
             moving$ = "right"
             char$ = ""
         end if
 
-        if char$ = "D" then                                    'if Caps Lock is on
+        if char$ = "D" then
+                shipX = shipX + shipSpeed                         'if Caps Lock is on
                 if health = 5 then
                     print #game, "spriteimage ship ship_right_on"
                     print #game, "drawsprites"
@@ -816,7 +819,6 @@ WindowHeight = DisplayHeight
                     print #game, "drawsprites"
                 end if
 
-            shipX = shipX + 10
             moving$ = "right"
             char$ = ""
         end if
