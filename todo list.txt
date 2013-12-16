@@ -9,9 +9,13 @@ version 2:
 
 Advanced/Long term:
 ***multiplayer
-***in game levels
+***in game stages
 ***powerups
 ***save game loading
+***Highscores file where the users highscores are outputed it will contain the name of the user and date and time.
+It willsk the user if they want their score put into the highscores list. then if yes then theywill be prompted for their name
+then their name followed by their score and then date and time will be outputted to the highscores.txt file.
+
 
 
 str(45) -- changes 45 into the string "45"
