@@ -7,9 +7,10 @@
 'Version 1.3.5: Start 1/3/2014 1:45 PM Finished 1/3/2014 3:55 PM
 'Version 1.4.7: Start 1/6/2014 about 6:48 PM finished 1/7/2014 1:11 AM
 'Version 1.5.0: Start 1/8/2014 6:52 PM to 1/9/2014 4:16 AM finished: 1/11/2014 6:54 PM
+'Version 1.6.7: Start 2/4/2014 5:29 PM
     '*Added spritepack compaibility(just make sure theres a sprite for ebvery image with your spritename on it!"also a _
 
-NOMAINWIN
+'NOMAINWIN
 
 global score
 global cursor$
@@ -29,6 +30,7 @@ upKey$="w"
 downKey$="s"
 leftKey$="a"
 rightKey$="d"
+powerupMode = 1
 
 WindowWidth = DisplayWidth
 WindowHeight = DisplayHeight
@@ -131,7 +133,7 @@ WindowHeight = DisplayHeight
     fromGame = 1
     statictext #game.score, "Score: ", 1, 0, 100, 50
 
-    open "SpaceBlast v1.5.0a" for graphics_nsb_nf as #game
+    open "SpaceBlast v1.6.7a" for graphics_nsb_nf as #game
     print #game, "down"
     print #game, "font times_new_roman 12"
     gosub [Score]
@@ -338,6 +340,7 @@ WindowHeight = DisplayHeight
                 gosub [Score] 'Refresh score bar
                 gosub [loadAsteroids] 'Refresh asteroids
                 gosub [loadBullet] 'Refresh and render bullets
+                gosub [loadPowerups] 'load new powerups
 9               gosub [CollisionDetection] 'check for collision detection
                 gosub [updateGame]'Update game/check for setting changes
             else
@@ -397,43 +400,47 @@ WindowHeight = DisplayHeight
         if char$ = "B" then
             gosub [Boost]
         end if
+        if frozen < 50 then
+            if frozen > 0 then
+                frozen = frozen - 1
+            else
+                if char$ = upKey$ or char$ = upper$(upKey$) then
+                    shipY = shipY - shipSpeed
+                    moving$ = "up"
+                    char$ = ""
+                    print #game, "spriteimage ship ship_up_on"
+                    print #game, "drawsprites"
+                end if
 
-        if char$ = upKey$ or char$ = upper$(upKey$) then
-            shipY = shipY - shipSpeed
-            moving$ = "up"
-            char$ = ""
-            print #game, "spriteimage ship ship_up_on"
-            print #game, "drawsprites"
+
+                if char$ = leftKey$ or char$ = upper$(leftKey$) then
+                    shipX = shipX - shipSpeed
+                    moving$ = "left"
+                    char$ = ""
+                    print #game, "spriteimage ship ship_left_on"
+                    print #game, "drawsprites"
+                end if
+
+
+                if char$ = downKey$ or char$ = upper$(downKey$) then
+                    shipY = shipY + shipSpeed
+                    moving$ = "down"
+                    char$ = ""
+                    print #game, "spriteimage ship ship_down_on"
+                    print #game, "drawsprites"
+                end if
+
+
+
+                if char$ = rightKey$ or char$ = upper$(rightKey$) then
+                    shipX = shipX + shipSpeed
+                    moving$ = "right"
+                    char$ = ""
+                    print #game, "spriteimage ship ship_right_on"
+                    print #game, "drawsprites"
+                end if
+            end if
         end if
-
-
-        if char$ = leftKey$ or char$ = upper$(leftKey$) then
-            shipX = shipX - shipSpeed
-            moving$ = "left"
-            char$ = ""
-            print #game, "spriteimage ship ship_left_on"
-            print #game, "drawsprites"
-        end if
-
-
-        if char$ = downKey$ or char$ = upper$(downKey$) then
-            shipY = shipY + shipSpeed
-            moving$ = "down"
-            char$ = ""
-            print #game, "spriteimage ship ship_down_on"
-            print #game, "drawsprites"
-        end if
-
-
-
-        if char$ = rightKey$ or char$ = upper$(rightKey$) then
-            shipX = shipX + shipSpeed
-            moving$ = "right"
-            char$ = ""
-            print #game, "spriteimage ship ship_right_on"
-            print #game, "drawsprites"
-        end if
-
 
         if char$ = "p" then
             goto [Pause]
@@ -2392,19 +2399,26 @@ WindowHeight = DisplayHeight
 
 [CollisionDetection]
     'Ship to Asteroids
-    print #game, "spritecollides ship ";
-    input #game, shipcollides$
-    if shipcollides$ = "asteroid" then
-        if SFX$ = "On" then
-            playwave "SFX\damage.wav", async
+    if invincible <= 50 then
+        if invincible >= 1 then
+            invincible = invincible - 1
+        else
+            print #game, "spritecollides ship ";
+            input #game, shipcollides$
+            if shipcollides$ = "asteroid" then
+                if SFX$ = "On" then
+                    playwave "SFX\damage.wav", async
+                end if
+                print "Hit! -1 health"
+                health = health - 1
+                print #game, "spriteimage ship ship_damage"
+                print #game, "spritevisible asteroid off"
+                print #game, "drawsprites"
+                shipcollides$ = ""
+             end if
         end if
-        print "Hit! -1 health"
-        health = health - 1
-        print #game, "spriteimage ship ship_damage"
-        print #game, "spritevisible asteroid off"
-        print #game, "drawsprites"
-        shipcollides$ = ""
     end if
+
 
     'Bullet to Asteroids
         rapidfiretime = rapidfiretime + 1
@@ -2516,6 +2530,14 @@ WindowHeight = DisplayHeight
     print #set.SFX, "reset"
     wait
 
+[powerupsOFF]
+    powerupsMode = 0
+    wait
+
+[powerups]
+    powerupsMode = 1
+    wait
+
 [Settings]
     if Settings$ <> "Closed" then
         if Settings$ <> "" then
@@ -2524,13 +2546,14 @@ WindowHeight = DisplayHeight
     end if
     musicState$ = "On"
     WindowWidth=100
-    WindowHeight=200
+    WindowHeight=300
     UpperLeftX=300
     UpperLeftY=100
     checkbox #set.music, "Music OFF", [musicOFF], [toggleMusic], 5, 5, 100, 50
     checkbox #set.SFX, "SFX OFF", [SFXOFF], [SFXON], 5, 45, 100, 50
     checkbox #set.rapidfire, "RapidFire OFF", [rapidFireOFF], [rapidFire], 5, 95, 110, 50
     button #set.keys, "Change game keys", [changeKeys], UL, 5, 145, 120, 20
+    checkbox #set.powerups, "Powerups OFF", [powerupsOFF], [powerups], 5, 145, 160, 50
     open "Settings" for graphics_nsb_nf as #set
     print #set, "trapclose [closeSettings]"
     if coderapidfire$ <> "used" then
@@ -2594,6 +2617,47 @@ WindowHeight = DisplayHeight
     print setsprites$()
     goto 10
     wait
+
+    [loadPowerups]
+    'shrink
+    '10 boost
+    'invincible
+    'full health
+    'cheat code or + 20 points!
+        if powerupMode = 1 then
+            'choose a random powerup to render
+            poweruptype = int(rnd(1)*5)-1
+            'choose a random position
+            powerupX = int(rnd(1)*WindowWidth)-1
+            powerupY = int(rnd(1)*WindowHeight)-1
+            'render the powerup
+            print renderPowerup(poweruptype, powerupX, powerupY)
+            print "AT LOADPUWERUP!!!!"
+            print #game, "spritecollides ship shippowerupcollides$"
+            if shippowerupcollides$ = "shrink" then
+                print #game, "spritescale ship 10 10"
+                print #game, "drawsprites"
+            end if
+
+            if shippowercollides$ = "10boost" then
+                boost = boost + 10
+            end if
+
+            if shippowercollides$ = "invincible" then
+                if invincible = 0 then
+                    invincible = 50
+                end if
+            end if
+
+            if shippowercollides$ = "fullhealth" then
+                health = 5
+            end if
+
+            if shippowercollides$ = "frozen" then
+                frozen = 50
+            end if
+        end if
+        return
 
 [changeKeys]
     upKeyResponce$ = upKey$
@@ -2819,4 +2883,56 @@ function setsprites$()'maybe they should onlybe requireto have a ship on and off
     loadbmp "bullettenleft","sprites\";packname$;"bullet10left.bmp"
     loadbmp "ship_damage", "sprites\";packname$;"ship_damage.bmp"
     close #loading
+end function
+
+function renderPowerup(powerup, X, Y)
+'shrink
+'10 boost
+'invincible
+'full health
+'cheat code or + 20 points!
+
+    if powerup = 1 then
+        loadbmp "shrink", "powerups\shrink.bmp"
+        print "powerupX: ";X;" powerupY: ";Y
+        print #game, "addsprite shrink shrink"
+        print #game, "spriteimage shrink shrink"
+        print #game, "spritescale shrink 500 500"
+        print #game, "spritexy shrink ";X;" ";Y
+        print #game, "drawsprites"
+        'print #game, "removesprite shrink"
+    end if
+    if powerup = 2 then
+        loadbmp "10boost", "powerups\10boost.bmp"
+        print #game, "addsprite 10boost 10boost"
+        print #game, "spriteimage 10boost 10boost"
+        print #game, "spritescale 10boost 500 500"
+        print #game, "spritexy 10boost ";X;" ";Y
+        print #game, "drawsprites"
+    end if
+    if powerup = 3 then
+        loadbmp "invincible", "powerups\invincible.bmp"
+        print #game, "addsprite invincible invincible"
+        print #game, "spriteimage invincible invincible"
+        print #game, "spritescale invincible 500 500"
+        print #game, "spritexy invincible ";X;" ";Y
+        print #game, "drawsprites"
+    end if
+    if powerup = 4 then
+        loadbmp "fullhealth", "powerups\fullhealth.bmp"
+        print #game, "addsprite fullhealth fullhealth"
+        print #game, "spriteimage fullhealth fullhealth"
+        print #game, "spritescale fullheaith 500 500"
+        print #game, "spritexy fullhealth ";X;" ";Y
+        print #game, "drawsprites"
+    end if
+    if powerup = 5 then
+        loadbmp "frozen", "powerdowns\frozen.bmp"
+        print #game, "addsprite frozen frozen"
+        print #game, "spriteimage frozen frozen"
+        print #game, "spritescale frozen 500 500"
+        print #game, "spritexy frozen ";X;" ";Y
+        print #game, "drawsprites"
+    end if
+
 end function
