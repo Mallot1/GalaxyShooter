@@ -34,5 +34,4 @@ Version 2/long term:
 Advanced/Long term:
 ***multiplayer
 ***in game levels
-***powerups
 ***save game loading
