@@ -1,4 +1,4 @@
-'SpaceBlast v1.5.0a
+'SpaceBlast v1.6.7a
 'By: Mallot1
 '(C)2013 - 2014
 
@@ -7,10 +7,10 @@
 'Version 1.3.5: Start 1/3/2014 1:45 PM Finished 1/3/2014 3:55 PM
 'Version 1.4.7: Start 1/6/2014 about 6:48 PM finished 1/7/2014 1:11 AM
 'Version 1.5.0: Start 1/8/2014 6:52 PM to 1/9/2014 4:16 AM finished: 1/11/2014 6:54 PM
-'Version 1.6.7: Start 2/4/2014 5:29 PM
+'Version 1.6.7: Start 2/4/2014 5:29 PM finished: 11:07 PM
     '*Added spritepack compaibility(just make sure theres a sprite for ebvery image with your spritename on it!"also a _
 
-'NOMAINWIN
+NOMAINWIN
 
 global score
 global cursor$
@@ -106,7 +106,7 @@ WindowHeight = DisplayHeight
     if musicState$ = "On" then
         if music$ <> "" then
             if musicStarted = 0 then
-                playwave music$, loop
+                playwave music$', loop
                 musicStarted = 1
             end if
         end if
@@ -232,7 +232,11 @@ WindowHeight = DisplayHeight
             stopmidi
             if fromMenu = 1 then close #main
             if fromSettings = 1 then close #set
-4           close #game : end  'if your out of health you come here and the game ends
+4           playwave ""
+            if fromHealth = 1 then
+                stopmidi
+            end if
+            close #game : end  'if your out of health you come here and the game ends
 
         end if
         if quit$ = "no" then
@@ -293,6 +297,7 @@ WindowHeight = DisplayHeight
         goto [Health]
 
         [Health]
+            fromHealth = 1
             if useGameLabel = 1 then
                 print #game, "spriteimage health health("; health; ")"
                 print #game, "spritescale health 500"
@@ -2626,35 +2631,46 @@ WindowHeight = DisplayHeight
     'cheat code or + 20 points!
         if powerupMode = 1 then
             'choose a random powerup to render
-            poweruptype = int(rnd(1)*5)-1
+            poweruptype = int(rnd(1)*75)-1
             'choose a random position
             powerupX = int(rnd(1)*WindowWidth)-1
             powerupY = int(rnd(1)*WindowHeight)-1
             'render the powerup
             print renderPowerup(poweruptype, powerupX, powerupY)
             print "AT LOADPUWERUP!!!!"
-            print #game, "spritecollides ship shippowerupcollides$"
+            print #game, "spritecollides ship shippowerupcollides$";
+            print shippowerupcollides$
             if shippowerupcollides$ = "shrink" then
-                print #game, "spritescale ship 10 10"
+                print #game, "spritescale ship 50 50"
+                print #game, "drawsprites"
+                print #game, "spritevisible shrink off"
                 print #game, "drawsprites"
             end if
 
-            if shippowercollides$ = "10boost" then
+            if shippowerupcollides$ = "10boost" then
                 boost = boost + 10
+                print #game, "spritevisible 10boost off"
+                print #game, "drawsprites"
             end if
 
-            if shippowercollides$ = "invincible" then
+            if shippowerupcollides$ = "invincible" then
                 if invincible = 0 then
                     invincible = 50
                 end if
+                print #game, "spritevisible invincible off"
+                print #game, "drawsprites"
             end if
 
-            if shippowercollides$ = "fullhealth" then
+            if shippowerupcollides$ = "fullhealth" then
                 health = 5
+                print #game, "spritevisible fullhealth off"
+                print #game, "drawsprites"
             end if
 
-            if shippowercollides$ = "frozen" then
+            if shippowerupcollides$ = "frozen" then
                 frozen = 50
+                print #game, "spritevisible frozen off"
+                print #game, "drawsprites"
             end if
         end if
         return
@@ -2922,7 +2938,7 @@ function renderPowerup(powerup, X, Y)
         loadbmp "fullhealth", "powerups\fullhealth.bmp"
         print #game, "addsprite fullhealth fullhealth"
         print #game, "spriteimage fullhealth fullhealth"
-        print #game, "spritescale fullheaith 500 500"
+        print #game, "spritescale fullhealth 500 500"
         print #game, "spritexy fullhealth ";X;" ";Y
         print #game, "drawsprites"
     end if
